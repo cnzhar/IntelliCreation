@@ -1,7 +1,7 @@
 package com.intellicreation.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.intellicreation.enums.AppHttpCodeEnum;
+import com.intellicreation.constant.AppHttpCodeEnums;
 
 /**
  * @author za
@@ -23,8 +23,8 @@ public class ResponseResult<T> {
     private T data;
 
     public ResponseResult() {
-        this.code = AppHttpCodeEnum.SUCCESS.getCode();
-        this.msg = AppHttpCodeEnum.SUCCESS.getMsg();
+        this.code = AppHttpCodeEnums.SUCCESS.getCode();
+        this.msg = AppHttpCodeEnums.SUCCESS.getMsg();
     }
 
     public ResponseResult(Integer code, T data) {
@@ -57,26 +57,26 @@ public class ResponseResult<T> {
     }
 
     public static ResponseResult okResult(Object data) {
-        ResponseResult result = setAppHttpCodeEnum(AppHttpCodeEnum.SUCCESS, AppHttpCodeEnum.SUCCESS.getMsg());
+        ResponseResult result = setAppHttpCodeEnum(AppHttpCodeEnums.SUCCESS, AppHttpCodeEnums.SUCCESS.getMsg());
         if(data!=null) {
             result.setData(data);
         }
         return result;
     }
 
-    public static ResponseResult errorResult(AppHttpCodeEnum enums){
+    public static ResponseResult errorResult(AppHttpCodeEnums enums){
         return setAppHttpCodeEnum(enums,enums.getMsg());
     }
 
-    public static ResponseResult errorResult(AppHttpCodeEnum enums, String msg){
+    public static ResponseResult errorResult(AppHttpCodeEnums enums, String msg){
         return setAppHttpCodeEnum(enums,msg);
     }
 
-    public static ResponseResult setAppHttpCodeEnum(AppHttpCodeEnum enums){
+    public static ResponseResult setAppHttpCodeEnum(AppHttpCodeEnums enums){
         return okResult(enums.getCode(),enums.getMsg());
     }
 
-    private static ResponseResult setAppHttpCodeEnum(AppHttpCodeEnum enums, String msg){
+    private static ResponseResult setAppHttpCodeEnum(AppHttpCodeEnums enums, String msg){
         return okResult(enums.getCode(),msg);
     }
 

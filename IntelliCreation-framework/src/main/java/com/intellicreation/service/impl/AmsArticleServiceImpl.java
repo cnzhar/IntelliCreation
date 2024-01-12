@@ -3,12 +3,17 @@ package com.intellicreation.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.intellicreation.constant.SystemConstants;
 import com.intellicreation.domain.model.AmsArticleDO;
 import com.intellicreation.domain.ResponseResult;
+import com.intellicreation.domain.vo.HotArticleVO;
 import com.intellicreation.mapper.AmsArticleMapper;
 import com.intellicreation.service.AmsArticleService;
+import com.intellicreation.util.BeanCopyUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,14 +32,15 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
         // 查询热门文章，并封装成ResponseResult
         LambdaQueryWrapper<AmsArticleDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 必须是正式文章（不是草稿）
-        lambdaQueryWrapper.eq(AmsArticleDO::getStatus, 0);
+        lambdaQueryWrapper.eq(AmsArticleDO::getStatus, SystemConstants.ARTICLE_STATUS_PUBLISHED);
         // 按照浏览量进行排序AmsArticle
         lambdaQueryWrapper.orderByDesc(AmsArticleDO::getViewCount);
         // 最多只查询十条
         Page<AmsArticleDO> page = new Page(1, 10);
         page(page, lambdaQueryWrapper);
-
         List<AmsArticleDO> articleList = page.getRecords();
-        return ResponseResult.okResult(articleList);
+        // bean拷贝
+        List<HotArticleVO> hotArticleVOList = BeanCopyUtils.copyBeanList(articleList, HotArticleVO.class);
+        return ResponseResult.okResult(hotArticleVOList);
     }
 }

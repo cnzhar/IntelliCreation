@@ -1,4 +1,4 @@
-package com.intellicreation.utils;
+package com.intellicreation.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;

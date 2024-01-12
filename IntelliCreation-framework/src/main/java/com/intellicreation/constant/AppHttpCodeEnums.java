@@ -1,9 +1,9 @@
-package com.intellicreation.enums;
+package com.intellicreation.constant;
 
 /**
  * @author za
  */
-public enum AppHttpCodeEnum {
+public enum AppHttpCodeEnums {
     // 成功
     SUCCESS(200,"操作成功"),
     // 登录
@@ -24,7 +24,7 @@ public enum AppHttpCodeEnum {
     int code;
     String msg;
 
-    AppHttpCodeEnum(int code, String errorMessage){
+    AppHttpCodeEnums(int code, String errorMessage){
         this.code = code;
         this.msg = errorMessage;
     }

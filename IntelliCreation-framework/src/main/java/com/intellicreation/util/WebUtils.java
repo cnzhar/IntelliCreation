@@ -1,4 +1,4 @@
-package com.intellicreation.utils;
+package com.intellicreation.util;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
