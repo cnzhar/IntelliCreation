@@ -21,17 +21,23 @@ public class AmsArticleController {
     @Autowired
     private AmsArticleService amsArticleService;
 
+    /**
+     * 查询热门文章，并封装成ResponseResult
+     * @return ResponseResult
+     */
     @GetMapping("/hotArticleList")
     public ResponseResult hotArticleList(){
-        // 查询热门文章，并封装成ResponseResult
-        ResponseResult result =  amsArticleService.hotArticleList();
-        return result;
+        return amsArticleService.hotArticleList();
     }
 
-//    @GetMapping("/articleList")
-//    public ResponseResult articleList(Integer pageNum,Integer pageSize,Long categoryId){
-//        return articleService.articleList(pageNum,pageSize,categoryId);
-//    }
+    /**
+     * 文章列表，并封装成ResponseResult
+     * @return ResponseResult
+     */
+    @GetMapping("/articleList")
+    public ResponseResult articleList(Integer pageNum,Integer pageSize,Long categoryId){
+        return amsArticleService.articleList(pageNum,pageSize,categoryId);
+    }
 //
 //    @PutMapping("/updateViewCount/{id}")
 //    public ResponseResult updateViewCount(@PathVariable("id") Long id){

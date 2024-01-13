@@ -64,10 +64,10 @@ public class AmsArticleDO implements Serializable {
     @TableField("is_premium")
     private Integer premium;
 
-    @ApiModelProperty(value = "默认为非分类0")
+    @ApiModelProperty(value = "默认为非分类1")
     private Long category1Id;
 
-    @ApiModelProperty(value = "默认为非分类0")
+    @ApiModelProperty(value = "默认为非分类1")
     private Long category2Id;
 
     @ApiModelProperty(value = "是否被删除（0为未删除，1为已删除）")

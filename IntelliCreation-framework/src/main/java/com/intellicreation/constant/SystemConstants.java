@@ -4,6 +4,18 @@ package com.intellicreation.constant;
  * @author za
  */
 public class SystemConstants {
+
+    /**
+     * 通用状态
+     * 状态为正常
+     */
+    public static final String  STATUS_NORMAL = "0";
+    /**
+     * 通用状态
+     * 状态为禁用
+     */
+    public static final String  STATUS_DISABLED = "1";
+
     /**
      *  文章是草稿状态
      */
@@ -26,7 +38,6 @@ public class SystemConstants {
     public static final int ARTICLE_STATUS_PUBLISHED = 4;
 
 
-//    public static final String  STATUS_NORMAL = "0";
 //    /**
 //     * 友链状态为审核通过
 //     */

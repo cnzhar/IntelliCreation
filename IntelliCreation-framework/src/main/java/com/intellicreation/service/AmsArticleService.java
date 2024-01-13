@@ -16,8 +16,16 @@ public interface AmsArticleService extends IService<AmsArticleDO> {
 
     /**
      * 查询热门文章，并封装成ResponseResult
-     * @return
+     * @return ResponseResult
      */
     ResponseResult hotArticleList();
 
+    /**
+     * 文章列表
+     * @param pageNum
+     * @param pageSize
+     * @param categoryId
+     * @return ResponseResult
+     */
+    ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId);
 }

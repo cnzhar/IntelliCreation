@@ -6,14 +6,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.intellicreation.constant.SystemConstants;
 import com.intellicreation.domain.model.AmsArticleDO;
 import com.intellicreation.domain.ResponseResult;
-import com.intellicreation.domain.vo.HotArticleVO;
+import com.intellicreation.domain.vo.AmsHotArticleVO;
 import com.intellicreation.mapper.AmsArticleMapper;
 import com.intellicreation.service.AmsArticleService;
 import com.intellicreation.util.BeanCopyUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +38,12 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
         page(page, lambdaQueryWrapper);
         List<AmsArticleDO> articleList = page.getRecords();
         // bean拷贝
-        List<HotArticleVO> hotArticleVOList = BeanCopyUtils.copyBeanList(articleList, HotArticleVO.class);
-        return ResponseResult.okResult(hotArticleVOList);
+        List<AmsHotArticleVO> amsHotArticleVOList = BeanCopyUtils.copyBeanList(articleList, AmsHotArticleVO.class);
+        return ResponseResult.okResult(amsHotArticleVOList);
+    }
+
+    @Override
+    public ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId) {
+        return null;
     }
 }
