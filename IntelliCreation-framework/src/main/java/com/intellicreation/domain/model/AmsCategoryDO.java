@@ -22,8 +22,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value="AmsCategory对象", description="")
 @TableName("ams_category")
+@ApiModel(value="AmsCategory对象", description="")
 public class AmsCategoryDO implements Serializable {
 
     private static final long serialVersionUID = 1L;

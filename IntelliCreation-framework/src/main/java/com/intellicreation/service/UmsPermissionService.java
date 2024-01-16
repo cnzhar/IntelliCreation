@@ -1,6 +1,6 @@
 package com.intellicreation.service;
 
-import com.intellicreation.domain.UmsPermission;
+import com.intellicreation.domain.model.UmsPermissionDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author za
  * @since 2024-01-02
  */
-public interface UmsPermissionService extends IService<UmsPermission> {
+public interface UmsPermissionService extends IService<UmsPermissionDO> {
 
 }

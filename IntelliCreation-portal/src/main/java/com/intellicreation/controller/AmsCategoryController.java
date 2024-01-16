@@ -1,7 +1,7 @@
 package com.intellicreation.controller;
 
 
-import com.intellicreation.domain.ResponseResult;
+import com.intellicreation.domain.dto.ResponseResult;
 import com.intellicreation.service.AmsCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

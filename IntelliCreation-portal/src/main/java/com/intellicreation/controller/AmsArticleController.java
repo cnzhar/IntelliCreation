@@ -1,14 +1,14 @@
 package com.intellicreation.controller;
 
 
-import com.intellicreation.domain.ResponseResult;
+import com.intellicreation.domain.dto.ResponseResult;
 import com.intellicreation.service.AmsArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author za
@@ -22,31 +22,29 @@ public class AmsArticleController {
     private AmsArticleService amsArticleService;
 
     /**
-     * 查询热门文章，并封装成ResponseResult
-     * @return ResponseResult
+     * 查询热门文章
      */
     @GetMapping("/hotArticleList")
-    public ResponseResult hotArticleList(){
+    public ResponseResult hotArticleList() {
         return amsArticleService.hotArticleList();
     }
 
     /**
-     * 文章列表，并封装成ResponseResult
-     * @return ResponseResult
+     * 文章列表
      */
     @GetMapping("/articleList")
-    public ResponseResult articleList(Integer pageNum,Integer pageSize,Long categoryId){
-        return amsArticleService.articleList(pageNum,pageSize,categoryId);
+    public ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId) {
+        return amsArticleService.articleList(pageNum, pageSize, categoryId);
     }
-//
+
 //    @PutMapping("/updateViewCount/{id}")
 //    public ResponseResult updateViewCount(@PathVariable("id") Long id){
 //        return amsArticleService.updateViewCount(id);
 //    }
-//
-//    @GetMapping("/{id}")
-//    public ResponseResult getArticleDetail(@PathVariable("id") Long id){
-//        return amsArticleService.getArticleDetail(id);
-//    }
+
+    @GetMapping("/{id}")
+    public ResponseResult getArticleDetail(@PathVariable("id") Long id){
+        return amsArticleService.getArticleDetail(id);
+    }
 
 }

@@ -1,10 +1,12 @@
-package com.intellicreation.domain;
+package com.intellicreation.domain.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -20,8 +22,9 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@TableName("ums_member")
 @ApiModel(value="UmsMember对象", description="")
-public class UmsMember implements Serializable {
+public class UmsMemberDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -1,7 +1,7 @@
 package com.intellicreation.service.impl;
 
 import com.intellicreation.mapper.UmsMemberMapper;
-import com.intellicreation.domain.UmsMember;
+import com.intellicreation.domain.model.UmsMemberDO;
 import com.intellicreation.service.UmsMemberService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2024-01-01
  */
 @Service
-public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember> implements UmsMemberService {
+public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMemberDO> implements UmsMemberService {
 
 }

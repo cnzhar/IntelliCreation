@@ -1,7 +1,7 @@
 package com.intellicreation.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.intellicreation.domain.UmsMember;
+import com.intellicreation.domain.model.UmsMemberDO;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.intellicreation.domain.UmsMember;
  * @author za
  * @since 2024-01-01
  */
-public interface UmsMemberService extends IService<UmsMember> {
+public interface UmsMemberService extends IService<UmsMemberDO> {
 
 }

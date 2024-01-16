@@ -1,6 +1,6 @@
 package com.intellicreation.mapper;
 
-import com.intellicreation.domain.UmsPermission;
+import com.intellicreation.domain.model.UmsPermissionDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @since 2024-01-02
  */
 @Component
-public interface UmsPermissionMapper extends BaseMapper<UmsPermission> {
+public interface UmsPermissionMapper extends BaseMapper<UmsPermissionDO> {
 
-    List<String> selectPermissionByMemberId(Long memberId);
+//    List<String> selectPermissionByMemberId(Long memberId);
 }

@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -23,8 +24,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value="AmsArticle对象", description="")
 @TableName("ams_article")
+@ApiModel(value="AmsArticle对象", description="")
 public class AmsArticleDO implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -2,7 +2,7 @@ package com.intellicreation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.intellicreation.constant.SystemConstants;
-import com.intellicreation.domain.ResponseResult;
+import com.intellicreation.domain.dto.ResponseResult;
 import com.intellicreation.domain.model.AmsArticleDO;
 import com.intellicreation.domain.model.AmsCategoryDO;
 import com.intellicreation.domain.vo.AmsCategoryVO;

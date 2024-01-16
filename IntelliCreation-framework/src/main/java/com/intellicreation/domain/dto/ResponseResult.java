@@ -1,4 +1,4 @@
-package com.intellicreation.domain;
+package com.intellicreation.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.intellicreation.constant.AppHttpCodeEnums;
@@ -47,10 +47,12 @@ public class ResponseResult<T> {
         ResponseResult result = new ResponseResult();
         return result.error(code, msg);
     }
+
     public static ResponseResult okResult() {
         ResponseResult result = new ResponseResult();
         return result;
     }
+
     public static ResponseResult okResult(int code, String msg) {
         ResponseResult result = new ResponseResult();
         return result.ok(code, null, msg);
@@ -58,26 +60,26 @@ public class ResponseResult<T> {
 
     public static ResponseResult okResult(Object data) {
         ResponseResult result = setAppHttpCodeEnum(AppHttpCodeEnums.SUCCESS, AppHttpCodeEnums.SUCCESS.getMsg());
-        if(data!=null) {
+        if (data != null) {
             result.setData(data);
         }
         return result;
     }
 
-    public static ResponseResult errorResult(AppHttpCodeEnums enums){
-        return setAppHttpCodeEnum(enums,enums.getMsg());
+    public static ResponseResult errorResult(AppHttpCodeEnums enums) {
+        return setAppHttpCodeEnum(enums, enums.getMsg());
     }
 
-    public static ResponseResult errorResult(AppHttpCodeEnums enums, String msg){
-        return setAppHttpCodeEnum(enums,msg);
+    public static ResponseResult errorResult(AppHttpCodeEnums enums, String msg) {
+        return setAppHttpCodeEnum(enums, msg);
     }
 
-    public static ResponseResult setAppHttpCodeEnum(AppHttpCodeEnums enums){
-        return okResult(enums.getCode(),enums.getMsg());
+    public static ResponseResult setAppHttpCodeEnum(AppHttpCodeEnums enums) {
+        return okResult(enums.getCode(), enums.getMsg());
     }
 
-    private static ResponseResult setAppHttpCodeEnum(AppHttpCodeEnums enums, String msg){
-        return okResult(enums.getCode(),msg);
+    private static ResponseResult setAppHttpCodeEnum(AppHttpCodeEnums enums, String msg) {
+        return okResult(enums.getCode(), msg);
     }
 
     public ResponseResult<?> error(Integer code, String msg) {

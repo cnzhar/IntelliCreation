@@ -1,6 +1,6 @@
 package com.intellicreation.service;
 
-import com.intellicreation.domain.ResponseResult;
+import com.intellicreation.domain.dto.ResponseResult;
 import com.intellicreation.domain.model.AmsCategoryDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -14,5 +14,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface AmsCategoryService extends IService<AmsCategoryDO> {
 
+    /**
+     * 分类列表
+     * @return
+     */
     ResponseResult getCategoryList();
 }

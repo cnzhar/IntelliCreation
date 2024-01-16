@@ -2,11 +2,11 @@ package com.intellicreation.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.intellicreation.domain.model.AmsArticleDO;
-import com.intellicreation.domain.ResponseResult;
+import com.intellicreation.domain.dto.ResponseResult;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author za
@@ -16,16 +16,28 @@ public interface AmsArticleService extends IService<AmsArticleDO> {
 
     /**
      * 查询热门文章，并封装成ResponseResult
+     *
      * @return ResponseResult
      */
     ResponseResult hotArticleList();
 
     /**
-     * 文章列表
+     * 直接查询文章列表，或根据分类查询文章列表
+     * 注意：
+     * 1.仅返回有“已发布”状态的文章
+     * 2.必须是未被删除的文章
+     *
      * @param pageNum
      * @param pageSize
      * @param categoryId
      * @return ResponseResult
      */
     ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId);
+
+    /**
+     * 获取文章详情
+     * @param id
+     * @return
+     */
+    ResponseResult getArticleDetail(Long id);
 }

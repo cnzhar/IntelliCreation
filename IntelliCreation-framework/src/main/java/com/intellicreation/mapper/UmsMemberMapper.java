@@ -1,7 +1,7 @@
 package com.intellicreation.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.intellicreation.domain.UmsMember;
+import com.intellicreation.domain.model.UmsMemberDO;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Component;
  * @since 2024-01-01
  */
 @Component
-public interface UmsMemberMapper extends BaseMapper<UmsMember> {
+public interface UmsMemberMapper extends BaseMapper<UmsMemberDO> {
 
 }
