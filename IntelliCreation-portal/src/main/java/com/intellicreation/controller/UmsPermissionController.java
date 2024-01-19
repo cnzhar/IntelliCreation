@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2024-01-02
  */
 @RestController
-@RequestMapping("/ums-permission")
+@RequestMapping("/permission")
 public class UmsPermissionController {
 
 }

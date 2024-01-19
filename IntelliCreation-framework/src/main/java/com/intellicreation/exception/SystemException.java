@@ -1,6 +1,6 @@
 package com.intellicreation.exception;
 
-import com.intellicreation.constant.AppHttpCodeEnums;
+import com.intellicreation.enumtype.AppHttpCodeEnums;
 
 /**
  * 自定义系统异常

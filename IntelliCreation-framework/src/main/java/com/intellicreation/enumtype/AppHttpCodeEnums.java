@@ -1,4 +1,4 @@
-package com.intellicreation.constant;
+package com.intellicreation.enumtype;
 
 /**
  * @author za

@@ -1,12 +1,10 @@
 package com.intellicreation.handler.exception;
 
 import com.intellicreation.domain.dto.ResponseResult;
-import com.intellicreation.constant.AppHttpCodeEnums;
+import com.intellicreation.enumtype.AppHttpCodeEnums;
 import com.intellicreation.exception.SystemException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 

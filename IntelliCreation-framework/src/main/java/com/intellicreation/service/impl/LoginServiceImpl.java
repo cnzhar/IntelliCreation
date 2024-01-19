@@ -55,11 +55,12 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ResponseResult logout() {
         // 获取SecurityContextHolder中的用户id
-        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoginMemberDTO loginMemberDTO = (LoginMemberDTO) authentication.getPrincipal();
+        // 获取id
         Long memberId = loginMemberDTO.getUmsMemberDO().getId();
         // 删除redis中的值
-        redisCache.deleteObject("login:" + memberId);
+        redisCache.deleteObject("memberLogin:" + memberId);
         return new ResponseResult(200, "注销成功");
     }
 }

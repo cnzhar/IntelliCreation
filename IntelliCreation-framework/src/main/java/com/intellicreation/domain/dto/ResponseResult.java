@@ -1,7 +1,7 @@
 package com.intellicreation.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.intellicreation.constant.AppHttpCodeEnums;
+import com.intellicreation.enumtype.AppHttpCodeEnums;
 
 /**
  * @author za

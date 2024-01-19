@@ -1,6 +1,6 @@
 package com.intellicreation.controller;
 
-import com.intellicreation.constant.AppHttpCodeEnums;
+import com.intellicreation.enumtype.AppHttpCodeEnums;
 import com.intellicreation.domain.dto.ResponseResult;
 import com.intellicreation.domain.model.UmsMemberDO;
 import com.intellicreation.exception.SystemException;
