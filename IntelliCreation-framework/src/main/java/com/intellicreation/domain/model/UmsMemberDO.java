@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("ums_member")
-@ApiModel(value="UmsMember对象", description="")
+@ApiModel(value="UmsMemberDO对象", description="")
 public class UmsMemberDO implements Serializable {
 
     private static final long serialVersionUID = 1L;

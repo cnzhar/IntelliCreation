@@ -24,4 +24,11 @@ public interface AmsCommentService extends IService<AmsCommentDO> {
      */
     ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize);
 
+    /**
+     * 添加一条评论
+     *
+     * @param comment
+     * @return
+     */
+    ResponseResult addComment(AmsCommentDO comment);
 }

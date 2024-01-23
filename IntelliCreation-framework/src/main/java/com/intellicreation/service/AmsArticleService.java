@@ -35,6 +35,14 @@ public interface AmsArticleService extends IService<AmsArticleDO> {
     ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId);
 
     /**
+     * 更新浏览量
+     *
+     * @param id
+     * @return
+     */
+    ResponseResult updateViewCount(Long id);
+
+    /**
      * 获取文章详情
      * @param id
      * @return

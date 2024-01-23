@@ -1,6 +1,7 @@
 package com.intellicreation.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.intellicreation.constant.SystemConstants;
 import com.intellicreation.enumtype.AppHttpCodeEnums;
 import com.intellicreation.domain.dto.LoginMemberDTO;
 import com.intellicreation.domain.dto.ResponseResult;
@@ -54,7 +55,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
         // 从redis中获取用户信息
-        String redisKey = "memberLogin:" + memberId;
+        String redisKey = SystemConstants.MEMBER_LOGIN_KEY + memberId;
         LoginMemberDTO loginMemberDTO = redisCache.getCacheObject(redisKey);
         if(Objects.isNull(loginMemberDTO)){
             // 说明登录过期，提示重新登录

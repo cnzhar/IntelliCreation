@@ -8,11 +8,14 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
+ * http://localhost:7777/swagger-ui.html
  * @author za
  */
 @Configuration
+@EnableSwagger2
 public class SwaggerConfig {
     @Bean
     public Docket customDocket() {
@@ -24,12 +27,14 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        Contact contact = new Contact("三更草堂", "http://www.sangeng.com", "my@my.com");
+        Contact contact = new Contact("zar", "暂无", "zarkjk@163.com");
         return new ApiInfoBuilder()
-                .title("文档标题1")
-                .description("文档描述2")
-                .contact(contact)   // 联系方式
-                .version("1.1.1")  // 版本
+                .title("基于Spring Boot的智能创作系统接口文档")
+                .description("基于Spring Boot的智能创作系统接口文档")
+                // 联系方式
+                .contact(contact)
+                // 版本
+                .version("1.1.1")
                 .build();
     }
 }

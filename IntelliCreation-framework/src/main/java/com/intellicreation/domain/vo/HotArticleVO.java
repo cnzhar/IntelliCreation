@@ -10,12 +10,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AmsCategoryVO {
+public class HotArticleVO {
 
     private Long id;
-    private String name;
     /**
-     * 描述
+     * 标题
      */
-    private String description;
+    private String title;
+    /**
+     * 访问量
+     */
+    private Long viewCount;
 }

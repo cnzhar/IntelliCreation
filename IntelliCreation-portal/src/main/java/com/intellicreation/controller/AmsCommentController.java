@@ -1,14 +1,13 @@
 package com.intellicreation.controller;
 
 
-import com.intellicreation.constant.SystemConstants;
+import com.intellicreation.domain.dto.AddCommentDTO;
 import com.intellicreation.domain.dto.ResponseResult;
+import com.intellicreation.domain.model.AmsCommentDO;
 import com.intellicreation.service.AmsCommentService;
+import com.intellicreation.util.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -28,6 +27,13 @@ public class AmsCommentController {
     @GetMapping("/commentList")
     public ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize) {
         return amsCommentService.commentList(articleId, pageNum, pageSize);
+    }
+
+    @PostMapping("/addComment")
+    public ResponseResult addComment(@RequestBody AddCommentDTO addCommentDTO){
+        // todo 直接这样copybean合适吗
+        AmsCommentDO comment = BeanCopyUtils.copyBean(addCommentDTO, AmsCommentDO.class);
+        return amsCommentService.addComment(comment);
     }
 
 }

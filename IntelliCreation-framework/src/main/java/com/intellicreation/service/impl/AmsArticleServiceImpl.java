@@ -7,7 +7,7 @@ import com.intellicreation.constant.SystemConstants;
 import com.intellicreation.domain.model.AmsArticleDO;
 import com.intellicreation.domain.dto.ResponseResult;
 import com.intellicreation.domain.model.AmsCategoryDO;
-import com.intellicreation.domain.vo.AmsHotArticleVO;
+import com.intellicreation.domain.vo.HotArticleVO;
 import com.intellicreation.domain.vo.ArticleDetailVO;
 import com.intellicreation.domain.vo.ArticleListVO;
 import com.intellicreation.domain.vo.PageVO;
@@ -15,6 +15,7 @@ import com.intellicreation.mapper.AmsArticleMapper;
 import com.intellicreation.service.AmsArticleService;
 import com.intellicreation.service.AmsCategoryService;
 import com.intellicreation.util.BeanCopyUtils;
+import com.intellicreation.util.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +37,12 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
     @Autowired
     private AmsCategoryService amsCategoryService;
 
+    @Autowired
+    private RedisCache redisCache;
+
     @Override
     public ResponseResult hotArticleList() {
+        // todo viewCount改为从redis中获取
         // 查询热门文章，并封装成ResponseResult
         LambdaQueryWrapper<AmsArticleDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 必须是正式文章（不是草稿）
@@ -49,12 +54,13 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
         page(page, lambdaQueryWrapper);
         List<AmsArticleDO> articleList = page.getRecords();
         // bean拷贝
-        List<AmsHotArticleVO> amsHotArticleVOList = BeanCopyUtils.copyBeanList(articleList, AmsHotArticleVO.class);
-        return ResponseResult.okResult(amsHotArticleVOList);
+        List<HotArticleVO> hotArticleVOList = BeanCopyUtils.copyBeanList(articleList, HotArticleVO.class);
+        return ResponseResult.okResult(hotArticleVOList);
     }
 
     @Override
     public ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId) {
+        // todo viewCount改为从redis中获取
         // 查询条件
         LambdaQueryWrapper<AmsArticleDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 如果有categoryId，只留下该分类下的
@@ -74,14 +80,21 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
         return ResponseResult.okResult(pageVO);
     }
 
+    @Override
+    public ResponseResult updateViewCount(Long id) {
+        // 更新redis中对应 id的浏览量
+        redisCache.incrementCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, id.toString(), 1);
+        return ResponseResult.okResult();
+    }
+
     // Todo 只有已发布的能被所有人看到，草稿等只能自己看
     @Override
     public ResponseResult getArticleDetail(Long id) {
         // 根据id查询文章
         AmsArticleDO amsArticleDO = getById(id);
         // 从redis中获取viewCount
-//        Integer viewCount = redisCache.getCacheMapValue("article:viewCount", id.toString());
-//        amsArticleDO.setViewCount(viewCount.longValue());
+        Integer viewCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, id.toString());
+        amsArticleDO.setViewCount(viewCount.longValue());
         // 转换成VO
         ArticleDetailVO articleDetailVO = BeanCopyUtils.copyBean(amsArticleDO, ArticleDetailVO.class);
         // 根据分类id查询分类名

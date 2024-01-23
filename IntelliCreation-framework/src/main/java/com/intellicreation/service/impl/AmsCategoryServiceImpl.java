@@ -5,7 +5,7 @@ import com.intellicreation.constant.SystemConstants;
 import com.intellicreation.domain.dto.ResponseResult;
 import com.intellicreation.domain.model.AmsArticleDO;
 import com.intellicreation.domain.model.AmsCategoryDO;
-import com.intellicreation.domain.vo.AmsCategoryVO;
+import com.intellicreation.domain.vo.CategoryVO;
 import com.intellicreation.mapper.AmsCategoryMapper;
 import com.intellicreation.service.AmsArticleService;
 import com.intellicreation.service.AmsCategoryService;
@@ -56,8 +56,8 @@ public class AmsCategoryServiceImpl extends ServiceImpl<AmsCategoryMapper, AmsCa
                 .filter(category -> SystemConstants.STATUS_NORMAL.equals(category.getStatus()))
                 .collect(Collectors.toList());
         // 封装VO
-        List<AmsCategoryVO> amsCategoryVOList = BeanCopyUtils.copyBeanList(categories, AmsCategoryVO.class);
+        List<CategoryVO> categoryVOList = BeanCopyUtils.copyBeanList(categories, CategoryVO.class);
 
-        return ResponseResult.okResult(amsCategoryVOList);
+        return ResponseResult.okResult(categoryVOList);
     }
 }

@@ -18,14 +18,14 @@ public class MemberInfoVO {
     /**
      * 昵称
      */
-    private String nickName;
+    private String nickname;
 
     /**
      * 头像
      */
     private String avatar;
 
-    private String sex;
+    private String gender;
 
     private String email;
 

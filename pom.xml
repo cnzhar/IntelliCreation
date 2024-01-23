@@ -13,7 +13,6 @@
         <module>IntelliCreation-portal</module>
         <module>IntelliCreation-framework</module>
         <module>IntelliCreation-mpg</module>
-        <module>security</module>
         <module>IntelliCreation-security</module>
         <module>IntelliCreation-search</module>
     </modules>
