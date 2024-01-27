@@ -1,13 +1,13 @@
 package com.intellicreation.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.intellicreation.enumtype.AppHttpCodeEnums;
+import com.intellicreation.constant.SystemConstants;
 import com.intellicreation.domain.dto.LoginMemberDTO;
 import com.intellicreation.domain.dto.ResponseResult;
-import com.intellicreation.enumtype.AppHttpCodeEnums;
 import com.intellicreation.util.JwtUtil;
 import com.intellicreation.util.RedisCache;
 import com.intellicreation.util.WebUtils;
-import com.intellicreation.constant.SystemConstants;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,7 +55,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
         // 从redis中获取用户信息
-        String redisKey = SystemConstants.MEMBER_LOGIN_KEY + memberId;
+        String redisKey = SystemConstants.ADMIN_LOGIN_KEY + memberId;
         LoginMemberDTO loginMemberDTO = redisCache.getCacheObject(redisKey);
         if(Objects.isNull(loginMemberDTO)){
             // 说明登录过期，提示重新登录

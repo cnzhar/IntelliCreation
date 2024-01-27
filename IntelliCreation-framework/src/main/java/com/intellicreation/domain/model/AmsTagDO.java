@@ -3,14 +3,14 @@ package com.intellicreation.domain.model;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -18,30 +18,26 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author za
- * @since 2024-01-02
+ * @since 2024-01-24
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("ums_permission")
-@ApiModel(value="UmsPermission对象", description="")
-public class UmsPermissionDO implements Serializable {
+@TableName("ams_tag")
+@ApiModel(value="AmsTag对象", description="")
+public class AmsTagDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private String permissionName;
+    @ApiModelProperty(value = "标签名")
+    private String name;
 
-    private String permissionKey;
+    @ApiModelProperty(value = "备注")
+    private String remark;
 
-    @ApiModelProperty(value = "权限类型（I目录，M菜单，B按钮）")
-    private String permissionType;
-
-    @ApiModelProperty(value = "权限状态（0正常 1停用）")
-    private String status;
-
-    @ApiModelProperty(value = "是否删除（0未删除 1已删除）")
+    @ApiModelProperty(value = "是否被删除（0为未删除，1为已删除）")
     @TableField("is_deleted")
     private Integer deleted;
 

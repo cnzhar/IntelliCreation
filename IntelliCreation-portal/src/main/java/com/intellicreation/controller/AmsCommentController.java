@@ -1,11 +1,11 @@
 package com.intellicreation.controller;
 
 
-import com.intellicreation.domain.dto.AddCommentDTO;
 import com.intellicreation.domain.dto.ResponseResult;
+import com.intellicreation.util.BeanCopyUtils;
+import com.intellicreation.domain.dto.AddCommentDTO;
 import com.intellicreation.domain.model.AmsCommentDO;
 import com.intellicreation.service.AmsCommentService;
-import com.intellicreation.util.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

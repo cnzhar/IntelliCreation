@@ -18,28 +18,28 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author za
- * @since 2024-01-02
+ * @since 2024-01-25
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("ums_permission")
-@ApiModel(value="UmsPermission对象", description="")
-public class UmsPermissionDO implements Serializable {
+@TableName("ums_role")
+@ApiModel(value="UmsRole对象", description="")
+public class UmsRoleDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private String permissionName;
+    private String roleName;
 
-    private String permissionKey;
+    private String roleKey;
 
-    @ApiModelProperty(value = "权限类型（I目录，M菜单，B按钮）")
-    private String permissionType;
-
-    @ApiModelProperty(value = "权限状态（0正常 1停用）")
+    @ApiModelProperty(value = "角色状态（0正常 1停用）")
     private String status;
+
+    @ApiModelProperty(value = "描述")
+    private String description;
 
     @ApiModelProperty(value = "是否删除（0未删除 1已删除）")
     @TableField("is_deleted")

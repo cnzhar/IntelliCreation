@@ -11,6 +11,11 @@ public class SystemConstants {
     public static final String MEMBER_LOGIN_KEY = "memberLogin:";
 
     /**
+     * 管理员登录信息在redis中的key
+     */
+    public static final String ADMIN_LOGIN_KEY = "adminLogin:";
+
+    /**
      * 文章浏览量在Redis中的key
      */
     public static final String ARTICLE_VIEW_COUNT_KEY = "article:viewCount";
@@ -26,6 +31,11 @@ public class SystemConstants {
      * 状态为禁用
      */
     public static final String  STATUS_DISABLED = "1";
+
+    /**
+     * 无父元素
+     */
+    public static final Long NULL_PARENT = 0L;
 
     /**
      *  文章是草稿状态
@@ -61,4 +71,24 @@ public class SystemConstants {
      * 不对任何用户进行回复
      */
     public static final long COMMENT_TO_NULL = 0;
+
+    /**
+     * 超级管理员ID
+     */
+    public static final long ID_OF_SUPER_ADMIN = 1L;
+
+    /**
+     * 超级管理员 role ley
+     */
+    public static final String KEY_OF_SUPER_ADMIN = "Super Admin";
+
+    /**
+     * 菜单权限
+     */
+    public static final String MENU_PERMISSION = "M";
+
+    /**
+     * 按钮权限
+     */
+    public static final String BUTTON_PERMISSION = "B";
 }

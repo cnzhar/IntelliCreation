@@ -43,7 +43,7 @@ public class AmsArticleController {
         return amsArticleService.articleList(pageNum, pageSize, categoryId);
     }
 
-    // todo 考虑要不要加上防止刷浏览量
+    // todo 考虑要不要加上防止刷浏览量, 接口防刷，注解
     @PutMapping("/updateViewCount/{id}")
     public ResponseResult updateViewCount(@PathVariable("id") Long id){
         return amsArticleService.updateViewCount(id);

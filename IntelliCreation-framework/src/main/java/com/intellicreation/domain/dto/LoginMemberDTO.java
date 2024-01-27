@@ -2,6 +2,8 @@ package com.intellicreation.domain.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.intellicreation.domain.model.UmsMemberDO;
+import com.intellicreation.util.SecurityUtils;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,38 +18,33 @@ import java.util.stream.Collectors;
  * @author za
  */
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class LoginMemberDTO implements UserDetails {
+
+    // todo 这个命名为dto合适吗
 
     private UmsMemberDO umsMemberDO;
 
     private List<String> permissions;
 
-//    public LoginMemberDTO(UmsMemberDO umsMemberDO, List<String> permissions) {
-//        this.umsMemberDO = umsMemberDO;
-//        this.permissions = permissions;
-//    }
+    @JSONField(serialize = false)
+    private List<SimpleGrantedAuthority> authorities;
 
-    public LoginMemberDTO(UmsMemberDO umsMemberDO) {
+    public LoginMemberDTO(UmsMemberDO umsMemberDO, List<String> permissionList) {
         this.umsMemberDO = umsMemberDO;
+        this.permissions = permissionList;
     }
-
-//    @JSONField(serialize = false)
-//    private List<SimpleGrantedAuthority> authorities;
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        if (authorities != null) {
-//            return authorities;
-//        }
-//        authorities = permissions.stream()
-//                .map(SimpleGrantedAuthority::new)
-//                .collect(Collectors.toList());
-//        return authorities;
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        if (authorities != null) {
+            return authorities;
+        }
+        authorities = permissions.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+        return authorities;
     }
 
     @Override

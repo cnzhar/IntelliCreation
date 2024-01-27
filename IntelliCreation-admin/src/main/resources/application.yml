@@ -44,4 +44,4 @@ mybatis-plus:
       logic-not-delete-value: 0
       id-type: auto
 server:
-  port: 7777
+  port: 8989

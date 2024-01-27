@@ -1,15 +1,15 @@
 package com.intellicreation.service.impl;
 
-import com.intellicreation.constant.SystemConstants;
 import com.intellicreation.domain.dto.LoginMemberDTO;
 import com.intellicreation.domain.dto.ResponseResult;
 import com.intellicreation.domain.model.UmsMemberDO;
 import com.intellicreation.domain.vo.MemberInfoVO;
 import com.intellicreation.domain.vo.MemberLoginVO;
-import com.intellicreation.service.LoginService;
+import com.intellicreation.service.MemberLoginService;
 import com.intellicreation.util.BeanCopyUtils;
 import com.intellicreation.util.JwtUtil;
 import com.intellicreation.util.RedisCache;
+import com.intellicreation.constant.SystemConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +23,7 @@ import java.util.Objects;
  * @author za
  */
 @Service
-public class LoginServiceImpl implements LoginService {
+public class MemberLoginServiceImpl implements MemberLoginService {
 
     @Autowired
     private AuthenticationManager authenticationManager;

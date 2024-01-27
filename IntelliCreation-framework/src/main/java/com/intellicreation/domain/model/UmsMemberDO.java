@@ -2,6 +2,8 @@ package com.intellicreation.domain.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDate;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
@@ -87,6 +89,10 @@ public class UmsMemberDO implements Serializable {
 
     @ApiModelProperty(value = "qq号")
     private Integer qqNumber;
+
+    @ApiModelProperty(value = "是否被删除（0为未删除，1为已删除）")
+    @TableField("is_deleted")
+    private Integer deleted;
 
     @ApiModelProperty(value = "创建人")
     private Long createBy;

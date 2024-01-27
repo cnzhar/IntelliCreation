@@ -17,5 +17,12 @@ import java.util.List;
 @Component
 public interface UmsPermissionMapper extends BaseMapper<UmsPermissionDO> {
 
-//    List<String> selectPermissionByMemberId(Long memberId);
+    /**
+     * 根据用户id返回所具有的权限
+     *
+     * @param memberId
+     * @return
+     */
+    List<String> selectPermissionByMemberId(Long memberId);
+    // todo 这个的mapper中相关内容，建立一下索引
 }

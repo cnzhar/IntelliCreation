@@ -1,8 +1,10 @@
 package com.intellicreation.handler.mybatisplus;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.baomidou.mybatisplus.core.injector.ISqlInjector;
 import com.intellicreation.util.SecurityUtils;
 import org.apache.ibatis.reflection.MetaObject;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;

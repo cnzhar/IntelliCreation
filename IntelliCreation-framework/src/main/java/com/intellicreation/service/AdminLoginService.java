@@ -6,10 +6,11 @@ import com.intellicreation.domain.model.UmsMemberDO;
 /**
  * @author za
  */
-public interface LoginService {
+public interface AdminLoginService {
 
     /**
      * 登录
+     *
      * @param umsMemberDO
      * @return
      */
@@ -17,6 +18,7 @@ public interface LoginService {
 
     /**
      * 登出
+     *
      * @return
      */
     ResponseResult logout();

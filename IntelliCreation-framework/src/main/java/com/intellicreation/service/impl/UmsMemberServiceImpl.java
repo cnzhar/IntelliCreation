@@ -1,11 +1,11 @@
 package com.intellicreation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.intellicreation.domain.dto.ResponseResult;
 import com.intellicreation.domain.vo.MemberInfoVO;
+import com.intellicreation.mapper.UmsMemberMapper;
+import com.intellicreation.domain.dto.ResponseResult;
 import com.intellicreation.enumtype.AppHttpCodeEnums;
 import com.intellicreation.exception.SystemException;
-import com.intellicreation.mapper.UmsMemberMapper;
 import com.intellicreation.domain.model.UmsMemberDO;
 import com.intellicreation.service.UmsMemberService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

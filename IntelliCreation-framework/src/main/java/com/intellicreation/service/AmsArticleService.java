@@ -1,8 +1,8 @@
 package com.intellicreation.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.intellicreation.domain.model.AmsArticleDO;
 import com.intellicreation.domain.dto.ResponseResult;
+import com.intellicreation.domain.model.AmsArticleDO;
 
 /**
  * <p>
