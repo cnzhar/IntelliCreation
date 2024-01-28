@@ -9,13 +9,14 @@
     <name>IntelliCreation</name>
     <packaging>pom</packaging>
     <modules>
-        <module>IntelliCreation-admin</module>
-        <module>IntelliCreation-portal</module>
         <module>IntelliCreation-framework</module>
         <module>IntelliCreation-mpg</module>
-        <module>IntelliCreation-security</module>
         <module>IntelliCreation-search</module>
-        <module>IntelliCreation-facede</module>
+        <module>IntelliCreation-facade</module>
+        <module>IntelliCreation-common</module>
+        <module>IntelliCreation-api</module>
+        <module>IntelliCreation-member</module>
+        <module>IntelliCreation-article</module>
     </modules>
 
     <properties>
