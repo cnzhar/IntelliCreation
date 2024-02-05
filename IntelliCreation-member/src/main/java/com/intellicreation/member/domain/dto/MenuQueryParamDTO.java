@@ -10,7 +10,17 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginMemberDTO {
+public class MenuQueryParamDTO {
 
     private Long id;
+
+    private String icon;
+
+    private String menuName;
+
+    private Long parent;
+
+    private Integer sort;
+
+    private String path;
 }

@@ -14,21 +14,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface AmsCommentService extends IService<AmsCommentDO> {
 
-//    /**
-//     * 获取评论列表
-//     *
-//     * @param articleId
-//     * @param pageNum
-//     * @param pageSize
-//     * @return ResponseResult
-//     */
-//    ResponseResult commentList(Long articleId, Integer pageNum, Integer pageSize);
-//
-//    /**
-//     * 添加一条评论
-//     *
-//     * @param comment
-//     * @return
-//     */
-//    ResponseResult addComment(AmsCommentDO comment);
+    /**
+     * 添加一条评论
+     *
+     * @param comment
+     * @return
+     */
+    void addComment(AmsCommentDO comment);
 }

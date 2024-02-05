@@ -1,6 +1,6 @@
 package com.intellicreation.member.mapper;
 
-import com.intellicreation.member.domain.entity.UmsMenu;
+import com.intellicreation.member.domain.entity.UmsMenuDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.intellicreation.member.domain.vo.MenuVO;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * @author za
  * @since 2024-01-26
  */
-public interface UmsMenuMapper extends BaseMapper<UmsMenu> {
+public interface UmsMenuMapper extends BaseMapper<UmsMenuDO> {
 
     /**
      * 获取所有的路由

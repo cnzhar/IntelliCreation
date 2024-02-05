@@ -1,6 +1,11 @@
 package com.intellicreation.member.service.impl;
 
-import com.intellicreation.member.domain.entity.UmsMenu;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.intellicreation.common.vo.PageVO;
+import com.intellicreation.member.domain.dto.MenuQueryParamDTO;
+import com.intellicreation.member.domain.entity.UmsMenuDO;
+import com.intellicreation.member.domain.entity.UmsRoleDO;
 import com.intellicreation.member.domain.vo.MenuVO;
 import com.intellicreation.common.constant.SystemConstants;
 import com.intellicreation.member.mapper.UmsMenuMapper;
@@ -8,6 +13,8 @@ import com.intellicreation.member.service.UmsMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.intellicreation.member.util.SecurityUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,14 +28,14 @@ import java.util.stream.Collectors;
  * @since 2024-01-26
  */
 @Service
-public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> implements UmsMenuService {
+public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenuDO> implements UmsMenuService {
 
     @Override
     public List<MenuVO> selectRouterMenuTreeByMemberId(Long memberId) {
         UmsMenuMapper menuMapper = getBaseMapper();
         List<MenuVO> menus;
         // 判断是否是管理员
-        if (SecurityUtils.isSuperAdmin()) {
+        if (SecurityUtils.isSuperAdmin(memberId)) {
             // 如果是，获取所有符合要求的Menu
             menus = menuMapper.selectAllRouterMenu();
         } else {
@@ -37,6 +44,25 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
         }
         // 构建tree
         return builderMenuTree(menus);
+    }
+
+    @Override
+    public PageVO queryMenuList(Integer pageNum, Integer pageSize, MenuQueryParamDTO menuQueryParamDTO) {
+        // 分页查询
+        LambdaQueryWrapper<UmsMenuDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.select(UmsMenuDO::getId, UmsMenuDO::getIcon, UmsMenuDO::getMenuName, UmsMenuDO::getParent, UmsMenuDO::getSort, UmsMenuDO::getPath)
+                .like(!ObjectUtils.isEmpty(menuQueryParamDTO.getId()), UmsMenuDO::getId, menuQueryParamDTO.getId())
+                .like(StringUtils.hasText(menuQueryParamDTO.getIcon()), UmsMenuDO::getIcon, menuQueryParamDTO.getIcon())
+                .like(StringUtils.hasText(menuQueryParamDTO.getMenuName()), UmsMenuDO::getMenuName, menuQueryParamDTO.getMenuName())
+                .like(!ObjectUtils.isEmpty(menuQueryParamDTO.getParent()), UmsMenuDO::getParent, menuQueryParamDTO.getParent())
+                .like(!ObjectUtils.isEmpty(menuQueryParamDTO.getSort()), UmsMenuDO::getSort, menuQueryParamDTO.getSort())
+                .like(StringUtils.hasText(menuQueryParamDTO.getPath()), UmsMenuDO::getPath, menuQueryParamDTO.getPath());
+        Page<UmsMenuDO> page = new Page<>();
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page(page, lambdaQueryWrapper);
+        // 封装数据返回
+        return new PageVO(page.getRecords(), page.getTotal());
     }
 
     /**

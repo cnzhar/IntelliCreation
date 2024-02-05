@@ -14,6 +14,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>
  *
@@ -37,6 +40,7 @@ public class UmsMemberDO implements Serializable {
     private String uid;
 
     @ApiModelProperty(value = "昵称")
+    @NotNull(message = "昵称不能为空")
     private String nickname;
 
     @ApiModelProperty(value = "密码")
@@ -46,6 +50,8 @@ public class UmsMemberDO implements Serializable {
     private String avatar;
 
     @ApiModelProperty(value = "电子邮件")
+    @NotNull(message = "电子邮件不能为空")
+    @Email(message = "电子邮件格式不正确")
     private String email;
 
     @ApiModelProperty(value = "电子邮件激活状态（0未激活 1已激活）")

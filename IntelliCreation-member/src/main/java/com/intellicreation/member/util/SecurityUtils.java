@@ -1,7 +1,7 @@
 package com.intellicreation.member.util;
 
 import com.intellicreation.common.constant.SystemConstants;
-import com.intellicreation.member.domain.dto.LoginMemberDTO;
+import com.intellicreation.member.domain.dto.MemberDetailsDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -13,8 +13,8 @@ public class SecurityUtils {
     /**
      * 获取用户
      **/
-    public static LoginMemberDTO getLoginMember() {
-        return (LoginMemberDTO) getAuthentication().getPrincipal();
+    public static MemberDetailsDTO getLoginMember() {
+        return (MemberDetailsDTO) getAuthentication().getPrincipal();
     }
 
     /**
@@ -24,11 +24,24 @@ public class SecurityUtils {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+    /**
+     * 根据id判断是否是超级管理员
+     *
+     * @param id
+     * @return
+     */
+    public static Boolean isSuperAdmin(Long id){
+        return id != null && id == SystemConstants.ID_OF_SUPER_ADMIN;
+    }
+
+    /**
+     * 判断当前用户是否是超级管理员
+     *
+     * @return
+     */
     public static Boolean isSuperAdmin(){
-        // todo 这一套体系方法是不是不太对
-        // todo 获取的似乎是当前用户，使用这个方法的几个地方似乎都是要获取传入的用户，看看会不会有问题
         Long id = getLoginMember().getUmsMemberDO().getId();
-        return id != null && id.equals(SystemConstants.ID_OF_SUPER_ADMIN);
+        return id != null && id == SystemConstants.ID_OF_SUPER_ADMIN;
     }
 
     public static Long getMemberId() {

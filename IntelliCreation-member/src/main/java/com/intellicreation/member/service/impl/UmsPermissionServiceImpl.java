@@ -1,6 +1,9 @@
 package com.intellicreation.member.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.intellicreation.common.vo.PageVO;
+import com.intellicreation.member.domain.dto.PermissionQueryParamDTO;
 import com.intellicreation.member.domain.entity.UmsPermissionDO;
 import com.intellicreation.common.constant.SystemConstants;
 import com.intellicreation.member.mapper.UmsPermissionMapper;
@@ -8,6 +11,8 @@ import com.intellicreation.member.service.UmsPermissionService;
 import com.intellicreation.member.util.SecurityUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +31,7 @@ public class UmsPermissionServiceImpl extends ServiceImpl<UmsPermissionMapper, U
     @Override
     public List<String> selectPermissionByMemberId(Long id) {
         // 如果是管理员，返回所有的权限
-        if (SecurityUtils.isSuperAdmin()) {
+        if (SecurityUtils.isSuperAdmin(id)) {
             LambdaQueryWrapper<UmsPermissionDO> wrapper = new LambdaQueryWrapper<>();
             wrapper.in(UmsPermissionDO::getPermissionType, SystemConstants.MENU_PERMISSION, SystemConstants.BUTTON_PERMISSION);
             wrapper.eq(UmsPermissionDO::getStatus, SystemConstants.STATUS_NORMAL);
@@ -37,5 +42,21 @@ public class UmsPermissionServiceImpl extends ServiceImpl<UmsPermissionMapper, U
         }
         // 否则返回所具有的权限
         return getBaseMapper().selectPermissionByMemberId(id);
+    }
+
+    @Override
+    public PageVO queryPermissionList(Integer pageNum, Integer pageSize, PermissionQueryParamDTO permissionQueryParamDTO) {
+        // 分页查询
+        LambdaQueryWrapper<UmsPermissionDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.select(UmsPermissionDO::getId, UmsPermissionDO::getPermissionName, UmsPermissionDO::getPermissionKey)
+                .like(!ObjectUtils.isEmpty(permissionQueryParamDTO.getId()), UmsPermissionDO::getId, permissionQueryParamDTO.getId())
+                .like(StringUtils.hasText(permissionQueryParamDTO.getPermissionName()), UmsPermissionDO::getPermissionName, permissionQueryParamDTO.getPermissionName())
+                .like(StringUtils.hasText(permissionQueryParamDTO.getPermissionKey()), UmsPermissionDO::getPermissionKey, permissionQueryParamDTO.getPermissionKey());
+        Page<UmsPermissionDO> page = new Page<>();
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page(page, lambdaQueryWrapper);
+        // 封装数据返回
+        return new PageVO(page.getRecords(), page.getTotal());
     }
 }

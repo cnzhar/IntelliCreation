@@ -7,7 +7,7 @@ import com.intellicreation.common.ResponseResult;
 import com.intellicreation.common.util.JwtUtil;
 import com.intellicreation.common.util.RedisCache;
 import com.intellicreation.common.util.WebUtils;
-import com.intellicreation.member.domain.dto.LoginMemberDTO;
+import com.intellicreation.member.domain.dto.MemberDetailsDTO;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -56,8 +56,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         // 从redis中获取用户信息
         String redisKey = SystemConstants.ADMIN_LOGIN_KEY + memberId;
-        LoginMemberDTO loginMemberDTO = redisCache.getCacheObject(redisKey);
-        if(Objects.isNull(loginMemberDTO)){
+        MemberDetailsDTO memberDetailsDTO = redisCache.getCacheObject(redisKey);
+        if(Objects.isNull(memberDetailsDTO)){
             // 说明登录过期，提示重新登录
             ResponseResult result = ResponseResult.errorResult(AppHttpCodeEnums.NEED_LOGIN);
             WebUtils.renderString(response, JSON.toJSONString(result));
@@ -66,7 +66,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         // 存入SecurityContextHolder
         // 获取权限信息封装到Authentication中
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginMemberDTO, null, loginMemberDTO.getAuthorities());
+                new UsernamePasswordAuthenticationToken(memberDetailsDTO, null, memberDetailsDTO.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         // 放行
         filterChain.doFilter(request, response);

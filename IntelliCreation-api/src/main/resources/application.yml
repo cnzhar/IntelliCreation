@@ -26,12 +26,15 @@ spring:
 #    multipart:
 #      max-file-size: 2MB
 #      max-request-size: 5MB
-  restart:
-    # 设置开启热部署
-    enabled: true
-    # 重启目录
-    additional-paths: src/main/java
-    exclude: WEB-INF/**
+  devtools:
+    restart:
+      # 设置开启热部署
+      enabled: true
+      # 重启目录
+      additional-paths: src/main/java
+      exclude: WEB-INF/**
+    freemarker:
+      cache: false
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
   configuration:

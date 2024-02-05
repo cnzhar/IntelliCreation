@@ -1,4 +1,4 @@
-package com.intellicreation.member.domain.dto;
+package com.intellicreation.article.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginMemberDTO {
+public class AddArticleDTO {
 
-    private Long id;
+    private String title;
+
+    private String content;
 }

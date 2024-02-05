@@ -1,6 +1,9 @@
 package com.intellicreation.member.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.intellicreation.common.vo.PageVO;
+import com.intellicreation.member.domain.dto.MemberQueryParamDTO;
 import com.intellicreation.member.domain.vo.MemberInfoVO;
 import com.intellicreation.member.mapper.UmsMemberMapper;
 import com.intellicreation.common.ResponseResult;
@@ -14,6 +17,7 @@ import com.intellicreation.member.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -31,25 +35,24 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public ResponseResult memberInfo() {
+    public MemberInfoVO memberInfo() {
         // 获取当前用户id
         Long memberId = SecurityUtils.getMemberId();
         // 根据用户id查询用户信息
         UmsMemberDO member = getById(memberId);
         // 封装成MemberInfoVO
         MemberInfoVO memberInfoVO = BeanCopyUtils.copyBean(member, MemberInfoVO.class);
-        return ResponseResult.okResult(memberInfoVO);
+        return memberInfoVO;
     }
 
     @Override
-    public ResponseResult updateMemberInfo(UmsMemberDO member) {
+    public void updateMemberInfo(UmsMemberDO member) {
         // todo 改成update(wrapper....),防止有人获取接口地址，恶意更新密码等字段
         updateById(member);
-        return ResponseResult.okResult();
     }
 
     @Override
-    public ResponseResult register(UmsMemberDO member) {
+    public void register(UmsMemberDO member) {
         // todo 用validation框架等方式把以下if改成注解
         // 对数据进行非空判断
         if (!StringUtils.hasText(member.getUid())) {
@@ -86,7 +89,22 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         member.setPassword(encodePassword);
         // 存入数据库
         save(member);
-        return ResponseResult.okResult();
+    }
+
+    @Override
+    public PageVO queryMemberList(Integer pageNum, Integer pageSize, MemberQueryParamDTO memberQueryParamDTO) {
+        // 分页查询
+        LambdaQueryWrapper<UmsMemberDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.select(UmsMemberDO::getId, UmsMemberDO::getUid, UmsMemberDO::getNickname)
+                .like(!ObjectUtils.isEmpty(memberQueryParamDTO.getId()), UmsMemberDO::getId, memberQueryParamDTO.getId())
+                .like(StringUtils.hasText(memberQueryParamDTO.getUid()), UmsMemberDO::getUid, memberQueryParamDTO.getUid())
+                .like(StringUtils.hasText(memberQueryParamDTO.getNickname()), UmsMemberDO::getNickname, memberQueryParamDTO.getNickname());
+        Page<UmsMemberDO> page = new Page<>();
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page(page, lambdaQueryWrapper);
+        // 封装数据返回
+        return new PageVO(page.getRecords(), page.getTotal());
     }
 
     /**

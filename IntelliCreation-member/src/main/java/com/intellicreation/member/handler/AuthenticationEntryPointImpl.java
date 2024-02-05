@@ -1,4 +1,4 @@
-package com.intellicreation.member.handler.security;
+package com.intellicreation.member.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.intellicreation.common.ResponseResult;

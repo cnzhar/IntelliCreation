@@ -1,10 +1,10 @@
 package com.intellicreation.member.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.intellicreation.member.domain.dto.LoginMemberDTO;
+import com.intellicreation.member.domain.dto.MemberDetailsDTO;
 import com.intellicreation.member.mapper.UmsMemberMapper;
-import com.intellicreation.member.mapper.UmsPermissionMapper;
 import com.intellicreation.member.domain.entity.UmsMemberDO;
+import com.intellicreation.member.service.UmsPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UmsMemberMapper umsMemberMapper;
 
     @Autowired
-    private UmsPermissionMapper umsPermissionMapper;
+    private UmsPermissionService umsPermissionService;
 
     @Override
     public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
@@ -33,12 +33,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         queryWrapper.eq(UmsMemberDO::getUid, uid);
         UmsMemberDO umsMemberDO = umsMemberMapper.selectOne(queryWrapper);
         // 如果没有查询到用户就抛出异常
-        if(Objects.isNull(umsMemberDO)) {
+        if (Objects.isNull(umsMemberDO)) {
             throw new RuntimeException("用户名或者密码错误");
         }
         // 查询权限信息封装
-        List<String> permissionList = umsPermissionMapper.selectPermissionByMemberId(umsMemberDO.getId());
+        List<String> permissionList = umsPermissionService.selectPermissionByMemberId(umsMemberDO.getId());
         // 把数据封装成UserDetails返回
-        return new LoginMemberDTO(umsMemberDO, permissionList);
+        return new MemberDetailsDTO(umsMemberDO, permissionList);
     }
 }

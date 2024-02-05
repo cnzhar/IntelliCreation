@@ -3,10 +3,12 @@ package com.intellicreation.member.service;
 import com.intellicreation.common.ResponseResult;
 import com.intellicreation.member.domain.entity.UmsMemberDO;
 
+import java.util.Map;
+
 /**
  * @author za
  */
-public interface AdminLoginService {
+public interface LoginService {
 
     /**
      * 登录
@@ -14,13 +16,13 @@ public interface AdminLoginService {
      * @param umsMemberDO
      * @return
      */
-    ResponseResult login(UmsMemberDO umsMemberDO);
+    Map<String, String> login(UmsMemberDO umsMemberDO);
 
     /**
      * 登出
      *
      * @return
      */
-    ResponseResult logout();
+    void logout();
 
 }

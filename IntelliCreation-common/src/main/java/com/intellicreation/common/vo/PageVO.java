@@ -1,8 +1,10 @@
-package com.intellicreation.member.domain.vo;
+package com.intellicreation.common.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * @author za
@@ -10,9 +12,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberLoginVO {
+public class PageVO {
 
-    private String token;
+    private List rows;
 
-    private MemberInfoVO userInfo;
+    private Long total;
 }

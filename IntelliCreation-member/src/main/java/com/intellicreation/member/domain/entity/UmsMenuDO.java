@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @TableName("ums_menu")
 @ApiModel(value="UmsMenu对象", description="")
-public class UmsMenu implements Serializable {
+public class UmsMenuDO implements Serializable {
 
     // todo 可能有很多不需要的字段，记得删除，同时也要删除数据表中的相应字段
 

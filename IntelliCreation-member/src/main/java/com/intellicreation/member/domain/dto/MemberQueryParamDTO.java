@@ -1,5 +1,6 @@
 package com.intellicreation.member.domain.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginMemberDTO {
+public class MemberQueryParamDTO {
 
     private Long id;
+
+    private String uid;
+
+    private String nickname;
 }

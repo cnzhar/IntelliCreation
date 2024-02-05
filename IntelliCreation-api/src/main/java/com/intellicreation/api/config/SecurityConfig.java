@@ -1,4 +1,4 @@
-package com.intellicreation.member.config;
+package com.intellicreation.api.config;
 
 import com.intellicreation.member.filter.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问
                 .antMatchers("/login").anonymous()
+                .antMatchers("/member/register").anonymous()
+                .antMatchers("/swagger-ui.html").anonymous()
                 // 注销接口需要认证才能访问
 //                .antMatchers("/logout").authenticated()
 //                .antMatchers("/hello").authenticated()

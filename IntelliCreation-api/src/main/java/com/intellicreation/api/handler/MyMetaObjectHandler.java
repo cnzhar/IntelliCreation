@@ -1,4 +1,4 @@
-package com.intellicreation.member.handler.mybatisplus;
+package com.intellicreation.api.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.intellicreation.member.util.SecurityUtils;

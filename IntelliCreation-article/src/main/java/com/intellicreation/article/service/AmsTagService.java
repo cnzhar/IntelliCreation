@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.intellicreation.article.domain.entity.AmsTagDO;
 import com.intellicreation.common.ResponseResult;
 import com.intellicreation.article.domain.dto.TagQueryParamDTO;
-import com.intellicreation.article.domain.vo.PageVO;
+import com.intellicreation.common.vo.PageVO;
 
 /**
  * <p>
@@ -24,5 +24,5 @@ public interface AmsTagService extends IService<AmsTagDO> {
      * @param tagQueryParamDTO
      * @return
      */
-    ResponseResult<PageVO> queryTagList(Integer pageNum, Integer pageSize, TagQueryParamDTO tagQueryParamDTO);
+    PageVO queryTagList(Integer pageNum, Integer pageSize, TagQueryParamDTO tagQueryParamDTO);
 }

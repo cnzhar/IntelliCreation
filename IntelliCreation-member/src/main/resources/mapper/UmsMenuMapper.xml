@@ -7,7 +7,8 @@
                         m.icon,
                         m.menu_name,
                         m.parent,
-                        m.sort
+                        m.sort,
+                        m.path
         FROM `ums_menu` AS m
         WHERE m.`menu_type` IN ('I', 'M')
           AND m.`status` = 0
@@ -20,7 +21,8 @@
                         m.icon,
                         m.menu_name,
                         m.parent,
-                        m.sort
+                        m.sort,
+                        m.path
         FROM `ums_member_role_relation` AS mr
                  JOIN `ums_role_menu_relation` AS rm ON mr.`role_id` = rm.`role_id`
                  JOIN `ums_menu` AS m ON rm.`menu_id` = m.`id`

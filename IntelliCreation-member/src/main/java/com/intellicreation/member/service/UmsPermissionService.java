@@ -1,5 +1,7 @@
 package com.intellicreation.member.service;
 
+import com.intellicreation.common.vo.PageVO;
+import com.intellicreation.member.domain.dto.PermissionQueryParamDTO;
 import com.intellicreation.member.domain.entity.UmsPermissionDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -22,4 +24,14 @@ public interface UmsPermissionService extends IService<UmsPermissionDO> {
      * @return
      */
     List<String> selectPermissionByMemberId(Long id);
+
+    /**
+     * 根据条件查询权限列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param permissionQueryParamDTO
+     * @return
+     */
+    PageVO queryPermissionList(Integer pageNum, Integer pageSize, PermissionQueryParamDTO permissionQueryParamDTO);
 }

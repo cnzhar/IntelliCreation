@@ -10,7 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginMemberDTO {
+public class RoleQueryParamDTO {
 
     private Long id;
+
+    private String roleName;
+
+    private String roleKey;
 }

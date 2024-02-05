@@ -10,7 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginMemberDTO {
+public class PermissionQueryParamDTO {
 
     private Long id;
+
+    private String permissionName;
+
+    private String permissionKey;
 }
