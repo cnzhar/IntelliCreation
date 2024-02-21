@@ -1,5 +1,6 @@
 package com.intellicreation.common.util;
 
+import com.intellicreation.common.constant.SystemConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 /**
  * JWT工具类
+ *
  * @author za
  */
 public class JwtUtil {
@@ -44,6 +46,20 @@ public class JwtUtil {
     }
 
     /**
+     * 创建token
+     *
+     * @param id
+     * @param subject
+     * @param ttlMillis
+     * @return jwt
+     */
+    public static String createJWT(String id, String subject, Long ttlMillis) {
+        // 设置过期时间
+        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, id);
+        return builder.compact();
+    }
+
+    /**
      * 生成jwt
      *
      * @param subject   token中要存放的数据（json格式）
@@ -54,6 +70,18 @@ public class JwtUtil {
         // 设置过期时间
         JwtBuilder builder = getJwtBuilder(subject, ttlMillis, getUUID());
         return builder.compact();
+    }
+
+    /**
+     * 生成Bearer token
+     *
+     * @param subject token中要存放的数据（json格式）
+     * @return Bearer Token
+     */
+    public static String createBearerToken(String subject) {
+        // 设置过期时间
+        JwtBuilder builder = getJwtBuilder(subject, null, getUUID());
+        return SystemConstants.BearerTokenPrefix + builder.compact();
     }
 
     private static JwtBuilder getJwtBuilder(String subject, Long ttlMillis,
@@ -82,27 +110,6 @@ public class JwtUtil {
     }
 
     /**
-     * 创建token
-     *
-     * @param id
-     * @param subject
-     * @param ttlMillis
-     * @return jwt
-     */
-    public static String createJWT(String id, String subject, Long ttlMillis) {
-        // 设置过期时间
-        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, id);
-        return builder.compact();
-    }
-
-    public static void main(String[] args) throws Exception {
-        String token =
-                "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlZjI0ODkzNTIwMmI0Y2RmYjhhOWExNzMxN2FlYjY0ZiIsInN1YiI6IjEiLCJpc3MiOiJzZyIsImlhdCI6MTcwNTIzMjk2NSwiZXhwIjoxNzA1MzE5MzY1fQ.sjpOMGldQ0eRAu7hUAGQZC0kaUJeHPqcI33J1IMYXJg";
-        Claims claims = parseJWT(token);
-        System.out.println(claims);
-    }
-
-    /**
      * 生成加密后的秘钥 secretKey
      *
      * @return
@@ -122,6 +129,24 @@ public class JwtUtil {
      */
     public static Claims parseJWT(String jwt) throws Exception {
         SecretKey secretKey = generalKey();
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(jwt)
+                .getBody();
+    }
+
+    /**
+     * 解析BearerToken
+     *
+     * @param jwt
+     * @return
+     * @throws Exception
+     */
+    public static Claims parseBearerToken(String jwt) throws Exception {
+        SecretKey secretKey = generalKey();
+        if (jwt.startsWith(SystemConstants.BearerTokenPrefix)) {
+            jwt = jwt.substring(7);
+        }
         return Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(jwt)

@@ -14,5 +14,5 @@ import java.util.List;
 @NoArgsConstructor
 public class RouterVO {
 
-    private List<MenuVO> menus;
+    private List<MenuItemVO> menus;
 }

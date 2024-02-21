@@ -1,6 +1,7 @@
 package com.intellicreation.member.service;
 
 import com.intellicreation.common.ResponseResult;
+import com.intellicreation.member.domain.dto.LoginMemberDTO;
 import com.intellicreation.member.domain.entity.UmsMemberDO;
 
 import java.util.Map;
@@ -13,10 +14,10 @@ public interface LoginService {
     /**
      * 登录
      *
-     * @param umsMemberDO
+     * @param loginMemberDTO
      * @return
      */
-    Map<String, String> login(UmsMemberDO umsMemberDO);
+    Map<String, String> login(LoginMemberDTO loginMemberDTO);
 
     /**
      * 登出

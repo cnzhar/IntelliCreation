@@ -6,14 +6,14 @@ package com.intellicreation.common.constant;
 public class SystemConstants {
 
     /**
-     * 用户登录信息在redis中的key
+     * Bearer Token前缀
      */
-    public static final String MEMBER_LOGIN_KEY = "memberLogin:";
+    public static final String BearerTokenPrefix = "Bearer ";
 
     /**
      * 管理员登录信息在redis中的key
      */
-    public static final String ADMIN_LOGIN_KEY = "adminLogin:";
+    public static final String LOGIN_KEY = "memberLogin:";
 
     /**
      * 文章浏览量在Redis中的key
@@ -91,4 +91,9 @@ public class SystemConstants {
      * 按钮权限
      */
     public static final String BUTTON_PERMISSION = "B";
+
+    /**
+     * 新建账号默认密码
+     */
+    public static String defaultPassword = "123456";
 }

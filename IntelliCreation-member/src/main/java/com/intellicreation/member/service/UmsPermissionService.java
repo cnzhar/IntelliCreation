@@ -1,9 +1,12 @@
 package com.intellicreation.member.service;
 
 import com.intellicreation.common.vo.PageVO;
+import com.intellicreation.member.domain.dto.AddPermissionDTO;
 import com.intellicreation.member.domain.dto.PermissionQueryParamDTO;
+import com.intellicreation.member.domain.dto.UpdatePermissionDTO;
 import com.intellicreation.member.domain.entity.UmsPermissionDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.intellicreation.member.domain.vo.PermissionVO;
 
 import java.util.List;
 
@@ -16,6 +19,20 @@ import java.util.List;
  * @since 2024-01-02
  */
 public interface UmsPermissionService extends IService<UmsPermissionDO> {
+
+    /**
+     * 新增权限
+     *
+     * @param addPermissionDTO
+     */
+    void addPermission(AddPermissionDTO addPermissionDTO);
+
+    /**
+     * 更新权限
+     *
+     * @param updatePermissionDTO
+     */
+    void updatePermissionInfo(UpdatePermissionDTO updatePermissionDTO);
 
     /**
      * 根据用户id获取用户所有权限
@@ -34,4 +51,22 @@ public interface UmsPermissionService extends IService<UmsPermissionDO> {
      * @return
      */
     PageVO queryPermissionList(Integer pageNum, Integer pageSize, PermissionQueryParamDTO permissionQueryParamDTO);
+
+    /**
+     * 根据id获取角色详情
+     *
+     * @param id
+     * @return
+     */
+    PermissionVO getPermissionDetail(Long id);
+
+    /**
+     * 根据id列表批量获取权限
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param idList
+     * @return
+     */
+    PageVO getPermissionByRoleIdBatch(Integer pageNum, Integer pageSize, List<Long> idList);
 }

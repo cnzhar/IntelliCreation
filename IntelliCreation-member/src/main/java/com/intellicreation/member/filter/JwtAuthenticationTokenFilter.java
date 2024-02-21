@@ -44,7 +44,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         // 解析token
         String memberId;
         try {
-            Claims claims = JwtUtil.parseJWT(token);
+            Claims claims = JwtUtil.parseBearerToken(token);
             memberId = claims.getSubject();
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,9 +55,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
         // 从redis中获取用户信息
-        String redisKey = SystemConstants.ADMIN_LOGIN_KEY + memberId;
+        String redisKey = SystemConstants.LOGIN_KEY + memberId;
         MemberDetailsDTO memberDetailsDTO = redisCache.getCacheObject(redisKey);
-        if(Objects.isNull(memberDetailsDTO)){
+        if (Objects.isNull(memberDetailsDTO)) {
             // 说明登录过期，提示重新登录
             ResponseResult result = ResponseResult.errorResult(AppHttpCodeEnums.NEED_LOGIN);
             WebUtils.renderString(response, JSON.toJSONString(result));

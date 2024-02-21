@@ -16,6 +16,4 @@ public class MybatisPlusConfig {
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
         return paginationInterceptor;
     }
-
-    // todo 实现逻辑删除
 }

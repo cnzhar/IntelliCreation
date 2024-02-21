@@ -2,12 +2,16 @@ package com.intellicreation.member.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.vo.PageVO;
+import com.intellicreation.member.domain.dto.AddMenuDTO;
 import com.intellicreation.member.domain.dto.MenuQueryParamDTO;
+import com.intellicreation.member.domain.dto.UpdateMenuDTO;
+import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.domain.entity.UmsMenuDO;
-import com.intellicreation.member.domain.entity.UmsRoleDO;
-import com.intellicreation.member.domain.vo.MenuVO;
+import com.intellicreation.member.domain.vo.MenuItemVO;
 import com.intellicreation.common.constant.SystemConstants;
+import com.intellicreation.member.domain.vo.MenuVO;
 import com.intellicreation.member.mapper.UmsMenuMapper;
 import com.intellicreation.member.service.UmsMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -31,9 +35,21 @@ import java.util.stream.Collectors;
 public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenuDO> implements UmsMenuService {
 
     @Override
-    public List<MenuVO> selectRouterMenuTreeByMemberId(Long memberId) {
+    public void addMenu(AddMenuDTO addMenuDTO) {
+        UmsMenuDO umsMenuDO = BeanCopyUtils.copyBean(addMenuDTO, UmsMenuDO.class);
+        save(umsMenuDO);
+    }
+
+    @Override
+    public void updateMenuInfo(UpdateMenuDTO updateMenuDTO) {
+        UmsMenuDO umsMenuDO = BeanCopyUtils.copyBean(updateMenuDTO, UmsMenuDO.class);
+        updateById(umsMenuDO);
+    }
+
+    @Override
+    public List<MenuItemVO> selectRouterMenuTreeByMemberId(Long memberId) {
         UmsMenuMapper menuMapper = getBaseMapper();
-        List<MenuVO> menus;
+        List<MenuItemVO> menus;
         // 判断是否是管理员
         if (SecurityUtils.isSuperAdmin(memberId)) {
             // 如果是，获取所有符合要求的Menu
@@ -65,6 +81,12 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenuDO> im
         return new PageVO(page.getRecords(), page.getTotal());
     }
 
+    @Override
+    public MenuVO getMenuDetail(Long id) {
+        UmsMenuDO umsMenuDO = getById(id);
+        return BeanCopyUtils.copyBean(umsMenuDO, MenuVO.class);
+    }
+
     /**
      * 构建tree
      * 先找出第一层的菜单,然后去找他们的子菜单设置到children属性中
@@ -72,7 +94,7 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenuDO> im
      * @param menus
      * @return
      */
-    private List<MenuVO> builderMenuTree(List<MenuVO> menus) {
+    private List<MenuItemVO> builderMenuTree(List<MenuItemVO> menus) {
         return menus.stream()
                 .filter(menu -> menu.getParent().equals(SystemConstants.NULL_PARENT))
                 .map(menu -> menu.setChildren(getChildren(menu, menus)))
@@ -82,13 +104,13 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenuDO> im
     /**
      * 获取存入参数的子Menu集合
      *
-     * @param menuVO
+     * @param menuItemVO
      * @param menus
      * @return
      */
-    private List<MenuVO> getChildren(MenuVO menuVO, List<MenuVO> menus) {
+    private List<MenuItemVO> getChildren(MenuItemVO menuItemVO, List<MenuItemVO> menus) {
         return menus.stream()
-                .filter(m -> m.getParent().equals(menuVO.getId()))
+                .filter(m -> m.getParent().equals(menuItemVO.getId()))
                 .map(m -> m.setChildren(getChildren(m, menus)))
                 .collect(Collectors.toList());
     }

@@ -1,62 +1,55 @@
 package com.intellicreation.api.controller;
 
-
 import com.intellicreation.api.facade.MemberFacade;
-import com.intellicreation.common.vo.PageVO;
-import com.intellicreation.common.annotation.SystemLog;
 import com.intellicreation.common.ResponseResult;
-import com.intellicreation.member.domain.dto.MemberQueryParamDTO;
-import com.intellicreation.member.domain.entity.UmsMemberDO;
-import com.intellicreation.member.domain.vo.MemberInfoVO;
-import com.intellicreation.member.service.UmsMemberService;
+import com.intellicreation.member.domain.dto.LoginMemberDTO;
+import com.intellicreation.member.domain.vo.AdminInfoVO;
+import com.intellicreation.member.domain.vo.MenuItemVO;
+import com.intellicreation.member.domain.vo.RouterVO;
+import com.intellicreation.member.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
+
 /**
- * <p>
- * 前端控制器
- * </p>
- *
  * @author za
- * @since 2024-01-01
  */
 @RestController
 @RequestMapping("/member")
 public class MemberController {
 
     @Autowired
-    private UmsMemberService umsMemberService;
-
-    @Autowired
     private MemberFacade memberFacade;
 
-    @GetMapping("/memberInfo")
-    public ResponseResult memberInfo() {
-        MemberInfoVO memberInfoVO = memberFacade.memberInfo();
-        return ResponseResult.okResult(memberInfoVO);
+    @PostMapping("/login")
+    public ResponseResult login(@Valid @RequestBody LoginMemberDTO loginMemberDTO) {
+        Map<String, String> map = memberFacade.login(loginMemberDTO);
+        return ResponseResult.okResult(map);
     }
 
-    // todo 看看要不要用dto接收
-    @SystemLog(businessName = "更新用户信息")
-    @PutMapping("/updateMemberInfo")
-    public ResponseResult updateMemberInfo(@RequestBody UmsMemberDO member) {
-        memberFacade.updateMemberInfo(member);
-        return ResponseResult.okResult();
+    @PostMapping("/logout")
+    public ResponseResult logout() {
+        memberFacade.logout();
+        return new ResponseResult(200, "注销成功");
     }
 
-    // todo 看看有没有必要在前端就加密，不然明文在网络上传太不安全了
-    // todo 看看要不要用dto接收
-    @PostMapping("/register")
-    public ResponseResult register(@RequestBody UmsMemberDO member) {
-        memberFacade.register(member);
-        return ResponseResult.okResult();
+    @GetMapping("getInfo")
+    public ResponseResult<AdminInfoVO> getInfo() {
+        AdminInfoVO adminInfoVO = memberFacade.getInfo();
+        return ResponseResult.okResult(adminInfoVO);
     }
 
-    @GetMapping("/memberList")
-    public ResponseResult getMemberList(@RequestParam(defaultValue = "1") Integer pageNum,
-                                        @RequestParam(defaultValue = "5") Integer pageSize,
-                                        MemberQueryParamDTO memberQueryParamDTO) {
-        PageVO pageVO = memberFacade.queryMemberList(pageNum, pageSize, memberQueryParamDTO);
-        return ResponseResult.okResult(pageVO);
+    @PreAuthorize("hasAuthority('system:test:list1')")
+    @GetMapping("getRouter")
+    public ResponseResult<RouterVO> getRouters() {
+        Long memberId = SecurityUtils.getMemberId();
+        // 查询menu，结果是tree的形式
+        List<MenuItemVO> menus = memberFacade.selectRouterMenuTreeByMemberId(memberId);
+        // 封装数据返回
+        return ResponseResult.okResult(new RouterVO(menus));
     }
 }

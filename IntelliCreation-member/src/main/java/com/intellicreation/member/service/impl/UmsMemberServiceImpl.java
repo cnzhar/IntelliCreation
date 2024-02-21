@@ -2,18 +2,19 @@ package com.intellicreation.member.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.intellicreation.common.constant.SystemConstants;
 import com.intellicreation.common.vo.PageVO;
+import com.intellicreation.member.domain.dto.AddMemberDTO;
 import com.intellicreation.member.domain.dto.MemberQueryParamDTO;
+import com.intellicreation.member.domain.dto.RegisterMemberDTO;
 import com.intellicreation.member.domain.vo.MemberInfoVO;
 import com.intellicreation.member.mapper.UmsMemberMapper;
-import com.intellicreation.common.ResponseResult;
 import com.intellicreation.common.enumtype.AppHttpCodeEnums;
 import com.intellicreation.common.exception.SystemException;
 import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.service.UmsMemberService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.intellicreation.common.util.BeanCopyUtils;
-import com.intellicreation.member.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,14 +36,38 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public MemberInfoVO memberInfo() {
-        // 获取当前用户id
-        Long memberId = SecurityUtils.getMemberId();
-        // 根据用户id查询用户信息
-        UmsMemberDO member = getById(memberId);
-        // 封装成MemberInfoVO
-        MemberInfoVO memberInfoVO = BeanCopyUtils.copyBean(member, MemberInfoVO.class);
-        return memberInfoVO;
+    public void register(RegisterMemberDTO registerMemberDTO) {
+        // 对数据进行是否存在的判断
+        if (uidExist(registerMemberDTO.getUid())) {
+            throw new SystemException(AppHttpCodeEnums.USERNAME_EXIST);
+        }
+        if (emailExist(registerMemberDTO.getEmail())) {
+            throw new SystemException(AppHttpCodeEnums.EMAIL_EXIST);
+        }
+        if (nicknameExist(registerMemberDTO.getNickname())) {
+            throw new SystemException(AppHttpCodeEnums.NICKNAME_EXIST);
+        }
+        if (phoneNumberExist(registerMemberDTO.getPhoneNumber())) {
+            throw new SystemException(AppHttpCodeEnums.PHONE_NUMBER_EXIST);
+        }
+        // todo 看看还有没有其他需要校验的，包括需要非空的，或者不能已存在的
+        // todo 用validation框架 正则等方式判断密码长度，是否包含字母数字等进行判断
+        // 对密码进行加密
+        String encodePassword = passwordEncoder.encode(registerMemberDTO.getPassword());
+        registerMemberDTO.setPassword(encodePassword);
+        // 存入数据库
+        UmsMemberDO umsMemberDO = BeanCopyUtils.copyBean(registerMemberDTO, UmsMemberDO.class);
+        save(umsMemberDO);
+    }
+
+    @Override
+    public void addMember(AddMemberDTO addMemberDTO) {
+        UmsMemberDO umsMemberDO = BeanCopyUtils.copyBean(addMemberDTO, UmsMemberDO.class);
+        // todo 考虑要不要加上修改默认密码的功能
+        // todo 数据校验
+        String encodePassword = passwordEncoder.encode(SystemConstants.defaultPassword);
+        umsMemberDO.setPassword(encodePassword);
+        save(umsMemberDO);
     }
 
     @Override
@@ -52,50 +77,11 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     }
 
     @Override
-    public void register(UmsMemberDO member) {
-        // todo 用validation框架等方式把以下if改成注解
-        // 对数据进行非空判断
-        if (!StringUtils.hasText(member.getUid())) {
-            throw new SystemException(AppHttpCodeEnums.USERNAME_NOT_NULL);
-        }
-        if (!StringUtils.hasText(member.getPassword())) {
-            throw new SystemException(AppHttpCodeEnums.PASSWORD_NOT_NULL);
-        }
-        if (!StringUtils.hasText(member.getEmail())) {
-            throw new SystemException(AppHttpCodeEnums.EMAIL_NOT_NULL);
-        }
-        if (!StringUtils.hasText(member.getNickname())) {
-            throw new SystemException(AppHttpCodeEnums.NICKNAME_NOT_NULL);
-        }
-        // 对数据进行是否存在的判断
-        if (uidExist(member.getUid())) {
-            throw new SystemException(AppHttpCodeEnums.USERNAME_EXIST);
-        }
-        // todo 校验邮箱格式
-        if (emailExist(member.getEmail())) {
-            throw new SystemException(AppHttpCodeEnums.EMAIL_EXIST);
-        }
-        // todo 看看有没有必要让nickname不重复，或者要不要加个开关
-        if (nicknameExist(member.getNickname())) {
-            throw new SystemException(AppHttpCodeEnums.NICKNAME_EXIST);
-        }
-        if (phoneNumberExist(member.getPhoneNumber())) {
-            throw new SystemException(AppHttpCodeEnums.PHONE_NUMBER_EXIST);
-        }
-        // todo 看看还有没有其他需要校验的，包括需要非空的，或者不能已存在的
-        // todo 用validation框架 正则等方式判断密码长度，是否包含字母数字等进行判断
-        // 对密码进行加密
-        String encodePassword = passwordEncoder.encode(member.getPassword());
-        member.setPassword(encodePassword);
-        // 存入数据库
-        save(member);
-    }
-
-    @Override
     public PageVO queryMemberList(Integer pageNum, Integer pageSize, MemberQueryParamDTO memberQueryParamDTO) {
         // 分页查询
         LambdaQueryWrapper<UmsMemberDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.select(UmsMemberDO::getId, UmsMemberDO::getUid, UmsMemberDO::getNickname)
+        lambdaQueryWrapper
+                .select(UmsMemberDO::getId, UmsMemberDO::getUid, UmsMemberDO::getNickname)
                 .like(!ObjectUtils.isEmpty(memberQueryParamDTO.getId()), UmsMemberDO::getId, memberQueryParamDTO.getId())
                 .like(StringUtils.hasText(memberQueryParamDTO.getUid()), UmsMemberDO::getUid, memberQueryParamDTO.getUid())
                 .like(StringUtils.hasText(memberQueryParamDTO.getNickname()), UmsMemberDO::getNickname, memberQueryParamDTO.getNickname());
@@ -107,6 +93,15 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         return new PageVO(page.getRecords(), page.getTotal());
     }
 
+    @Override
+    public MemberInfoVO getMemberInfo(Long id) {
+        // 根据用户id查询用户信息
+        UmsMemberDO member = getById(id);
+        // 封装成MemberInfoVO
+        MemberInfoVO memberInfoVO = BeanCopyUtils.copyBean(member, MemberInfoVO.class);
+        return memberInfoVO;
+    }
+
     /**
      * 判断uid是否存在
      *
@@ -114,6 +109,7 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
      * @return
      */
     private boolean uidExist(String uid) {
+        // todo 这些判断是否存在的函数是否select过多字段
         LambdaQueryWrapper<UmsMemberDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UmsMemberDO::getUid, uid);
         return count(queryWrapper) > 0;

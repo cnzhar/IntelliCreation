@@ -1,3 +1,5 @@
+server:
+  port: 7777
 # DataSource Config
 spring:
   datasource:
@@ -26,13 +28,6 @@ spring:
 #    multipart:
 #      max-file-size: 2MB
 #      max-request-size: 5MB
-  devtools:
-    restart:
-      # 设置开启热部署
-      enabled: true
-      # 重启目录
-      additional-paths: src/main/java
-      exclude: WEB-INF/**
     freemarker:
       cache: false
 mybatis-plus:
@@ -46,5 +41,21 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
       id-type: auto
-server:
-  port: 7777
+security:
+  ignored:
+    urls:
+      - /member/login
+      - /swagger-ui.html
+      - /v2/**
+      - /webjars/**
+      - /swagger-resources/**
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.ico
+logstash:
+  host: localhost
+logging:
+  level:
+    root: debug
+

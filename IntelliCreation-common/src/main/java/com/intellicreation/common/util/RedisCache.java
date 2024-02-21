@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author za
  */
-@SuppressWarnings(value = {"unchecked", "rawtypes"})
 @Component
 public class RedisCache {
 

@@ -1,9 +1,6 @@
 package com.intellicreation.article.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -35,22 +32,26 @@ public class AmsTagDO implements Serializable {
     private String name;
 
     @ApiModelProperty(value = "备注")
-    private String remark;
+    private String description;
 
     @ApiModelProperty(value = "是否被删除（0为未删除，1为已删除）")
     @TableField("is_deleted")
     private Integer deleted;
 
     @ApiModelProperty(value = "创建人")
+    @TableField(fill = FieldFill.INSERT)
     private Long createBy;
 
     @ApiModelProperty(value = "更新人")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long modifiedBy;
 
     @ApiModelProperty(value = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime gmtCreate;
 
     @ApiModelProperty(value = "最后修改时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime gmtModified;
 
 

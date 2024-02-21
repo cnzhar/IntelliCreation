@@ -2,7 +2,7 @@ package com.intellicreation.member.mapper;
 
 import com.intellicreation.member.domain.entity.UmsMenuDO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.intellicreation.member.domain.vo.MenuVO;
+import com.intellicreation.member.domain.vo.MenuItemVO;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public interface UmsMenuMapper extends BaseMapper<UmsMenuDO> {
      *
      * @return
      */
-    List<MenuVO> selectAllRouterMenu();
+    List<MenuItemVO> selectAllRouterMenu();
 
     /**
      * 根据用户id获取用户菜单路由
@@ -29,5 +29,5 @@ public interface UmsMenuMapper extends BaseMapper<UmsMenuDO> {
      * @param memberId
      * @return
      */
-    List<MenuVO> selectRouterMenuByMemberId(Long memberId);
+    List<MenuItemVO> selectRouterMenuByMemberId(Long memberId);
 }

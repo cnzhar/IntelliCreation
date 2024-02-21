@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.vo.PageVO;
+import com.intellicreation.member.domain.dto.AddRoleDTO;
 import com.intellicreation.member.domain.dto.RoleQueryParamDTO;
+import com.intellicreation.member.domain.dto.UpdateRoleDTO;
 import com.intellicreation.member.domain.entity.UmsRoleDO;
 import com.intellicreation.common.constant.SystemConstants;
 import com.intellicreation.member.domain.vo.RoleVO;
@@ -31,15 +33,16 @@ import java.util.List;
 public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRoleDO> implements UmsRoleService {
 
     @Override
-    public List<String> selectRoleKeyByMemberId(Long id) {
-        // 判断是否为超级管理员 如果是返回集合中只需要有Super Admin
-        if (SecurityUtils.isSuperAdmin(id)) {
-            List<String> roleKeys = new ArrayList<>();
-            roleKeys.add(SystemConstants.KEY_OF_SUPER_ADMIN);
-            return roleKeys;
-        }
-        // 否则查询用户所具有的角色信息
-        return getBaseMapper().selectRoleKeyByMemberId(id);
+    public void addRole(AddRoleDTO addRoleDTO) {
+        UmsRoleDO umsRoleDO = BeanCopyUtils.copyBean(addRoleDTO, UmsRoleDO.class);
+        save(umsRoleDO);
+    }
+
+    @Override
+    public void updateRoleInfo(UpdateRoleDTO updateRoleDTO) {
+        // todo 改成update(wrapper....), 不要更新不必要字段
+        UmsRoleDO umsRoleDO = BeanCopyUtils.copyBean(updateRoleDTO, UmsRoleDO.class);
+        updateById(umsRoleDO);
     }
 
     @Override
@@ -62,5 +65,17 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRoleDO> im
     public RoleVO getRoleDetail(Long id) {
         UmsRoleDO umsRoleDO = getById(id);
         return BeanCopyUtils.copyBean(umsRoleDO, RoleVO.class);
+    }
+
+    @Override
+    public List<String> selectRoleKeyByMemberId(Long id) {
+        // 判断是否为超级管理员 如果是返回集合中只需要有Super Admin
+        if (SecurityUtils.isSuperAdmin(id)) {
+            List<String> roleKeys = new ArrayList<>();
+            roleKeys.add(SystemConstants.KEY_OF_SUPER_ADMIN);
+            return roleKeys;
+        }
+        // 否则查询用户所具有的角色信息
+        return getBaseMapper().selectRoleKeyByMemberId(id);
     }
 }

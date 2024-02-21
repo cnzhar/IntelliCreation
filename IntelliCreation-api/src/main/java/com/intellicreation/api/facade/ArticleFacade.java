@@ -1,6 +1,8 @@
 package com.intellicreation.api.facade;
 
 import com.intellicreation.article.domain.dto.AddArticleDTO;
+import com.intellicreation.article.domain.dto.AddTagDTO;
+import com.intellicreation.article.domain.dto.TagQueryParamDTO;
 import com.intellicreation.article.domain.vo.ArticleDetailVO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
 import com.intellicreation.common.vo.PageVO;

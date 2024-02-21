@@ -11,9 +11,14 @@ public enum AppHttpCodeEnums {
     SUCCESS(200, "操作成功"),
 
     /**
+     * 请求格式错误
+     */
+    BAD_REQUEST(400, "请求格式错误"),
+
+    /**
      * 需要登录后操作
      */
-    NEED_LOGIN(401, "需要登录后操作"),
+    NEED_LOGIN(401, "未登录或登录已过期，请重新登录"),
 
     /**
      * 无权限操作
@@ -23,7 +28,7 @@ public enum AppHttpCodeEnums {
     /**
      * 出现错误
      */
-    SYSTEM_ERROR(500, "出现错误"),
+    SYSTEM_ERROR(500, "服务出现错误"),
 
     /**
      * 用户名已存在

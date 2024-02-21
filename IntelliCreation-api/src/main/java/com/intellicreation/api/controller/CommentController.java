@@ -4,7 +4,6 @@ package com.intellicreation.api.controller;
 import com.intellicreation.api.facade.CommentFacade;
 import com.intellicreation.article.domain.dto.AddCommentDTO;
 import com.intellicreation.article.domain.entity.AmsCommentDO;
-import com.intellicreation.article.service.AmsCommentService;
 import com.intellicreation.common.ResponseResult;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.vo.PageVO;

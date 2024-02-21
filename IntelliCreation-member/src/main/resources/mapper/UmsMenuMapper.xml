@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.intellicreation.member.mapper.UmsMenuMapper">
 
-    <select id="selectAllRouterMenu" resultType="com.intellicreation.member.domain.vo.MenuVO">
+    <select id="selectAllRouterMenu" resultType="com.intellicreation.member.domain.vo.MenuItemVO">
         SELECT DISTINCT m.id,
                         m.icon,
                         m.menu_name,
@@ -10,13 +10,12 @@
                         m.sort,
                         m.path
         FROM `ums_menu` AS m
-        WHERE m.`menu_type` IN ('I', 'M')
-          AND m.`status` = 0
+        WHERE m.`status` = 0
           AND m.`is_deleted` = 0
         ORDER BY m.parent, m.sort
     </select>
 
-    <select id="selectRouterMenuByMemberId" resultType="com.intellicreation.member.domain.vo.MenuVO">
+    <select id="selectRouterMenuByMemberId" resultType="com.intellicreation.member.domain.vo.MenuItemVO">
         SELECT DISTINCT m.id,
                         m.icon,
                         m.menu_name,
@@ -27,7 +26,6 @@
                  JOIN `ums_role_menu_relation` AS rm ON mr.`role_id` = rm.`role_id`
                  JOIN `ums_menu` AS m ON rm.`menu_id` = m.`id`
         WHERE mr.`member_id` = #{memberId}
-          AND m.`menu_type` IN ('I', 'M')
           AND m.`status` = 0
           AND m.`is_deleted` = 0
         ORDER BY m.parent, m.sort

@@ -1,14 +1,12 @@
 package com.intellicreation.member.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDate;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -40,7 +38,6 @@ public class UmsMemberDO implements Serializable {
     private String uid;
 
     @ApiModelProperty(value = "昵称")
-    @NotNull(message = "昵称不能为空")
     private String nickname;
 
     @ApiModelProperty(value = "密码")
@@ -50,18 +47,13 @@ public class UmsMemberDO implements Serializable {
     private String avatar;
 
     @ApiModelProperty(value = "电子邮件")
-    @NotNull(message = "电子邮件不能为空")
-    @Email(message = "电子邮件格式不正确")
     private String email;
 
     @ApiModelProperty(value = "电子邮件激活状态（0未激活 1已激活）")
     private String emailStatus;
 
     @ApiModelProperty(value = "手机号码")
-    private Integer phoneNumber;
-
-    @ApiModelProperty(value = "手机号码激活状态")
-    private Integer phoneNumberStatus;
+    private String phoneNumber;
 
     @ApiModelProperty(value = "真实姓名")
     private String fullName;
@@ -81,9 +73,6 @@ public class UmsMemberDO implements Serializable {
     @ApiModelProperty(value = "经验")
     private Integer exp;
 
-    @ApiModelProperty(value = "会员等级")
-    private Long vipLevelId;
-
     @ApiModelProperty(value = "所在城市")
     private Long locationId;
 
@@ -101,15 +90,19 @@ public class UmsMemberDO implements Serializable {
     private Integer deleted;
 
     @ApiModelProperty(value = "创建人")
+    @TableField(fill = FieldFill.INSERT)
     private Long createBy;
 
     @ApiModelProperty(value = "更新人")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long modifiedBy;
 
-    @ApiModelProperty(value = "创建时间，即注册时间")
+    @ApiModelProperty(value = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime gmtCreate;
 
     @ApiModelProperty(value = "最后修改时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime gmtModified;
 
 

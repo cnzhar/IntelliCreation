@@ -3,7 +3,6 @@ package com.intellicreation.member.domain.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -11,10 +10,11 @@ import java.util.List;
  * @author za
  */
 @Data
-@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdminInfoVO {
+
+    // todo 看看要不要改掉这个VO, 以及是不是应该改掉和MemberInfoVO的关联
 
     private List<String> permissions;
 

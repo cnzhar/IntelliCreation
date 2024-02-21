@@ -6,7 +6,6 @@ import com.intellicreation.article.domain.dto.AddArticleDTO;
 import com.intellicreation.article.domain.vo.ArticleDetailVO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
 import com.intellicreation.common.ResponseResult;
-import com.intellicreation.article.service.AmsArticleService;
 import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.util.SecurityUtils;
 import io.swagger.annotations.Api;
@@ -65,5 +64,4 @@ public class ArticleController {
         articleFacade.addArticle(addArticleDTO, SecurityUtils.getMemberId());
         return ResponseResult.okResult();
     }
-
 }

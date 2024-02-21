@@ -35,8 +35,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void updateFill(MetaObject metaObject) {
 
         this.setFieldValByName("gmtModified", getLocalDateTime(), metaObject);
-        // todo 这句是不是有问题
-        this.setFieldValByName(" ", SecurityUtils.getMemberId(), metaObject);
+        this.setFieldValByName("modifiedBy", SecurityUtils.getMemberId(), metaObject);
     }
 
     /**

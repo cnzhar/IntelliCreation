@@ -29,6 +29,11 @@ public class ResponseResult<T> {
         this.msg = AppHttpCodeEnums.SUCCESS.getMsg();
     }
 
+    public ResponseResult(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
     public ResponseResult(Integer code, T data) {
         this.code = code;
         this.data = data;
@@ -40,18 +45,8 @@ public class ResponseResult<T> {
         this.data = data;
     }
 
-    public ResponseResult(Integer code, String msg) {
-        this.code = code;
-        this.msg = msg;
-    }
-
-    public static ResponseResult errorResult(int code, String msg) {
-        ResponseResult result = new ResponseResult();
-        return result.error(code, msg);
-    }
-
     public static ResponseResult okResult() {
-        ResponseResult result = new ResponseResult();
+        ResponseResult result = setAppHttpCodeEnum(AppHttpCodeEnums.SUCCESS, AppHttpCodeEnums.SUCCESS.getMsg());
         return result;
     }
 
@@ -66,6 +61,16 @@ public class ResponseResult<T> {
             result.setData(data);
         }
         return result;
+    }
+
+    public static ResponseResult errorResult() {
+        ResponseResult result = setAppHttpCodeEnum(AppHttpCodeEnums.SYSTEM_ERROR, AppHttpCodeEnums.SYSTEM_ERROR.getMsg());
+        return result;
+    }
+
+    public static ResponseResult errorResult(int code, String msg) {
+        ResponseResult result = new ResponseResult();
+        return result.error(code, msg);
     }
 
     public static ResponseResult errorResult(AppHttpCodeEnums enums) {
@@ -84,12 +89,6 @@ public class ResponseResult<T> {
         return okResult(enums.getCode(), msg);
     }
 
-    public ResponseResult<?> error(Integer code, String msg) {
-        this.code = code;
-        this.msg = msg;
-        return this;
-    }
-
     public ResponseResult<?> ok(Integer code, T data) {
         this.code = code;
         this.data = data;
@@ -105,6 +104,12 @@ public class ResponseResult<T> {
 
     public ResponseResult<?> ok(T data) {
         this.data = data;
+        return this;
+    }
+
+    public ResponseResult<?> error(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
         return this;
     }
 

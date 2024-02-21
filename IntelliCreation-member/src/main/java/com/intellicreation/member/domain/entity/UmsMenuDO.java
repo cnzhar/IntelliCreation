@@ -1,12 +1,10 @@
 package com.intellicreation.member.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,8 +23,6 @@ import lombok.EqualsAndHashCode;
 @TableName("ums_menu")
 @ApiModel(value="UmsMenu对象", description="")
 public class UmsMenuDO implements Serializable {
-
-    // todo 可能有很多不需要的字段，记得删除，同时也要删除数据表中的相应字段
 
     private static final long serialVersionUID = 1L;
 
@@ -47,16 +43,6 @@ public class UmsMenuDO implements Serializable {
     @ApiModelProperty(value = "路由地址")
     private String path;
 
-    @ApiModelProperty(value = "组件路径")
-    private String component;
-
-    @ApiModelProperty(value = "是否为外链（0否，1是）")
-    @TableField("is_frame")
-    private Boolean frame;
-
-    @ApiModelProperty(value = "菜单类型（I目录，M菜单，B按钮）")
-    private String menuType;
-
     @ApiModelProperty(value = "菜单状态（0显示，1隐藏）")
     @TableField("is_visible")
     private Boolean visible;
@@ -72,15 +58,19 @@ public class UmsMenuDO implements Serializable {
     private Integer deleted;
 
     @ApiModelProperty(value = "创建人")
+    @TableField(fill = FieldFill.INSERT)
     private Long createBy;
 
     @ApiModelProperty(value = "更新人")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long modifiedBy;
 
     @ApiModelProperty(value = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime gmtCreate;
 
     @ApiModelProperty(value = "最后修改时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime gmtModified;
 
 

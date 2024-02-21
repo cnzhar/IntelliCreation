@@ -3,7 +3,9 @@ package com.intellicreation.member.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.intellicreation.common.ResponseResult;
 import com.intellicreation.common.vo.PageVO;
+import com.intellicreation.member.domain.dto.AddMemberDTO;
 import com.intellicreation.member.domain.dto.MemberQueryParamDTO;
+import com.intellicreation.member.domain.dto.RegisterMemberDTO;
 import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.domain.vo.MemberInfoVO;
 
@@ -18,11 +20,19 @@ import com.intellicreation.member.domain.vo.MemberInfoVO;
 public interface UmsMemberService extends IService<UmsMemberDO> {
 
     /**
-     * 获取用户信息
+     * 注册
      *
+     * @param member
      * @return
      */
-    MemberInfoVO memberInfo();
+    void register(RegisterMemberDTO registerMemberDTO);
+
+    /**
+     * 管理员新增用户
+     *
+     * @param addMemberDTO
+     */
+    void addMember(AddMemberDTO addMemberDTO);
 
     /**
      * 更新用户信息
@@ -33,14 +43,6 @@ public interface UmsMemberService extends IService<UmsMemberDO> {
     void updateMemberInfo(UmsMemberDO member);
 
     /**
-     * 注册
-     *
-     * @param member
-     * @return
-     */
-    void register(UmsMemberDO member);
-
-    /**
      * 根据查询条件，查询用户列表
      *
      * @param pageNum
@@ -49,4 +51,12 @@ public interface UmsMemberService extends IService<UmsMemberDO> {
      * @return
      */
     PageVO queryMemberList(Integer pageNum, Integer pageSize, MemberQueryParamDTO memberQueryParamDTO);
+
+    /**
+     * 获取用户信息
+     *
+     * @param id
+     * @return
+     */
+    MemberInfoVO getMemberInfo(Long id);
 }

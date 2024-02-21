@@ -45,6 +45,8 @@ public class ArticleFacadeImpl implements ArticleFacade {
     @Override
     public PageVO articleList(Integer pageNum, Integer pageSize, Long categoryId) {
         // todo viewCount改为从redis中获取
+        // todo select过多字段
+        // todo 看是否需要去掉articlelistvo
         // 查询条件
         LambdaQueryWrapper<AmsArticleDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 如果有categoryId，只留下该分类下的
