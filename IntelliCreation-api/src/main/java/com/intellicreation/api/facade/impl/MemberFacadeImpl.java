@@ -1,5 +1,6 @@
 package com.intellicreation.api.facade.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.intellicreation.api.facade.MemberFacade;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.member.domain.dto.LoginMemberDTO;
@@ -8,14 +9,12 @@ import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.domain.vo.AdminInfoVO;
 import com.intellicreation.member.domain.vo.MemberInfoVO;
 import com.intellicreation.member.domain.vo.MenuItemVO;
-import com.intellicreation.member.service.LoginService;
-import com.intellicreation.member.service.UmsMenuService;
-import com.intellicreation.member.service.UmsPermissionService;
-import com.intellicreation.member.service.UmsRoleService;
+import com.intellicreation.member.service.*;
 import com.intellicreation.member.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +36,27 @@ public class MemberFacadeImpl implements MemberFacade {
     @Autowired
     private UmsMenuService umsMenuService;
 
+    @Autowired
+    private UmsMemberService umsMemberService;
+
+    @Autowired
+    private UmsMemberLoginLogService umsMemberLoginLogService;
+
     @Override
     public Map<String, String> login(LoginMemberDTO loginMemberDTO) {
-        return loginService.login(loginMemberDTO);
+        // 登录逻辑
+        Map<String, String> tokenMap = loginService.login(loginMemberDTO);
+        // 获取登录用户的id
+        LambdaQueryWrapper<UmsMemberDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(UmsMemberDO::getId)
+                .eq(UmsMemberDO::getUid, loginMemberDTO.getUid())
+                .last("limit 1");
+        UmsMemberDO umsMemberDO = umsMemberService.getOne(lambdaQueryWrapper);
+        Long memberId = umsMemberDO.getId();
+        // 输入id, 生成登录日志
+        umsMemberLoginLogService.generateLoginLog(memberId);
+        return tokenMap;
     }
 
     @Override

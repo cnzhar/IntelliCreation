@@ -45,6 +45,7 @@ public class UmsPermissionServiceImpl extends ServiceImpl<UmsPermissionMapper, U
         updateById(umsPermissionDO);
     }
 
+    // todo 改成不配置sql实现
     @Override
     public List<String> selectPermissionByMemberId(Long id) {
         // 如果是管理员，返回所有的权限
