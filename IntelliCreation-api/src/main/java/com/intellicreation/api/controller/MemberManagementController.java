@@ -168,11 +168,19 @@ public class MemberManagementController {
         return ResponseResult.okResult(roleVO);
     }
 
-    @GetMapping("/getPermissionByRole")
-    public ResponseResult getPermissionByRole(@RequestParam(defaultValue = "1") Integer pageNum,
-                                              @RequestParam(defaultValue = "5") Integer pageSize,
-                                              @RequestParam Long roleId) {
-        PageVO pageVO = memberManagementFacade.getPermissionByRole(pageNum, pageSize, roleId);
+    @GetMapping("/getPermissionsByRole")
+    public ResponseResult getPermissionsByRole(@RequestParam(defaultValue = "1") Integer pageNum,
+                                               @RequestParam(defaultValue = "5") Integer pageSize,
+                                               @RequestParam Long roleId) {
+        PageVO pageVO = memberManagementFacade.getPermissionsByRole(pageNum, pageSize, roleId);
+        return ResponseResult.okResult(pageVO);
+    }
+
+    @GetMapping("/getMembersByRole")
+    public ResponseResult getMembersByRole(@RequestParam(defaultValue = "1") Integer pageNum,
+                                           @RequestParam(defaultValue = "5") Integer pageSize,
+                                           @RequestParam Long roleId) {
+        PageVO pageVO = memberManagementFacade.getMembersByRole(pageNum, pageSize, roleId);
         return ResponseResult.okResult(pageVO);
     }
 }

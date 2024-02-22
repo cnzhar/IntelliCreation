@@ -9,6 +9,8 @@ import com.intellicreation.member.domain.dto.RegisterMemberDTO;
 import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.domain.vo.MemberInfoVO;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -22,8 +24,7 @@ public interface UmsMemberService extends IService<UmsMemberDO> {
     /**
      * 注册
      *
-     * @param member
-     * @return
+     * @param registerMemberDTO
      */
     void register(RegisterMemberDTO registerMemberDTO);
 
@@ -59,4 +60,14 @@ public interface UmsMemberService extends IService<UmsMemberDO> {
      * @return
      */
     MemberInfoVO getMemberInfo(Long id);
+
+    /**
+     * 获取拥有某个角色的全部用户
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param idList
+     * @return
+     */
+    PageVO getMemberListById(Integer pageNum, Integer pageSize, List<Long> idList);
 }

@@ -84,7 +84,7 @@ public class UmsPermissionServiceImpl extends ServiceImpl<UmsPermissionMapper, U
     }
 
     @Override
-    public PageVO getPermissionByRoleIdBatch(Integer pageNum, Integer pageSize, List<Long> idList) {
+    public PageVO getPermissionListByIds(Integer pageNum, Integer pageSize, List<Long> idList) {
         if (idList == null || idList.isEmpty()) {
             return new PageVO(Collections.emptyList(), 0L);
         }

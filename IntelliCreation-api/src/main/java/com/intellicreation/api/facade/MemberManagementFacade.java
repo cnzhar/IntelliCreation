@@ -186,7 +186,7 @@ public interface MemberManagementFacade {
      * @param roleId
      * @return
      */
-    PageVO getPermissionByRole(Integer pageNum, Integer pageSize, Long roleId);
+    PageVO getPermissionsByRole(Integer pageNum, Integer pageSize, Long roleId);
 
     /**
      * 获取拥有某个角色的全部用户
@@ -196,5 +196,5 @@ public interface MemberManagementFacade {
      * @param roleId
      * @return
      */
-    PageVO selectMemberByRole(Integer pageNum, Integer pageSize, Long roleId);
+    PageVO getMembersByRole(Integer pageNum, Integer pageSize, Long roleId);
 }

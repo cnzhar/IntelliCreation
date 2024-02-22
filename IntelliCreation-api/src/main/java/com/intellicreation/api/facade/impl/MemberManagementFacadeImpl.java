@@ -1,12 +1,10 @@
 package com.intellicreation.api.facade.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import com.intellicreation.api.facade.MemberManagementFacade;
 import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.domain.dto.*;
 import com.intellicreation.member.domain.entity.UmsMemberDO;
-import com.intellicreation.member.domain.entity.UmsPermissionDO;
 import com.intellicreation.member.domain.vo.MemberInfoVO;
 import com.intellicreation.member.domain.vo.MenuVO;
 import com.intellicreation.member.domain.vo.PermissionVO;
@@ -37,6 +35,9 @@ public class MemberManagementFacadeImpl implements MemberManagementFacade {
 
     @Autowired
     private UmsRolePermissionRelationService umsRolePermissionRelationService;
+
+    @Autowired
+    private UmsMemberRoleRelationService umsMemberRoleRelationService;
 
     @Override
     public void register(RegisterMemberDTO registerMemberDTO) {
@@ -144,13 +145,14 @@ public class MemberManagementFacadeImpl implements MemberManagementFacade {
     }
 
     @Override
-    public PageVO getPermissionByRole(Integer pageNum, Integer pageSize, Long roleId) {
-        List<Long> idList = umsRolePermissionRelationService.getPermissionIdByRole(roleId);
-        return umsPermissionService.getPermissionByRoleIdBatch(pageNum, pageSize, idList);
+    public PageVO getPermissionsByRole(Integer pageNum, Integer pageSize, Long roleId) {
+        List<Long> idList = umsRolePermissionRelationService.getPermissionIdsByRole(roleId);
+        return umsPermissionService.getPermissionListByIds(pageNum, pageSize, idList);
     }
 
     @Override
-    public PageVO selectMemberByRole(Integer pageNum, Integer pageSize, Long roleId) {
-        return null;
+    public PageVO getMembersByRole(Integer pageNum, Integer pageSize, Long roleId) {
+        List<Long> idList = umsMemberRoleRelationService.getMemberIdsByRole(roleId);
+        return umsMemberService.getMemberListById(pageNum, pageSize, idList);
     }
 }

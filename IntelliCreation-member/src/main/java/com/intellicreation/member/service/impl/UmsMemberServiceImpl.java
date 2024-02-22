@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * <p>
  * 服务实现类
@@ -100,6 +103,23 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         // 封装成MemberInfoVO
         MemberInfoVO memberInfoVO = BeanCopyUtils.copyBean(member, MemberInfoVO.class);
         return memberInfoVO;
+    }
+
+    @Override
+    public PageVO getMemberListById(Integer pageNum, Integer pageSize, List<Long> idList) {
+        if (idList == null || idList.isEmpty()) {
+            return new PageVO(Collections.emptyList(), 0L);
+        }
+        LambdaQueryWrapper<UmsMemberDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(UmsMemberDO::getId, UmsMemberDO::getUid, UmsMemberDO::getNickname)
+                .in(UmsMemberDO::getId, idList);
+        Page<UmsMemberDO> page = new Page<>();
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page(page, lambdaQueryWrapper);
+        // 封装数据返回
+        return new PageVO(page.getRecords(), page.getTotal());
     }
 
     /**

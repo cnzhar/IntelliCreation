@@ -68,5 +68,5 @@ public interface UmsPermissionService extends IService<UmsPermissionDO> {
      * @param idList
      * @return
      */
-    PageVO getPermissionByRoleIdBatch(Integer pageNum, Integer pageSize, List<Long> idList);
+    PageVO getPermissionListByIds(Integer pageNum, Integer pageSize, List<Long> idList);
 }
