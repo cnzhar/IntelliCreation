@@ -188,7 +188,7 @@
         <appender-ref ref="LOG_STASH_ERROR"/>
     </root>
 
-    <logger name="com.intellicreation.common.aspect.LogAspect" level="DEBUG">
+    <logger name="com.intellicreation.api.aspect.LogAspect" level="DEBUG">
         <appender-ref ref="LOG_STASH_RECORD"/>
     </logger>
 

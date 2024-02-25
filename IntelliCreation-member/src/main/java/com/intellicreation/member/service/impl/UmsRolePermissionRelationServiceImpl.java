@@ -1,7 +1,6 @@
 package com.intellicreation.member.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.domain.entity.UmsRolePermissionRelationDO;
 import com.intellicreation.member.mapper.UmsRolePermissionRelationMapper;
 import com.intellicreation.member.service.UmsRolePermissionRelationService;
@@ -31,6 +30,18 @@ public class UmsRolePermissionRelationServiceImpl extends ServiceImpl<UmsRolePer
         List<UmsRolePermissionRelationDO> resultList = list(lambdaQueryWrapper);
         return resultList.stream()
                 .map(UmsRolePermissionRelationDO::getPermissionId)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Long> getRoleIdsByPermission(Long permissionId) {
+        LambdaQueryWrapper<UmsRolePermissionRelationDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(UmsRolePermissionRelationDO::getRoleId)
+                .eq(UmsRolePermissionRelationDO::getPermissionId, permissionId);
+        List<UmsRolePermissionRelationDO> resultList = list(lambdaQueryWrapper);
+        return resultList.stream()
+                .map(UmsRolePermissionRelationDO::getRoleId)
                 .collect(Collectors.toList());
     }
 }

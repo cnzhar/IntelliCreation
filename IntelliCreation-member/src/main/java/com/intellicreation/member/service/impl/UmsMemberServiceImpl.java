@@ -7,6 +7,7 @@ import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.domain.dto.AddMemberDTO;
 import com.intellicreation.member.domain.dto.MemberQueryParamDTO;
 import com.intellicreation.member.domain.dto.RegisterMemberDTO;
+import com.intellicreation.member.domain.dto.UpdateMemberInfoDTO;
 import com.intellicreation.member.domain.vo.MemberInfoVO;
 import com.intellicreation.member.mapper.UmsMemberMapper;
 import com.intellicreation.common.enumtype.AppHttpCodeEnums;
@@ -68,15 +69,18 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         UmsMemberDO umsMemberDO = BeanCopyUtils.copyBean(addMemberDTO, UmsMemberDO.class);
         // todo 考虑要不要加上修改默认密码的功能
         // todo 数据校验
+        if (uidExist(addMemberDTO.getUid())) {
+            throw new SystemException(AppHttpCodeEnums.USERNAME_EXIST);
+        }
         String encodePassword = passwordEncoder.encode(SystemConstants.defaultPassword);
         umsMemberDO.setPassword(encodePassword);
         save(umsMemberDO);
     }
 
     @Override
-    public void updateMemberInfo(UmsMemberDO member) {
-        // todo 改成update(wrapper....),防止有人获取接口地址，恶意更新密码等字段
-        updateById(member);
+    public void updateMemberInfo(UpdateMemberInfoDTO updateMemberInfoDTO) {
+        UmsMemberDO umsMemberDO = BeanCopyUtils.copyBean(updateMemberInfoDTO, UmsMemberDO.class);
+        updateById(umsMemberDO);
     }
 
     @Override
@@ -106,7 +110,8 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
     }
 
     @Override
-    public PageVO getMemberListById(Integer pageNum, Integer pageSize, List<Long> idList) {
+    public PageVO getMemberListByIds(Integer pageNum, Integer pageSize, List<Long> idList) {
+        // 如果传入的id列表为空，则返回空分页
         if (idList == null || idList.isEmpty()) {
             return new PageVO(Collections.emptyList(), 0L);
         }

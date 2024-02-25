@@ -1,9 +1,8 @@
 package com.intellicreation.api.facade;
 
 import com.intellicreation.article.domain.dto.AddArticleDTO;
-import com.intellicreation.article.domain.dto.AddTagDTO;
-import com.intellicreation.article.domain.dto.TagQueryParamDTO;
-import com.intellicreation.article.domain.vo.ArticleDetailVO;
+import com.intellicreation.article.domain.dto.PostRatingDTO;
+import com.intellicreation.article.domain.vo.ArticleTextVO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
 import com.intellicreation.common.vo.PageVO;
 
@@ -48,13 +47,19 @@ public interface ArticleFacade {
      * @param id
      * @return
      */
-    ArticleDetailVO getArticleDetail(Long id);
+    ArticleTextVO getArticleDetail(Long id);
 
     /**
      * 新增文章
      *
      * @param addArticleDTO
-     * @param memberId
      */
-    void addArticle(AddArticleDTO addArticleDTO, Long memberId);
+    void addArticle(AddArticleDTO addArticleDTO);
+
+    /**
+     * 用户发表评价
+     *
+     * @param postRatingDTO
+     */
+    void postRating(PostRatingDTO postRatingDTO);
 }

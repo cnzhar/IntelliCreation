@@ -13,6 +13,7 @@ import com.intellicreation.article.domain.entity.AmsTagDO;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.vo.PageVO;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -44,6 +45,7 @@ public class AmsTagServiceImpl extends ServiceImpl<AmsTagMapper, AmsTagDO> imple
         LambdaQueryWrapper<AmsTagDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper
                 .select(AmsTagDO::getId, AmsTagDO::getName, AmsTagDO::getDescription)
+                .like(!ObjectUtils.isEmpty(tagQueryParamDTO.getId()), AmsTagDO::getId, tagQueryParamDTO.getId())
                 .like(StringUtils.hasText(tagQueryParamDTO.getName()), AmsTagDO::getName, tagQueryParamDTO.getName())
                 .like(StringUtils.hasText(tagQueryParamDTO.getRemark()), AmsTagDO::getDescription, tagQueryParamDTO.getRemark());
         Page<AmsTagDO> page = new Page<>();

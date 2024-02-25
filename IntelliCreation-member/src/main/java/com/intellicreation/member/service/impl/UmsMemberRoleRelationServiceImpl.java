@@ -22,6 +22,18 @@ import java.util.stream.Collectors;
 public class UmsMemberRoleRelationServiceImpl extends ServiceImpl<UmsMemberRoleRelationMapper, UmsMemberRoleRelationDO> implements UmsMemberRoleRelationService {
 
     @Override
+    public List<Long> getRoleIdsByMember(Long memberId) {
+        LambdaQueryWrapper<UmsMemberRoleRelationDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(UmsMemberRoleRelationDO::getRoleId)
+                .eq(UmsMemberRoleRelationDO::getMemberId, memberId);
+        List<UmsMemberRoleRelationDO> resultList = list(lambdaQueryWrapper);
+        return resultList.stream()
+                .map(UmsMemberRoleRelationDO::getRoleId)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<Long> getMemberIdsByRole(Long roleId) {
         LambdaQueryWrapper<UmsMemberRoleRelationDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper

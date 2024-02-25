@@ -2,8 +2,11 @@ package com.intellicreation.api.facade.impl;
 
 import com.intellicreation.api.facade.ArticleManagementFacade;
 import com.intellicreation.article.domain.dto.*;
+import com.intellicreation.article.domain.vo.ArticleDetailVO;
+import com.intellicreation.article.domain.vo.ArticleQueryParamDTO;
 import com.intellicreation.article.domain.vo.CategoryDetailVO;
 import com.intellicreation.article.domain.vo.TagDetailVO;
+import com.intellicreation.article.service.AmsArticleService;
 import com.intellicreation.article.service.AmsCategoryService;
 import com.intellicreation.article.service.AmsTagService;
 import com.intellicreation.common.vo.PageVO;
@@ -17,10 +20,28 @@ import org.springframework.stereotype.Component;
 public class ArticleManagementFacadeImpl implements ArticleManagementFacade {
 
     @Autowired
+    private AmsArticleService amsArticleService;
+
+    @Autowired
     private AmsCategoryService amsCategoryService;
 
     @Autowired
     private AmsTagService amsTagService;
+
+    @Override
+    public void deleteArticle(Long id) {
+        amsArticleService.removeById(id);
+    }
+
+    @Override
+    public PageVO queryArticleList(Integer pageNum, Integer pageSize, ArticleQueryParamDTO articleQueryParamDTO) {
+        return amsArticleService.queryArticleList(pageNum, pageSize, articleQueryParamDTO);
+    }
+
+    @Override
+    public ArticleDetailVO getArticleDetail(Long id) {
+        return amsArticleService.getArticleDetail(id);
+    }
 
     @Override
     public void addCategory(AddCategoryDTO addCategoryDTO) {

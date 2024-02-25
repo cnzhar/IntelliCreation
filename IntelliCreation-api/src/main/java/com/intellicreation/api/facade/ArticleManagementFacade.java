@@ -1,6 +1,8 @@
 package com.intellicreation.api.facade;
 
 import com.intellicreation.article.domain.dto.*;
+import com.intellicreation.article.domain.vo.ArticleDetailVO;
+import com.intellicreation.article.domain.vo.ArticleQueryParamDTO;
 import com.intellicreation.article.domain.vo.CategoryDetailVO;
 import com.intellicreation.article.domain.vo.TagDetailVO;
 import com.intellicreation.common.vo.PageVO;
@@ -9,6 +11,31 @@ import com.intellicreation.common.vo.PageVO;
  * @author za
  */
 public interface ArticleManagementFacade {
+
+    /**
+     * 删除文章
+     *
+     * @param id
+     */
+    void deleteArticle(Long id);
+
+    /**
+     * 查询文章列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param articleQueryParamDTO
+     * @return
+     */
+    PageVO queryArticleList(Integer pageNum, Integer pageSize, ArticleQueryParamDTO articleQueryParamDTO);
+
+    /**
+     * 获取文章详情
+     *
+     * @param id
+     * @return
+     */
+    ArticleDetailVO getArticleDetail(Long id);
 
     /**
      * 新增分类

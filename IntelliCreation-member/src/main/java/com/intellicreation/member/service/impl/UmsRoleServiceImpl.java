@@ -19,6 +19,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -65,6 +66,25 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRoleDO> im
     public RoleVO getRoleDetail(Long id) {
         UmsRoleDO umsRoleDO = getById(id);
         return BeanCopyUtils.copyBean(umsRoleDO, RoleVO.class);
+    }
+
+    @Override
+    public PageVO getRoleListByIds(Integer pageNum, Integer pageSize, List<Long> idList) {
+        // 如果传入的id列表为空，则返回空分页
+        if (idList == null || idList.isEmpty()) {
+            return new PageVO(Collections.emptyList(), 0L);
+        }
+        // 分页查询
+        LambdaQueryWrapper<UmsRoleDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(UmsRoleDO::getId, UmsRoleDO::getRoleName, UmsRoleDO::getRoleKey)
+                .in(UmsRoleDO::getId, idList);
+        Page<UmsRoleDO> page = new Page<>();
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page(page, lambdaQueryWrapper);
+        // 封装数据返回
+        return new PageVO(page.getRecords(), page.getTotal());
     }
 
     @Override

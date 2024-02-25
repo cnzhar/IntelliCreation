@@ -4,17 +4,20 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.intellicreation.api.facade.ArticleFacade;
 import com.intellicreation.article.domain.dto.AddArticleDTO;
+import com.intellicreation.article.domain.dto.PostRatingDTO;
 import com.intellicreation.article.domain.entity.AmsArticleDO;
 import com.intellicreation.article.domain.entity.AmsCategoryDO;
-import com.intellicreation.article.domain.vo.ArticleDetailVO;
+import com.intellicreation.article.domain.vo.ArticleTextVO;
 import com.intellicreation.article.domain.vo.ArticleListVO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
 import com.intellicreation.article.service.AmsArticleService;
 import com.intellicreation.article.service.AmsCategoryService;
+import com.intellicreation.article.service.AmsRatingService;
 import com.intellicreation.common.constant.SystemConstants;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.util.RedisCache;
 import com.intellicreation.common.vo.PageVO;
+import com.intellicreation.member.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +36,9 @@ public class ArticleFacadeImpl implements ArticleFacade {
 
     @Autowired
     private AmsCategoryService amsCategoryService;
+
+    @Autowired
+    private AmsRatingService amsRatingService;
 
     @Autowired
     private RedisCache redisCache;
@@ -72,25 +78,32 @@ public class ArticleFacadeImpl implements ArticleFacade {
 
     // Todo 只有已发布的能被所有人看到，草稿等只能自己看
     @Override
-    public ArticleDetailVO getArticleDetail(Long id) {
+    public ArticleTextVO getArticleDetail(Long id) {
         // 根据id查询文章
         AmsArticleDO amsArticleDO = amsArticleService.getById(id);
         // 从redis中获取viewCount
         Integer viewCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, id.toString());
         amsArticleDO.setViewCount(viewCount.longValue());
         // 转换成VO
-        ArticleDetailVO articleDetailVO = BeanCopyUtils.copyBean(amsArticleDO, ArticleDetailVO.class);
+        ArticleTextVO articleTextVO = BeanCopyUtils.copyBean(amsArticleDO, ArticleTextVO.class);
         // 根据分类id查询分类名
-        Long category1Id = articleDetailVO.getCategory1Id();
+        Long category1Id = articleTextVO.getCategory1Id();
         AmsCategoryDO amsCategoryDO = amsCategoryService.getById(category1Id);
         if (amsCategoryDO != null) {
-            articleDetailVO.setCategory1Name(amsCategoryDO.getName());
+            articleTextVO.setCategory1Name(amsCategoryDO.getName());
         }
-        return articleDetailVO;
+        return articleTextVO;
     }
 
     @Override
-    public void addArticle(AddArticleDTO addArticleDTO, Long memberId) {
+    public void addArticle(AddArticleDTO addArticleDTO) {
+        Long memberId = SecurityUtils.getMemberId();
         amsArticleService.addArticle(addArticleDTO, memberId);
+    }
+
+    @Override
+    public void postRating(PostRatingDTO postRatingDTO) {
+        Long memberId = SecurityUtils.getMemberId();
+        amsRatingService.postRating(postRatingDTO, memberId);
     }
 }

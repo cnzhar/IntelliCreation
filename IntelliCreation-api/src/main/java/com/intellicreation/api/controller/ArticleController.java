@@ -1,11 +1,14 @@
 package com.intellicreation.api.controller;
 
 
+import com.intellicreation.api.annotation.SystemLog;
 import com.intellicreation.api.facade.ArticleFacade;
 import com.intellicreation.article.domain.dto.AddArticleDTO;
-import com.intellicreation.article.domain.vo.ArticleDetailVO;
+import com.intellicreation.article.domain.dto.PostRatingDTO;
+import com.intellicreation.article.domain.vo.ArticleTextVO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
 import com.intellicreation.common.ResponseResult;
+import com.intellicreation.common.constant.SystemConstants;
 import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.util.SecurityUtils;
 import io.swagger.annotations.Api;
@@ -13,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -31,7 +35,8 @@ public class ArticleController {
     @Autowired
     private ArticleFacade articleFacade;
 
-    @ApiOperation(value = "查询热门文章", notes = "获取热门文章列表")
+    @ApiOperation(value = "获取热门文章")
+    @SystemLog(businessName = "获取热门文章", operationType = SystemConstants.USER_TYPE)
     @GetMapping("/hotArticleList")
     public ResponseResult hotArticleList() {
         List<HotArticleVO> hotArticleVOList = articleFacade.hotArticleList();
@@ -55,13 +60,19 @@ public class ArticleController {
 
     @GetMapping("/{id}")
     public ResponseResult getArticleDetail(@PathVariable("id") Long id) {
-        ArticleDetailVO articleDetailVO = articleFacade.getArticleDetail(id);
-        return ResponseResult.okResult(articleDetailVO);
+        ArticleTextVO articleTextVO = articleFacade.getArticleDetail(id);
+        return ResponseResult.okResult(articleTextVO);
     }
 
     @PostMapping("/addArticle")
     public ResponseResult addArticle(@RequestBody AddArticleDTO addArticleDTO) {
-        articleFacade.addArticle(addArticleDTO, SecurityUtils.getMemberId());
+        articleFacade.addArticle(addArticleDTO);
+        return ResponseResult.okResult();
+    }
+
+    @PostMapping("postRating")
+    public ResponseResult postRating(@Valid @RequestBody PostRatingDTO postRatingDTO) {
+        articleFacade.postRating(postRatingDTO);
         return ResponseResult.okResult();
     }
 }

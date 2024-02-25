@@ -18,13 +18,12 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         Long memberId = null;
-        // todo 看看是否需要 try catch memberId = 0L,也就是获取不到memberId的情况
-//        try {
-        memberId = SecurityUtils.getMemberId();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            memberId = 0L; //表示是自己创建
-//        }
+        try {
+            memberId = SecurityUtils.getMemberId();
+        } catch (Exception e) {
+            e.printStackTrace();
+            memberId = 0L;
+        }
         this.setFieldValByName("createBy", memberId, metaObject);
         this.setFieldValByName("modifiedBy", memberId, metaObject);
         this.setFieldValByName("gmtCreate", getLocalDateTime(), metaObject);

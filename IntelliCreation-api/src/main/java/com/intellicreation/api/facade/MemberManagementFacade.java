@@ -1,9 +1,9 @@
 package com.intellicreation.api.facade;
 
 
+import com.intellicreation.member.domain.dto.UpdateMemberInfoDTO;
 import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.domain.dto.*;
-import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.domain.vo.MemberInfoVO;
 import com.intellicreation.member.domain.vo.MenuVO;
 import com.intellicreation.member.domain.vo.PermissionVO;
@@ -38,10 +38,9 @@ public interface MemberManagementFacade {
     /**
      * 更新用户信息
      *
-     * @param member
-     * @return
+     * @param updateMemberInfoDTO
      */
-    void updateMemberInfo(UmsMemberDO member);
+    void updateMemberInfo(UpdateMemberInfoDTO updateMemberInfoDTO);
 
     /**
      * 根据查询条件，查询用户列表
@@ -60,6 +59,26 @@ public interface MemberManagementFacade {
      * @return
      */
     MemberInfoVO getMemberInfo(Long id);
+
+    /**
+     * 获取某个用户拥有的全部角色
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param memberId
+     * @return
+     */
+    PageVO getRolesByMember(Integer pageNum, Integer pageSize, Long memberId);
+
+    /**
+     * 获取用户登录日志
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param memberId
+     * @return
+     */
+    PageVO getMemberLoginLog(Integer pageNum, Integer pageSize, Long memberId);
 
     /**
      * 新增菜单
@@ -138,6 +157,16 @@ public interface MemberManagementFacade {
      * @return
      */
     PermissionVO getPermissionDetail(Long id);
+
+    /**
+     * 获取拥有某个权限的全部角色
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param permissionId
+     * @return
+     */
+    PageVO getRolesByPermission(Integer pageNum, Integer pageSize, Long permissionId);
 
     /**
      * 新增角色

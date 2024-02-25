@@ -2,9 +2,9 @@ package com.intellicreation.api.facade.impl;
 
 
 import com.intellicreation.api.facade.MemberManagementFacade;
+import com.intellicreation.member.domain.dto.UpdateMemberInfoDTO;
 import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.domain.dto.*;
-import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.domain.vo.MemberInfoVO;
 import com.intellicreation.member.domain.vo.MenuVO;
 import com.intellicreation.member.domain.vo.PermissionVO;
@@ -34,6 +34,9 @@ public class MemberManagementFacadeImpl implements MemberManagementFacade {
     private UmsRoleService umsRoleService;
 
     @Autowired
+    private UmsMemberLoginLogService umsMemberLoginLogService;
+
+    @Autowired
     private UmsRolePermissionRelationService umsRolePermissionRelationService;
 
     @Autowired
@@ -55,8 +58,8 @@ public class MemberManagementFacadeImpl implements MemberManagementFacade {
     }
 
     @Override
-    public void updateMemberInfo(UmsMemberDO member) {
-        umsMemberService.updateMemberInfo(member);
+    public void updateMemberInfo(UpdateMemberInfoDTO updateMemberInfoDTO) {
+        umsMemberService.updateMemberInfo(updateMemberInfoDTO);
     }
 
     @Override
@@ -67,6 +70,17 @@ public class MemberManagementFacadeImpl implements MemberManagementFacade {
     @Override
     public MemberInfoVO getMemberInfo(Long id) {
         return umsMemberService.getMemberInfo(id);
+    }
+
+    @Override
+    public PageVO getRolesByMember(Integer pageNum, Integer pageSize, Long memberId) {
+        List<Long> idList = umsMemberRoleRelationService.getRoleIdsByMember(memberId);
+        return umsRoleService.getRoleListByIds(pageNum, pageSize, idList);
+    }
+
+    @Override
+    public PageVO getMemberLoginLog(Integer pageNum, Integer pageSize, Long memberId) {
+        return umsMemberLoginLogService.getMemberLoginLog(pageNum, pageSize, memberId);
     }
 
     @Override
@@ -120,6 +134,12 @@ public class MemberManagementFacadeImpl implements MemberManagementFacade {
     }
 
     @Override
+    public PageVO getRolesByPermission(Integer pageNum, Integer pageSize, Long permissionId) {
+        List<Long> idList = umsRolePermissionRelationService.getRoleIdsByPermission(permissionId);
+        return umsRoleService.getRoleListByIds(pageNum, pageSize, idList);
+    }
+
+    @Override
     public void addRole(AddRoleDTO addRoleDTO) {
         umsRoleService.addRole(addRoleDTO);
     }
@@ -153,6 +173,6 @@ public class MemberManagementFacadeImpl implements MemberManagementFacade {
     @Override
     public PageVO getMembersByRole(Integer pageNum, Integer pageSize, Long roleId) {
         List<Long> idList = umsMemberRoleRelationService.getMemberIdsByRole(roleId);
-        return umsMemberService.getMemberListById(pageNum, pageSize, idList);
+        return umsMemberService.getMemberListByIds(pageNum, pageSize, idList);
     }
 }

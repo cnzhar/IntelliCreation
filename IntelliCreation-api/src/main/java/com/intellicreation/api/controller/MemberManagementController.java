@@ -2,11 +2,12 @@ package com.intellicreation.api.controller;
 
 
 import com.intellicreation.api.facade.MemberManagementFacade;
+import com.intellicreation.common.constant.SystemConstants;
+import com.intellicreation.member.domain.dto.UpdateMemberInfoDTO;
 import com.intellicreation.common.vo.PageVO;
-import com.intellicreation.common.annotation.SystemLog;
+import com.intellicreation.api.annotation.SystemLog;
 import com.intellicreation.common.ResponseResult;
 import com.intellicreation.member.domain.dto.*;
-import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.domain.vo.MemberInfoVO;
 import com.intellicreation.member.domain.vo.MenuVO;
 import com.intellicreation.member.domain.vo.PermissionVO;
@@ -38,6 +39,7 @@ public class MemberManagementController {
         return ResponseResult.okResult();
     }
 
+    @SystemLog(businessName = "新增用户", operationType = SystemConstants.ADMIN_TYPE)
     @PostMapping("/addMember")
     public ResponseResult addMember(@Valid @RequestBody AddMemberDTO addMemberDTO) {
         memberManagementFacade.addMember(addMemberDTO);
@@ -50,11 +52,10 @@ public class MemberManagementController {
         return ResponseResult.okResult();
     }
 
-    // todo 看看要不要用dto接收
-    @SystemLog(businessName = "更新用户信息")
+    @SystemLog(businessName = "更新用户信息", operationType = SystemConstants.ADMIN_TYPE)
     @PutMapping("/updateMemberInfo")
-    public ResponseResult updateMemberInfo(@RequestBody UmsMemberDO member) {
-        memberManagementFacade.updateMemberInfo(member);
+    public ResponseResult updateMemberInfo(@Valid @RequestBody UpdateMemberInfoDTO updateMemberInfoDTO) {
+        memberManagementFacade.updateMemberInfo(updateMemberInfoDTO);
         return ResponseResult.okResult();
     }
 
@@ -70,6 +71,22 @@ public class MemberManagementController {
     public ResponseResult getMemberInfo(@PathVariable("id") Long id) {
         MemberInfoVO memberInfoVO = memberManagementFacade.getMemberInfo(id);
         return ResponseResult.okResult(memberInfoVO);
+    }
+
+    @GetMapping("/getRolesByMember")
+    public ResponseResult getRolesByMember(@RequestParam(defaultValue = "1") Integer pageNum,
+                                           @RequestParam(defaultValue = "5") Integer pageSize,
+                                           @RequestParam Long memberId) {
+        PageVO pageVO = memberManagementFacade.getRolesByMember(pageNum, pageSize, memberId);
+        return ResponseResult.okResult(pageVO);
+    }
+
+    @GetMapping("/getMemberLoginLog")
+    public ResponseResult getMemberLoginLog(@RequestParam(defaultValue = "1") Integer pageNum,
+                                            @RequestParam(defaultValue = "5") Integer pageSize,
+                                            Long memberId) {
+        PageVO pageVO = memberManagementFacade.getMemberLoginLog(pageNum, pageSize, memberId);
+        return ResponseResult.okResult(pageVO);
     }
 
     @PostMapping("/addMenu")
@@ -134,6 +151,14 @@ public class MemberManagementController {
     public ResponseResult getPermissionDetail(@PathVariable("id") Long id) {
         PermissionVO permissionVO = memberManagementFacade.getPermissionDetail(id);
         return ResponseResult.okResult(permissionVO);
+    }
+
+    @GetMapping("/getRolesByPermission")
+    public ResponseResult getRolesByPermission(@RequestParam(defaultValue = "1") Integer pageNum,
+                                               @RequestParam(defaultValue = "5") Integer pageSize,
+                                               Long permissionId) {
+        PageVO pageVO = memberManagementFacade.getRolesByPermission(pageNum, pageSize, permissionId);
+        return ResponseResult.okResult(pageVO);
     }
 
     @PostMapping("/addRole")

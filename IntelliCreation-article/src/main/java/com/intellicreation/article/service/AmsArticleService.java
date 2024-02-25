@@ -3,8 +3,8 @@ package com.intellicreation.article.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.intellicreation.article.domain.dto.AddArticleDTO;
 import com.intellicreation.article.domain.vo.ArticleDetailVO;
+import com.intellicreation.article.domain.vo.ArticleQueryParamDTO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
-import com.intellicreation.common.ResponseResult;
 import com.intellicreation.article.domain.entity.AmsArticleDO;
 import com.intellicreation.common.vo.PageVO;
 
@@ -36,10 +36,28 @@ public interface AmsArticleService extends IService<AmsArticleDO> {
     void updateViewCount(Long id);
 
     /**
-     * 新增文章
+     * 用户新增文章
      *
      * @param addArticleDTO
      * @param memberId
      */
     void addArticle(AddArticleDTO addArticleDTO, Long memberId);
+
+    /**
+     * 后台查询文章列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param articleQueryParamDTO
+     * @return
+     */
+    PageVO queryArticleList(Integer pageNum, Integer pageSize, ArticleQueryParamDTO articleQueryParamDTO);
+
+    /**
+     * 后台获取文章详情
+     *
+     * @param id
+     * @return
+     */
+    ArticleDetailVO getArticleDetail(Long id);
 }

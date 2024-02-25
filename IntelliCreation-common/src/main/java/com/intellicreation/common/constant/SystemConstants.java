@@ -33,6 +33,30 @@ public class SystemConstants {
     public static final String STATUS_DISABLED = "1";
 
     /**
+     * 日志状态
+     * 操作成功状态
+     */
+    public static final String STATUS_SUCCESS = "S";
+
+    /**
+     * 日志状态
+     * 操作失败状态
+     */
+    public static final String STATUS_ERROR = "E";
+
+    /**
+     * 日志类型
+     * 管理员操作
+     */
+    public static final String ADMIN_TYPE = "A";
+
+    /**
+     * 日志类型
+     * 用户操作
+     */
+    public static final String USER_TYPE = "U";
+
+    /**
      * 无父元素
      */
     public static final Long NULL_PARENT = 0L;

@@ -1,6 +1,6 @@
 package com.intellicreation.member.service;
 
-import com.intellicreation.common.vo.PageVO;
+
 import com.intellicreation.member.domain.entity.UmsRolePermissionRelationDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -23,4 +23,12 @@ public interface UmsRolePermissionRelationService extends IService<UmsRolePermis
      * @return
      */
     List<Long> getPermissionIdsByRole(Long roleId);
+
+    /**
+     * 获取拥有某个权限的全部角色
+     *
+     * @param permissionId
+     * @return
+     */
+    List<Long> getRoleIdsByPermission(Long permissionId);
 }

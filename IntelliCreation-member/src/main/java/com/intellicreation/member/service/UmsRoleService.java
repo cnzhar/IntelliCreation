@@ -53,6 +53,16 @@ public interface UmsRoleService extends IService<UmsRoleDO> {
     RoleVO getRoleDetail(Long id);
 
     /**
+     * 根据id批量获取用户
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param idList
+     * @return
+     */
+    PageVO getRoleListByIds(Integer pageNum, Integer pageSize, List<Long> idList);
+
+    /**
      * 根据用户id获取用户所有角色
      *
      * @param id

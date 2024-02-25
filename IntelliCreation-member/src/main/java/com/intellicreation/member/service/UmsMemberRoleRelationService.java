@@ -16,6 +16,14 @@ import java.util.List;
 public interface UmsMemberRoleRelationService extends IService<UmsMemberRoleRelationDO> {
 
     /**
+     * 获取某个用户拥有的全部角色
+     *
+     * @param memberId
+     * @return
+     */
+    List<Long> getRoleIdsByMember(Long memberId);
+
+    /**
      * 获取拥有某个角色的所有用户
      *
      * @param roleId

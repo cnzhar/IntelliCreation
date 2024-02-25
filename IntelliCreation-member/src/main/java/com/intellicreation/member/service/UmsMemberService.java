@@ -6,6 +6,7 @@ import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.domain.dto.AddMemberDTO;
 import com.intellicreation.member.domain.dto.MemberQueryParamDTO;
 import com.intellicreation.member.domain.dto.RegisterMemberDTO;
+import com.intellicreation.member.domain.dto.UpdateMemberInfoDTO;
 import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.domain.vo.MemberInfoVO;
 
@@ -38,10 +39,9 @@ public interface UmsMemberService extends IService<UmsMemberDO> {
     /**
      * 更新用户信息
      *
-     * @param member
-     * @return
+     * @param updateMemberInfoDTO
      */
-    void updateMemberInfo(UmsMemberDO member);
+    void updateMemberInfo(UpdateMemberInfoDTO updateMemberInfoDTO);
 
     /**
      * 根据查询条件，查询用户列表
@@ -62,12 +62,12 @@ public interface UmsMemberService extends IService<UmsMemberDO> {
     MemberInfoVO getMemberInfo(Long id);
 
     /**
-     * 获取拥有某个角色的全部用户
+     * 根据id批量获取用户
      *
      * @param pageNum
      * @param pageSize
      * @param idList
      * @return
      */
-    PageVO getMemberListById(Integer pageNum, Integer pageSize, List<Long> idList);
+    PageVO getMemberListByIds(Integer pageNum, Integer pageSize, List<Long> idList);
 }

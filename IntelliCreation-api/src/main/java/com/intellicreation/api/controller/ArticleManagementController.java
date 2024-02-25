@@ -3,6 +3,8 @@ package com.intellicreation.api.controller;
 
 import com.intellicreation.api.facade.ArticleManagementFacade;
 import com.intellicreation.article.domain.dto.*;
+import com.intellicreation.article.domain.vo.ArticleDetailVO;
+import com.intellicreation.article.domain.vo.ArticleQueryParamDTO;
 import com.intellicreation.article.domain.vo.CategoryDetailVO;
 import com.intellicreation.article.domain.vo.TagDetailVO;
 import com.intellicreation.common.ResponseResult;
@@ -29,6 +31,34 @@ public class ArticleManagementController {
     @Autowired
     private ArticleManagementFacade articleManagementFacade;
 
+    // *==================================================*
+    // *--------------------- Article --------------------*
+    // *==================================================*
+
+    @DeleteMapping("/deleteArticle/{id}")
+    public ResponseResult deleteArticle(@PathVariable Long id) {
+        articleManagementFacade.deleteArticle(id);
+        return ResponseResult.okResult();
+    }
+
+    @GetMapping("/articleList")
+    public ResponseResult articleList(@RequestParam(defaultValue = "1") Integer pageNum,
+                                      @RequestParam(defaultValue = "5") Integer pageSize,
+                                      ArticleQueryParamDTO articleQueryParamDTO) {
+        PageVO pageVO = articleManagementFacade.queryArticleList(pageNum, pageSize, articleQueryParamDTO);
+        return ResponseResult.okResult(pageVO);
+    }
+
+    @GetMapping("/getArticleDetail/{id}")
+    public ResponseResult getArticleDetail(@PathVariable("id") Long id) {
+        ArticleDetailVO articleDetailVO = articleManagementFacade.getArticleDetail(id);
+        return ResponseResult.okResult(articleDetailVO);
+    }
+
+    // *==================================================*
+    // *-------------------- Category --------------------*
+    // *==================================================*
+
     @PostMapping("/addCategory")
     public ResponseResult addCategory(@Valid @RequestBody AddCategoryDTO addCategoryDTO) {
         articleManagementFacade.addCategory(addCategoryDTO);
@@ -47,8 +77,8 @@ public class ArticleManagementController {
         return ResponseResult.okResult();
     }
 
-    @GetMapping("/CategoryList")
-    public ResponseResult CategoryList(@RequestParam(defaultValue = "1") Integer pageNum,
+    @GetMapping("/categoryList")
+    public ResponseResult categoryList(@RequestParam(defaultValue = "1") Integer pageNum,
                                        @RequestParam(defaultValue = "5") Integer pageSize,
                                        CategoryQueryParamDTO categoryQueryParamDTO) {
         PageVO pageVO = articleManagementFacade.queryCategoryList(pageNum, pageSize, categoryQueryParamDTO);
@@ -60,6 +90,10 @@ public class ArticleManagementController {
         CategoryDetailVO categoryDetailVO = articleManagementFacade.getCategoryDetail(id);
         return ResponseResult.okResult(categoryDetailVO);
     }
+
+    // *==================================================*
+    // *----------------------- Tag ----------------------*
+    // *==================================================*
 
     @PostMapping("/addTag")
     public ResponseResult addTag(@Valid @RequestBody AddTagDTO addTagDTO) {

@@ -4,15 +4,22 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.intellicreation.article.domain.dto.AddArticleDTO;
+import com.intellicreation.article.domain.dto.PostRatingDTO;
 import com.intellicreation.article.domain.entity.AmsArticleDO;
+import com.intellicreation.article.domain.entity.AmsRatingDO;
+import com.intellicreation.article.domain.vo.ArticleDetailVO;
+import com.intellicreation.article.domain.vo.ArticleQueryParamDTO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.util.RedisCache;
 import com.intellicreation.common.constant.SystemConstants;
 import com.intellicreation.article.mapper.AmsArticleMapper;
 import com.intellicreation.article.service.AmsArticleService;
+import com.intellicreation.common.vo.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -35,17 +42,18 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
         // todo viewCount改为从redis中获取
         // 查询热门文章，并封装成ResponseResult
         LambdaQueryWrapper<AmsArticleDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        // 必须是正式文章（不是草稿）
-        lambdaQueryWrapper.eq(AmsArticleDO::getStatus, SystemConstants.ARTICLE_STATUS_PUBLISHED);
-        // 按照浏览量进行排序AmsArticle
-        lambdaQueryWrapper.orderByDesc(AmsArticleDO::getViewCount);
+        lambdaQueryWrapper
+                // 必须是正式文章（不是草稿）
+                .select(AmsArticleDO::getId, AmsArticleDO::getTitle, AmsArticleDO::getViewCount)
+                .eq(AmsArticleDO::getStatus, SystemConstants.ARTICLE_STATUS_PUBLISHED)
+                // 按照浏览量进行排序AmsArticle
+                .orderByDesc(AmsArticleDO::getViewCount);
         // 最多只查询十条
         Page<AmsArticleDO> page = new Page(1, 10);
         page(page, lambdaQueryWrapper);
         List<AmsArticleDO> articleList = page.getRecords();
         // bean拷贝
-        List<HotArticleVO> hotArticleVOList = BeanCopyUtils.copyBeanList(articleList, HotArticleVO.class);
-        return hotArticleVOList;
+        return BeanCopyUtils.copyBeanList(articleList, HotArticleVO.class);
     }
 
     @Override
@@ -59,5 +67,28 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
         AmsArticleDO amsArticleDO = BeanCopyUtils.copyBean(addArticleDTO, AmsArticleDO.class);
         amsArticleDO.setAuthorId(memberId);
         save(amsArticleDO);
+    }
+
+    @Override
+    public PageVO queryArticleList(Integer pageNum, Integer pageSize, ArticleQueryParamDTO articleQueryParamDTO) {
+        // 分页查询
+        LambdaQueryWrapper<AmsArticleDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(AmsArticleDO::getId, AmsArticleDO::getTitle, AmsArticleDO::getAuthorId)
+                .like(!ObjectUtils.isEmpty(articleQueryParamDTO.getId()), AmsArticleDO::getId, articleQueryParamDTO.getId())
+                .like(StringUtils.hasText(articleQueryParamDTO.getTitle()), AmsArticleDO::getTitle, articleQueryParamDTO.getTitle())
+                .like(!ObjectUtils.isEmpty(articleQueryParamDTO.getAuthorId()), AmsArticleDO::getAuthorId, articleQueryParamDTO.getAuthorId());
+        Page<AmsArticleDO> page = new Page<>();
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page(page, lambdaQueryWrapper);
+        // 封装数据返回
+        return new PageVO(page.getRecords(), page.getTotal());
+    }
+
+    @Override
+    public ArticleDetailVO getArticleDetail(Long id) {
+        AmsArticleDO amsArticleDO = getById(id);
+        return BeanCopyUtils.copyBean(amsArticleDO, ArticleDetailVO.class);
     }
 }
