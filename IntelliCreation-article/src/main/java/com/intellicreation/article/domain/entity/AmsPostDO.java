@@ -19,20 +19,22 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("ams_rating")
-@ApiModel(value="AmsRating对象", description="")
-public class AmsRatingDO implements Serializable {
+@TableName("ams_post")
+@ApiModel(value="AmsPost对象", description="")
+public class AmsPostDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private Long articleId;
+    private String title;
 
-    private Integer score;
+    private String content;
 
-    private String text;
+    private Long likeCount;
+
+    private Long viewCount;
 
     @ApiModelProperty(value = "是否被删除（0为未删除，1为已删除）")
     @TableField("is_deleted")

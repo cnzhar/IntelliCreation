@@ -20,9 +20,8 @@ import org.springframework.stereotype.Service;
 public class AmsRatingServiceImpl extends ServiceImpl<AmsRatingMapper, AmsRatingDO> implements AmsRatingService {
 
     @Override
-    public void postRating(PostRatingDTO postRatingDTO, Long memberId) {
+    public void postRating(PostRatingDTO postRatingDTO) {
         AmsRatingDO amsRatingDO = BeanCopyUtils.copyBean(postRatingDTO, AmsRatingDO.class);
-        amsRatingDO.setMemberId(memberId);
         save(amsRatingDO);
     }
 }

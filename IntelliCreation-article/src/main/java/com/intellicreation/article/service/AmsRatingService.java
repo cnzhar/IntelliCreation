@@ -18,7 +18,6 @@ public interface AmsRatingService extends IService<AmsRatingDO> {
      * 用户发表评价
      *
      * @param postRatingDTO
-     * @param memberId
      */
-    void postRating(PostRatingDTO postRatingDTO, Long memberId);
+    void postRating(PostRatingDTO postRatingDTO);
 }

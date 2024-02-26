@@ -63,9 +63,8 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
     }
 
     @Override
-    public void addArticle(AddArticleDTO addArticleDTO, Long memberId) {
+    public void addArticle(AddArticleDTO addArticleDTO) {
         AmsArticleDO amsArticleDO = BeanCopyUtils.copyBean(addArticleDTO, AmsArticleDO.class);
-        amsArticleDO.setAuthorId(memberId);
         save(amsArticleDO);
     }
 
@@ -74,10 +73,10 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
         // 分页查询
         LambdaQueryWrapper<AmsArticleDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper
-                .select(AmsArticleDO::getId, AmsArticleDO::getTitle, AmsArticleDO::getAuthorId)
+                .select(AmsArticleDO::getId, AmsArticleDO::getTitle, AmsArticleDO::getCreateBy)
                 .like(!ObjectUtils.isEmpty(articleQueryParamDTO.getId()), AmsArticleDO::getId, articleQueryParamDTO.getId())
                 .like(StringUtils.hasText(articleQueryParamDTO.getTitle()), AmsArticleDO::getTitle, articleQueryParamDTO.getTitle())
-                .like(!ObjectUtils.isEmpty(articleQueryParamDTO.getAuthorId()), AmsArticleDO::getAuthorId, articleQueryParamDTO.getAuthorId());
+                .like(!ObjectUtils.isEmpty(articleQueryParamDTO.getAuthorId()), AmsArticleDO::getCreateBy, articleQueryParamDTO.getAuthorId());
         Page<AmsArticleDO> page = new Page<>();
         page.setCurrent(pageNum);
         page.setSize(pageSize);

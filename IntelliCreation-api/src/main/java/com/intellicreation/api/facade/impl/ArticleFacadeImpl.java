@@ -50,6 +50,7 @@ public class ArticleFacadeImpl implements ArticleFacade {
 
     @Override
     public PageVO articleList(Integer pageNum, Integer pageSize, Long categoryId) {
+        // todo 要不要下放到service
         // todo viewCount改为从redis中获取
         // todo select过多字段
         // todo 看是否需要去掉articlelistvo
@@ -97,13 +98,11 @@ public class ArticleFacadeImpl implements ArticleFacade {
 
     @Override
     public void addArticle(AddArticleDTO addArticleDTO) {
-        Long memberId = SecurityUtils.getMemberId();
-        amsArticleService.addArticle(addArticleDTO, memberId);
+        amsArticleService.addArticle(addArticleDTO);
     }
 
     @Override
     public void postRating(PostRatingDTO postRatingDTO) {
-        Long memberId = SecurityUtils.getMemberId();
-        amsRatingService.postRating(postRatingDTO, memberId);
+        amsRatingService.postRating(postRatingDTO);
     }
 }

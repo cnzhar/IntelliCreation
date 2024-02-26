@@ -35,8 +35,6 @@ public class AmsArticleDO implements Serializable {
 
     private String title;
 
-    private Long authorId;
-
     @ApiModelProperty(value = "文章摘要")
     private String summary;
 

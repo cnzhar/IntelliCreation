@@ -29,6 +29,7 @@ public class UmsMemberLoginLogServiceImpl extends ServiceImpl<UmsMemberLoginLogM
     @Override
     public void generateLoginLog(Long memberId) {
         UmsMemberLoginLogDO umsMemberLoginLogDO = new UmsMemberLoginLogDO();
+        // todo memberId和create by有冲突
         umsMemberLoginLogDO.setMemberId(memberId);
         // 获取ip
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

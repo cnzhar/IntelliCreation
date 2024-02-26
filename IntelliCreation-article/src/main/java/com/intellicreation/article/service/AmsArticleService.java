@@ -39,9 +39,8 @@ public interface AmsArticleService extends IService<AmsArticleDO> {
      * 用户新增文章
      *
      * @param addArticleDTO
-     * @param memberId
      */
-    void addArticle(AddArticleDTO addArticleDTO, Long memberId);
+    void addArticle(AddArticleDTO addArticleDTO);
 
     /**
      * 后台查询文章列表
