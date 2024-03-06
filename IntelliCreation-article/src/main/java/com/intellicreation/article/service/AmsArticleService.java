@@ -2,10 +2,12 @@ package com.intellicreation.article.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.intellicreation.article.domain.dto.AddArticleDTO;
+import com.intellicreation.article.domain.dto.UpdateArticleInfoDTO;
 import com.intellicreation.article.domain.vo.ArticleDetailVO;
 import com.intellicreation.article.domain.vo.ArticleQueryParamDTO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
 import com.intellicreation.article.domain.entity.AmsArticleDO;
+import com.intellicreation.article.domain.vo.UpdateArticleInfoVO;
 import com.intellicreation.common.vo.PageVO;
 
 import java.util.List;
@@ -39,8 +41,16 @@ public interface AmsArticleService extends IService<AmsArticleDO> {
      * 用户新增文章
      *
      * @param addArticleDTO
+     * @return 返回新增成功的文章id
      */
-    void addArticle(AddArticleDTO addArticleDTO);
+    Long addArticle(AddArticleDTO addArticleDTO);
+
+    /**
+     * 用户编辑文章
+     *
+     * @param updateArticleInfoDTO
+     */
+    void updateArticle(UpdateArticleInfoDTO updateArticleInfoDTO);
 
     /**
      * 后台查询文章列表
@@ -59,4 +69,12 @@ public interface AmsArticleService extends IService<AmsArticleDO> {
      * @return
      */
     ArticleDetailVO getArticleDetail(Long id);
+
+    /**
+     * 判断传入用户是否是文章作者
+     *
+     * @param articleId
+     * @return
+     */
+    boolean isAuthor(Long memberId, Long articleId);
 }

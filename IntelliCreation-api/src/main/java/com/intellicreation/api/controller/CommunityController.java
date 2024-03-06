@@ -3,11 +3,14 @@ package com.intellicreation.api.controller;
 
 import com.intellicreation.api.facade.CommunityFacade;
 import com.intellicreation.article.domain.dto.CreatePostDTO;
+import com.intellicreation.article.domain.vo.PostViewVO;
 import com.intellicreation.common.ResponseResult;
 import com.intellicreation.common.vo.PageVO;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -26,7 +29,7 @@ public class CommunityController {
     private CommunityFacade communityFacade;
 
     @PostMapping("/createPost")
-    public ResponseResult createPost(CreatePostDTO createPostDTO) {
+    public ResponseResult createPost(@Valid @RequestBody CreatePostDTO createPostDTO) {
         communityFacade.createPost(createPostDTO);
         return ResponseResult.okResult();
     }
@@ -36,5 +39,11 @@ public class CommunityController {
                                    @RequestParam(defaultValue = "5") Integer pageSize) {
         PageVO pageVO = communityFacade.postList(pageNum, pageSize);
         return ResponseResult.okResult(pageVO);
+    }
+
+    @GetMapping("/postDetail/{id}")
+    public ResponseResult postDetail(@PathVariable Long id) {
+        PostViewVO postViewVO = communityFacade.postDetail(id);
+        return ResponseResult.okResult(postViewVO);
     }
 }

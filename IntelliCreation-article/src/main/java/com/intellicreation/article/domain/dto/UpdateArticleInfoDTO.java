@@ -13,10 +13,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddArticleDTO {
+public class UpdateArticleInfoDTO {
+
+    private Long id;
 
     private String title;
 
+    @ApiModelProperty(value = "文章摘要")
     private String summary;
 
     @ApiModelProperty(value = "缩略图")

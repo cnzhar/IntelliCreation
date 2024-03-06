@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author za
@@ -13,13 +13,11 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticleTextVO {
+public class MineArticleListVO {
 
     private Long id;
 
     private String title;
-
-    private Long authorId;
 
     @ApiModelProperty(value = "文章摘要")
     private String summary;
@@ -27,24 +25,17 @@ public class ArticleTextVO {
     @ApiModelProperty(value = "缩略图")
     private String thumbnail;
 
-    private String content;
+    @ApiModelProperty(value = "所属分类id")
+    private Long category1Id;
+
+    @ApiModelProperty(value = "所属分类名称")
+    private String category1Name;
 
     @ApiModelProperty(value = "点赞数")
     private Long likeCount;
 
-    @ApiModelProperty(value = "阅读量")
+    @ApiModelProperty(value = "访问量")
     private Long viewCount;
 
-    /**
-     * 所属分类id
-     */
-    private Long category1Id;
-
-    /**
-     * 所属分类名
-     */
-    private String category1Name;
-
-    private Date createTime;
-
+    private LocalDateTime gmtCreate;
 }

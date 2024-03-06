@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 /**
@@ -30,6 +31,7 @@ public class AddCommentDTO {
     /**
      * 评论内容
      */
+    @NotEmpty(message = "评论内容不能为空")
     private String content;
 
     /**

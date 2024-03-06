@@ -3,6 +3,7 @@ package com.intellicreation.article.service;
 import com.intellicreation.article.domain.dto.PostRatingDTO;
 import com.intellicreation.article.domain.entity.AmsRatingDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.intellicreation.common.vo.PageVO;
 
 /**
  * <p>

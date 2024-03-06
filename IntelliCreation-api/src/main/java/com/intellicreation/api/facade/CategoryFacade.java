@@ -1,6 +1,6 @@
 package com.intellicreation.api.facade;
 
-import com.intellicreation.article.domain.vo.CategoryVO;
+import com.intellicreation.article.domain.vo.CategoryItemVO;
 
 import java.util.List;
 
@@ -17,5 +17,5 @@ public interface CategoryFacade {
      *
      * @return
      */
-    List<CategoryVO> getCategoryList();
+    List<CategoryItemVO> getCategoryList();
 }

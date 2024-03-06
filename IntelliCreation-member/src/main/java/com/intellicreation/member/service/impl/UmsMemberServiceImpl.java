@@ -4,11 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.intellicreation.common.constant.SystemConstants;
 import com.intellicreation.common.vo.PageVO;
-import com.intellicreation.member.domain.dto.AddMemberDTO;
-import com.intellicreation.member.domain.dto.MemberQueryParamDTO;
-import com.intellicreation.member.domain.dto.RegisterMemberDTO;
-import com.intellicreation.member.domain.dto.UpdateMemberInfoDTO;
-import com.intellicreation.member.domain.vo.MemberInfoVO;
+import com.intellicreation.member.domain.dto.*;
+import com.intellicreation.member.domain.vo.*;
 import com.intellicreation.member.mapper.UmsMemberMapper;
 import com.intellicreation.common.enumtype.AppHttpCodeEnums;
 import com.intellicreation.common.exception.SystemException;
@@ -125,6 +122,91 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         page(page, lambdaQueryWrapper);
         // 封装数据返回
         return new PageVO(page.getRecords(), page.getTotal());
+    }
+
+    @Override
+    public HeaderInfoVO headerInfo(Long memberId) {
+        LambdaQueryWrapper<UmsMemberDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(UmsMemberDO::getNickname, UmsMemberDO::getAvatar, UmsMemberDO::getPersonalizedSignature)
+                .eq(UmsMemberDO::getId, memberId);
+        UmsMemberDO umsMemberDO = getOne(lambdaQueryWrapper);
+        return BeanCopyUtils.copyBean(umsMemberDO, HeaderInfoVO.class);
+    }
+
+    @Override
+    public ReadMineCardInfoVO readMineCardInfo(Long memberId) {
+        LambdaQueryWrapper<UmsMemberDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(UmsMemberDO::getNickname, UmsMemberDO::getAvatar, UmsMemberDO::getArticleCount,
+                        UmsMemberDO::getRatingCount, UmsMemberDO::getExp)
+                .eq(UmsMemberDO::getId, memberId);
+        UmsMemberDO umsMemberDO = getOne(lambdaQueryWrapper);
+        return BeanCopyUtils.copyBean(umsMemberDO, ReadMineCardInfoVO.class);
+    }
+
+    @Override
+    public CommunityMineCardInfoVO communityMineCardInfo(Long memberId) {
+        LambdaQueryWrapper<UmsMemberDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(UmsMemberDO::getNickname, UmsMemberDO::getAvatar, UmsMemberDO::getPostCount,
+                        UmsMemberDO::getPostCommentCount, UmsMemberDO::getExp)
+                .eq(UmsMemberDO::getId, memberId);
+        UmsMemberDO umsMemberDO = getOne(lambdaQueryWrapper);
+        return BeanCopyUtils.copyBean(umsMemberDO, CommunityMineCardInfoVO.class);
+    }
+
+    @Override
+    public MineBasicInfoVO mineBasicInfo(Long memberId) {
+        LambdaQueryWrapper<UmsMemberDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(UmsMemberDO::getUid, UmsMemberDO::getEmail, UmsMemberDO::getEmailStatus,
+                        UmsMemberDO::getPhoneNumber, UmsMemberDO::getFullName, UmsMemberDO::getGender,
+                        UmsMemberDO::getBirthday, UmsMemberDO::getExp, UmsMemberDO::getLocationId,
+                        UmsMemberDO::getJob, UmsMemberDO::getCompany, UmsMemberDO::getQqNumber)
+                .eq(UmsMemberDO::getId, memberId);
+        UmsMemberDO umsMemberDO = getOne(lambdaQueryWrapper);
+        return BeanCopyUtils.copyBean(umsMemberDO, MineBasicInfoVO.class);
+    }
+
+    @Override
+    public MineEditInfoVO mineEditInfo(Long memberId) {
+        LambdaQueryWrapper<UmsMemberDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(UmsMemberDO::getAvatar)
+                .eq(UmsMemberDO::getId, memberId);
+        UmsMemberDO umsMemberDO = getOne(lambdaQueryWrapper);
+        return BeanCopyUtils.copyBean(umsMemberDO, MineEditInfoVO.class);
+    }
+
+    @Override
+    public void updateMineInfo(UpdateMineInfoDTO updateMineInfoDTO) {
+        UmsMemberDO umsMemberDO = BeanCopyUtils.copyBean(updateMineInfoDTO, UmsMemberDO.class);
+        updateById(umsMemberDO);
+    }
+
+    @Override
+    public String getNicknameById(Long id) {
+        LambdaQueryWrapper<UmsMemberDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(UmsMemberDO::getNickname)
+                .eq(UmsMemberDO::getId, id);
+        UmsMemberDO umsMemberDO = getOne(lambdaQueryWrapper);
+        return umsMemberDO.getNickname();
+    }
+
+    @Override
+    public String getAvatarById(Long id) {
+        LambdaQueryWrapper<UmsMemberDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper
+                .select(UmsMemberDO::getAvatar)
+                .eq(UmsMemberDO::getId, id);
+        UmsMemberDO umsMemberDO = getOne(lambdaQueryWrapper);
+        if (umsMemberDO != null) {
+            return umsMemberDO.getAvatar();
+        } else {
+            return "";
+        }
     }
 
     /**

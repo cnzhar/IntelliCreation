@@ -3,12 +3,9 @@ package com.intellicreation.member.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.intellicreation.common.ResponseResult;
 import com.intellicreation.common.vo.PageVO;
-import com.intellicreation.member.domain.dto.AddMemberDTO;
-import com.intellicreation.member.domain.dto.MemberQueryParamDTO;
-import com.intellicreation.member.domain.dto.RegisterMemberDTO;
-import com.intellicreation.member.domain.dto.UpdateMemberInfoDTO;
+import com.intellicreation.member.domain.dto.*;
 import com.intellicreation.member.domain.entity.UmsMemberDO;
-import com.intellicreation.member.domain.vo.MemberInfoVO;
+import com.intellicreation.member.domain.vo.*;
 
 import java.util.List;
 
@@ -70,4 +67,68 @@ public interface UmsMemberService extends IService<UmsMemberDO> {
      * @return
      */
     PageVO getMemberListByIds(Integer pageNum, Integer pageSize, List<Long> idList);
+
+    /**
+     * 个人信息页顶部信息
+     *
+     * @param memberId
+     * @return
+     */
+    HeaderInfoVO headerInfo(Long memberId);
+
+    /**
+     * 获取阅读页面“我的”卡片信息
+     *
+     * @param memberId
+     * @return
+     */
+    ReadMineCardInfoVO readMineCardInfo(Long memberId);
+
+    /**
+     * 获取社区页面“我的”卡片信息
+     *
+     * @param memberId
+     * @return
+     */
+    CommunityMineCardInfoVO communityMineCardInfo(Long memberId);
+
+    /**
+     * 个人基础信息
+     *
+     * @param memberId
+     * @return
+     */
+    MineBasicInfoVO mineBasicInfo(Long memberId);
+
+    /**
+     * 修改个人信息页面，需要先获取信息
+     *
+     * @param memberId
+     * @return
+     */
+    MineEditInfoVO mineEditInfo(Long memberId);
+
+    // todo 要不要把所有更新接口整合，去掉service层，facade层copybean，然后update
+
+    /**
+     * 更新个人信息
+     * @param updateMineInfoDTO
+     */
+    void updateMineInfo(UpdateMineInfoDTO updateMineInfoDTO);
+
+    /**
+     * 根据用户id获取用户昵称
+     *
+     * @param id
+     * @return
+     */
+    String getNicknameById(Long id);
+
+    /**
+     * 根据id获取用户头像
+     *
+     * @param id
+     * @return
+     */
+    String getAvatarById(Long id);
 }

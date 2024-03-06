@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.intellicreation.article.domain.dto.AddArticleDTO;
-import com.intellicreation.article.domain.dto.PostRatingDTO;
+import com.intellicreation.article.domain.dto.UpdateArticleInfoDTO;
 import com.intellicreation.article.domain.entity.AmsArticleDO;
-import com.intellicreation.article.domain.entity.AmsRatingDO;
 import com.intellicreation.article.domain.vo.ArticleDetailVO;
 import com.intellicreation.article.domain.vo.ArticleQueryParamDTO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
+import com.intellicreation.article.domain.vo.UpdateArticleInfoVO;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.util.RedisCache;
 import com.intellicreation.common.constant.SystemConstants;
@@ -63,9 +63,16 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
     }
 
     @Override
-    public void addArticle(AddArticleDTO addArticleDTO) {
+    public Long addArticle(AddArticleDTO addArticleDTO) {
         AmsArticleDO amsArticleDO = BeanCopyUtils.copyBean(addArticleDTO, AmsArticleDO.class);
         save(amsArticleDO);
+        return amsArticleDO.getId();
+    }
+
+    @Override
+    public void updateArticle(UpdateArticleInfoDTO updateArticleInfoDTO) {
+        AmsArticleDO amsArticleDO = BeanCopyUtils.copyBean(updateArticleInfoDTO, AmsArticleDO.class);
+        updateById(amsArticleDO);
     }
 
     @Override
@@ -89,5 +96,11 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
     public ArticleDetailVO getArticleDetail(Long id) {
         AmsArticleDO amsArticleDO = getById(id);
         return BeanCopyUtils.copyBean(amsArticleDO, ArticleDetailVO.class);
+    }
+
+    @Override
+    public boolean isAuthor(Long memberId, Long articleId) {
+        AmsArticleDO amsArticleDO = getById(articleId);
+        return amsArticleDO.getCreateBy().equals(memberId);
     }
 }

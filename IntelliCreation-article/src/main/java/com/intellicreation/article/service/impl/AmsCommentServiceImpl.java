@@ -23,10 +23,6 @@ public class AmsCommentServiceImpl extends ServiceImpl<AmsCommentMapper, AmsComm
 
     @Override
     public void addComment(AmsCommentDO comment) {
-        // 评论内容不能为空
-        if(!StringUtils.hasText(comment.getContent())){
-            throw new SystemException(AppHttpCodeEnums.CONTENT_NOT_NULL);
-        }
         save(comment);
     }
 }

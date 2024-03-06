@@ -67,6 +67,18 @@ public class UmsMemberDO implements Serializable {
     @ApiModelProperty(value = "账号状态（0正常 1停用）")
     private String status;
 
+    @ApiModelProperty(value = "文章数量")
+    private Long articleCount;
+
+    @ApiModelProperty(value = "文章评价数量")
+    private Long ratingCount;
+
+    @ApiModelProperty(value = "帖子数量")
+    private Long postCount;
+
+    @ApiModelProperty(value = "帖子评论数量")
+    private Long postCommentCount;
+
     @ApiModelProperty(value = "经验")
     private Integer exp;
 

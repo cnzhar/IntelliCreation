@@ -4,14 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.intellicreation.article.domain.dto.CreatePostDTO;
 import com.intellicreation.article.domain.entity.AmsPostDO;
+import com.intellicreation.article.domain.vo.PostViewVO;
 import com.intellicreation.article.mapper.AmsPostMapper;
 import com.intellicreation.article.service.AmsPostService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.vo.PageVO;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * <p>
@@ -35,7 +34,7 @@ public class AmsPostServiceImpl extends ServiceImpl<AmsPostMapper, AmsPostDO> im
         // 查询条件
         LambdaQueryWrapper<AmsPostDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper
-                .select(AmsPostDO::getContent, AmsPostDO::getCreateBy);
+                .select(AmsPostDO::getId, AmsPostDO::getTitle, AmsPostDO::getContent, AmsPostDO::getCreateBy);
         // 分页查询
         Page<AmsPostDO> page = new Page<>(pageNum, pageSize);
         page(page, lambdaQueryWrapper);

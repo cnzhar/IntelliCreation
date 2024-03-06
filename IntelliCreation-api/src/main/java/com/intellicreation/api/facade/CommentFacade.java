@@ -12,12 +12,12 @@ public interface CommentFacade {
     /**
      * 获取评论列表
      *
-     * @param articleId
      * @param pageNum
      * @param pageSize
+     * @param articleId
      * @return ResponseResult
      */
-    PageVO commentList(Long articleId, Integer pageNum, Integer pageSize);
+    PageVO commentList(Integer pageNum, Integer pageSize, Long articleId);
 
     /**
      * 添加一条评论

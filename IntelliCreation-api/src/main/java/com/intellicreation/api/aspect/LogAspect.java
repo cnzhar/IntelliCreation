@@ -113,11 +113,11 @@ public class LogAspect {
     }
 
     private void handleAfter(Object ret) {
+        umsOperationLogDO.setStatus(SystemConstants.STATUS_SUCCESS);
         // 出参
         if (systemLog.isSaveResponseData()) {
             String responseDate = JSON.toJSONString(ret);
             log.info("Response       : {}", responseDate);
-            umsOperationLogDO.setStatus(SystemConstants.STATUS_SUCCESS);
             umsOperationLogDO.setResponseData(responseDate);
         }
 

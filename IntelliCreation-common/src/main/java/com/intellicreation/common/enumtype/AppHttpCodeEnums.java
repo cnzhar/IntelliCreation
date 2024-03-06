@@ -26,6 +26,11 @@ public enum AppHttpCodeEnums {
     NO_OPERATOR_AUTH(403, "无权限操作"),
 
     /**
+     * 重复点赞
+     */
+    DUPLICATE_LIKE(409, "重复点赞"),
+
+    /**
      * 出现错误
      */
     SYSTEM_ERROR(500, "服务出现错误"),
@@ -51,6 +56,11 @@ public enum AppHttpCodeEnums {
     REQUIRE_USERNAME(504, "必须填写用户名"),
 
     /**
+     * 用户名或密码错误
+     */
+    LOGIN_ERROR(505, "用户名或密码错误"),
+
+    /**
      * 评论内容不能为空
      */
     CONTENT_NOT_NULL(506, "评论内容不能为空"),
@@ -61,9 +71,14 @@ public enum AppHttpCodeEnums {
     FILE_TYPE_ERROR(507, "文件类型错误，请上传png文件"),
 
     /**
+     * 图片不能为空
+     */
+    IMAGE_NOT_NULL(508, "图片不能为空"),
+
+    /**
      * 用户名不能为空
      */
-    USERNAME_NOT_NULL(508, "用户名不能为空"),
+    USERNAME_NOT_NULL(509, "用户名不能为空"),
 
     /**
      * 昵称不能为空
@@ -83,12 +98,7 @@ public enum AppHttpCodeEnums {
     /**
      * 昵称已存在
      */
-    NICKNAME_EXIST(512, "昵称已存在"),
-
-    /**
-     * 用户名或密码错误
-     */
-    LOGIN_ERROR(505, "用户名或密码错误");
+    NICKNAME_EXIST(512, "昵称已存在");
 
     int code;
     String msg;

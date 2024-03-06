@@ -4,12 +4,9 @@ import com.intellicreation.article.domain.dto.AddCategoryDTO;
 import com.intellicreation.article.domain.dto.CategoryQueryParamDTO;
 import com.intellicreation.article.domain.dto.UpdateCategoryDTO;
 import com.intellicreation.article.domain.vo.CategoryDetailVO;
-import com.intellicreation.article.domain.vo.CategoryVO;
 import com.intellicreation.article.domain.entity.AmsCategoryDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.intellicreation.common.vo.PageVO;
-
-import java.util.List;
 
 /**
  * <p>

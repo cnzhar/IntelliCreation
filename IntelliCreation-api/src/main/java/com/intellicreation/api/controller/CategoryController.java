@@ -2,9 +2,8 @@ package com.intellicreation.api.controller;
 
 
 import com.intellicreation.api.facade.CategoryFacade;
-import com.intellicreation.article.domain.vo.CategoryVO;
+import com.intellicreation.article.domain.vo.CategoryItemVO;
 import com.intellicreation.common.ResponseResult;
-import com.intellicreation.article.service.AmsCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +28,9 @@ public class CategoryController {
     private CategoryFacade categoryFacade;
 
     @GetMapping("/getCategoryList")
-    public ResponseResult getCategoryList(){
-        List<CategoryVO> categoryVOList = categoryFacade.getCategoryList();
-        return ResponseResult.okResult(categoryVOList);
+    public ResponseResult getCategoryList() {
+        List<CategoryItemVO> categoryItemVOList = categoryFacade.getCategoryList();
+        return ResponseResult.okResult(categoryItemVOList);
     }
 
 }

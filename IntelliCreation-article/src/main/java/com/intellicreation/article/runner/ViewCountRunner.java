@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * 启动时，将浏览量读入Redis
  * @author za
  */
 @Component

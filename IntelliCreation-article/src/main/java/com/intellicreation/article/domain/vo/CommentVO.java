@@ -46,9 +46,11 @@ public class CommentVO {
 
     private Long createBy;
 
+    private String avatar;
+
     private LocalDateTime gmtCreate;
 
-    private String nickName;
+    private String nickname;
 
     private List<CommentVO> children;
 }

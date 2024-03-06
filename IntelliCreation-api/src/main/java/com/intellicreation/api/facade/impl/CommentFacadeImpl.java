@@ -9,6 +9,7 @@ import com.intellicreation.article.service.AmsCommentService;
 import com.intellicreation.common.constant.SystemConstants;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.vo.PageVO;
+import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.service.UmsMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,8 @@ public class CommentFacadeImpl implements CommentFacade {
     private AmsCommentService amsCommentService;
 
     @Override
-    public PageVO commentList(Long articleId, Integer pageNum, Integer pageSize) {
+    public PageVO commentList(Integer pageNum, Integer pageSize, Long articleId) {
+        // todo 部分业务逻辑有没有必要下放到service
         // 查询对应文章的根评论
         LambdaQueryWrapper<AmsCommentDO> queryWrapper = new LambdaQueryWrapper<>();
         // 对articleId进行判断
@@ -59,9 +61,13 @@ public class CommentFacadeImpl implements CommentFacade {
         List<CommentVO> commentVOs = BeanCopyUtils.copyBeanList(list, CommentVO.class);
         // 遍历vo集合
         for (CommentVO commentVO : commentVOs) {
+            UmsMemberDO umsMemberDO = umsMemberService.getById(commentVO.getCreateBy());
             // 通过CreatBy查询用户的昵称并赋值
-            String nickName = umsMemberService.getById(commentVO.getCreateBy()).getNickname();
-            commentVO.setNickName(nickName);
+            String nickName = umsMemberDO.getNickname();
+            commentVO.setNickname(nickName);
+            // 用户头像
+            String avatar = umsMemberDO.getAvatar();
+            commentVO.setAvatar(avatar);
             // 通过toCommentMemberId查询用户的昵称并赋值
             // 如果是根评论，toCommentMemberId不为“不对任何用户进行回复”才进行查询
             if (commentVO.getToCommentMemberId() != SystemConstants.COMMENT_TO_NULL) {

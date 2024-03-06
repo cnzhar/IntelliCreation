@@ -3,6 +3,7 @@ package com.intellicreation.article.service;
 import com.intellicreation.article.domain.dto.CreatePostDTO;
 import com.intellicreation.article.domain.entity.AmsPostDO;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.intellicreation.article.domain.vo.PostViewVO;
 import com.intellicreation.common.vo.PageVO;
 
 /**

@@ -30,6 +30,13 @@ spring:
 #      max-request-size: 5MB
     freemarker:
       cache: false
+  tencent:
+    secretId: AKIDTm2OdhfZSBkCYpxBIKLF3k8TiprlbP6h
+    secretKey: b5Uq9Qet4CMVbfeXGnGveI5xphZhsz3L
+    region: ap-shanghai
+    bucketName: intellicreation-1317922175
+    path: https://intellicreation-1317922175.cos.ap-shanghai.myqcloud.com
+    prefix: intellicreation
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
   configuration:

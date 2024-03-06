@@ -5,10 +5,15 @@ import com.intellicreation.api.annotation.SystemLog;
 import com.intellicreation.api.facade.ArticleFacade;
 import com.intellicreation.article.domain.dto.AddArticleDTO;
 import com.intellicreation.article.domain.dto.PostRatingDTO;
-import com.intellicreation.article.domain.vo.ArticleTextVO;
+import com.intellicreation.article.domain.dto.UpdateArticleInfoDTO;
+import com.intellicreation.article.domain.vo.ArticleViewVO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
+import com.intellicreation.article.domain.vo.UpdateArticleInfoVO;
+import com.intellicreation.article.service.AmsArticleService;
 import com.intellicreation.common.ResponseResult;
 import com.intellicreation.common.constant.SystemConstants;
+import com.intellicreation.common.enumtype.AppHttpCodeEnums;
+import com.intellicreation.common.exception.SystemException;
 import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.util.SecurityUtils;
 import io.swagger.annotations.Api;
@@ -35,6 +40,9 @@ public class ArticleController {
     @Autowired
     private ArticleFacade articleFacade;
 
+    @Autowired
+    private AmsArticleService amsArticleService;
+
     @ApiOperation(value = "获取热门文章")
     @SystemLog(businessName = "获取热门文章", operationType = SystemConstants.USER_TYPE)
     @GetMapping("/hotArticleList")
@@ -45,23 +53,43 @@ public class ArticleController {
 
     @ApiOperation(value = "查询文章列表", notes = "获取文章列表")
     @GetMapping("/articleList")
-    public ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId) {
-        PageVO pageVO = articleFacade.articleList(pageNum, pageSize, categoryId);
+    public ResponseResult articleList(@RequestParam(defaultValue = "1") Integer pageNum,
+                                      @RequestParam(defaultValue = "5") Integer pageSize,
+                                      Long category1Id, Long category2Id) {
+        PageVO pageVO = articleFacade.articleList(pageNum, pageSize, category1Id, category2Id);
         return ResponseResult.okResult(pageVO);
     }
 
     // todo 考虑要不要加上防止刷浏览量, 接口防刷，注解
-    // todo 要不要整合到查文章详情的接口
-    @PutMapping("/updateViewCount/{id}")
-    public ResponseResult updateViewCount(@PathVariable("id") Long id) {
-        articleFacade.updateViewCount(id);
-        return ResponseResult.okResult();
-    }
-
     @GetMapping("/{id}")
     public ResponseResult getArticleDetail(@PathVariable("id") Long id) {
-        ArticleTextVO articleTextVO = articleFacade.getArticleDetail(id);
-        return ResponseResult.okResult(articleTextVO);
+        ArticleViewVO articleViewVO = articleFacade.getArticleDetail(id);
+        return ResponseResult.okResult(articleViewVO);
+    }
+
+    @GetMapping("/availableCategory1")
+    public ResponseResult availableCategory1(@RequestParam(defaultValue = "1") Integer pageNum,
+                                             @RequestParam(defaultValue = "5") Integer pageSize,
+                                             String name) {
+        PageVO pageVO = articleFacade.availableCategory1(pageNum, pageSize, name);
+        return ResponseResult.okResult(pageVO);
+    }
+
+    @GetMapping("/availableCategory2")
+    public ResponseResult availableCategory2(@RequestParam(defaultValue = "1") Integer pageNum,
+                                             @RequestParam(defaultValue = "5") Integer pageSize,
+                                             String name,
+                                             Long parent) {
+        PageVO pageVO = articleFacade.availableCategory2(pageNum, pageSize, name, parent);
+        return ResponseResult.okResult(pageVO);
+    }
+
+    @GetMapping("/availableTag")
+    public ResponseResult availableTag(@RequestParam(defaultValue = "1") Integer pageNum,
+                                       @RequestParam(defaultValue = "5") Integer pageSize,
+                                       String name) {
+        PageVO pageVO = articleFacade.availableTag(pageNum, pageSize, name);
+        return ResponseResult.okResult(pageVO);
     }
 
     @PostMapping("/addArticle")
@@ -70,9 +98,41 @@ public class ArticleController {
         return ResponseResult.okResult();
     }
 
+    @GetMapping("/updateArticleInfo/{id}")
+    public ResponseResult updateArticleInfo(@PathVariable("id") Long articleId) {
+        // 判断是否为文章的作者
+        Long memberId = SecurityUtils.getMemberId();
+        if (!amsArticleService.isAuthor(memberId, articleId)) {
+            throw new SystemException(AppHttpCodeEnums.NO_OPERATOR_AUTH);
+        }
+        UpdateArticleInfoVO updateArticleInfoVO = articleFacade.updateArticleInfo(articleId);
+        return ResponseResult.okResult(updateArticleInfoVO);
+    }
+
+    @PostMapping("/updateArticle")
+    public ResponseResult updateArticle(@RequestBody UpdateArticleInfoDTO updateArticleInfoDTO) {
+        // 判断是否为文章的作者
+        Long memberId = SecurityUtils.getMemberId();
+        Long articleId = updateArticleInfoDTO.getId();
+        if (!amsArticleService.isAuthor(memberId, articleId)) {
+            throw new SystemException(AppHttpCodeEnums.NO_OPERATOR_AUTH);
+        }
+        articleFacade.updateArticle(updateArticleInfoDTO);
+        return ResponseResult.okResult();
+    }
+
     @PostMapping("postRating")
     public ResponseResult postRating(@Valid @RequestBody PostRatingDTO postRatingDTO) {
         articleFacade.postRating(postRatingDTO);
         return ResponseResult.okResult();
     }
+
+    @GetMapping("/ratingList")
+    public ResponseResult ratingList(@RequestParam(defaultValue = "1") Integer pageNum,
+                                     @RequestParam(defaultValue = "5") Integer pageSize,
+                                     Long articleId) {
+        PageVO pageVO = articleFacade.ratingList(pageNum, pageSize, articleId);
+        return ResponseResult.okResult(pageVO);
+    }
+
 }

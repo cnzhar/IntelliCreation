@@ -4,9 +4,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,12 +15,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
-public class ArticleListVO {
+public class ArticleViewVO {
 
     private Long id;
 
-    @ApiModelProperty(value = "标题")
     private String title;
 
     @ApiModelProperty(value = "文章摘要")
@@ -29,25 +27,34 @@ public class ArticleListVO {
     @ApiModelProperty(value = "缩略图")
     private String thumbnail;
 
-    @ApiModelProperty(value = "所属分类id")
-    private Long category1Id;
-
-    @ApiModelProperty(value = "所属分类名称")
-    private String category1Name;
-
-    List<String> tagName;
+    private String content;
 
     @ApiModelProperty(value = "点赞数")
     private Long likeCount;
 
-    @ApiModelProperty(value = "访问量")
+    @ApiModelProperty(value = "阅读量")
     private Long viewCount;
+
+    /**
+     * 所属分类id
+     */
+    private Long category1Id;
+
+    /**
+     * 所属分类名
+     */
+    private String category1Name;
+
+    List<String> tagName;
 
     private Long createBy;
 
-    private String nickname;
-
     private String avatar;
 
+    private String nickname;
+
     private LocalDateTime gmtCreate;
+
+    private LocalDateTime gmtModified;
+
 }
