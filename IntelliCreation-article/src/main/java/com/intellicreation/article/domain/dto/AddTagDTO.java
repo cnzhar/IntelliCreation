@@ -17,5 +17,5 @@ public class AddTagDTO {
     @NotEmpty(message = "标签名不能为空")
     private String name;
 
-    private String remark;
+    private String description;
 }

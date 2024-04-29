@@ -27,8 +27,8 @@ public class ViewCountRunner implements CommandLineRunner {
     private RedisCache redisCache;
 
     @Override
-    public void run(String... args) throws Exception {
-        // 查询博客信息  id  viewCount
+    public void run(String... args) {
+        // 查询文章信息  id  viewCount
         LambdaQueryWrapper<AmsArticleDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.select(AmsArticleDO::getId, AmsArticleDO::getViewCount);
         List<AmsArticleDO> articles = amsArticleMapper.selectList(lambdaQueryWrapper);

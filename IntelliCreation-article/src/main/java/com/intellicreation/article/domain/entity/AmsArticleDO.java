@@ -89,8 +89,9 @@ public class AmsArticleDO implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime gmtModified;
 
-    public AmsArticleDO(Long id, long viewCount) {
+    public AmsArticleDO(Long id, Long viewCount, Long likeCount) {
         this.id = id;
         this.viewCount = viewCount;
+        this.likeCount = likeCount;
     }
 }

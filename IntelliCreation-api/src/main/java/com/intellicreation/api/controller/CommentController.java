@@ -41,10 +41,8 @@ public class CommentController {
     }
 
     @PostMapping("/addComment")
-    public ResponseResult addComment(@RequestBody AddCommentDTO addCommentDTO){
-        // todo 直接这样copybean合适吗
-        AmsCommentDO comment = BeanCopyUtils.copyBean(addCommentDTO, AmsCommentDO.class);
-        commentFacade.addComment(comment);
+    public ResponseResult addComment(@RequestBody AddCommentDTO addCommentDTO) throws Exception {
+        commentFacade.addComment(addCommentDTO);
         return ResponseResult.okResult();
     }
 

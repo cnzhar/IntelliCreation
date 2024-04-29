@@ -3,6 +3,7 @@ package com.intellicreation.article.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.intellicreation.article.ai.ClassifyUtil;
 import com.intellicreation.article.domain.dto.AddArticleDTO;
 import com.intellicreation.article.domain.dto.UpdateArticleInfoDTO;
 import com.intellicreation.article.domain.entity.AmsArticleDO;
@@ -10,11 +11,14 @@ import com.intellicreation.article.domain.vo.ArticleDetailVO;
 import com.intellicreation.article.domain.vo.ArticleQueryParamDTO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
 import com.intellicreation.article.domain.vo.UpdateArticleInfoVO;
+import com.intellicreation.common.enumtype.AppHttpCodeEnums;
+import com.intellicreation.common.exception.SystemException;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.util.RedisCache;
 import com.intellicreation.common.constant.SystemConstants;
 import com.intellicreation.article.mapper.AmsArticleMapper;
 import com.intellicreation.article.service.AmsArticleService;
+import com.intellicreation.common.util.SensitiveUtil;
 import com.intellicreation.common.vo.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +53,7 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
                 // 按照浏览量进行排序AmsArticle
                 .orderByDesc(AmsArticleDO::getViewCount);
         // 最多只查询十条
-        Page<AmsArticleDO> page = new Page(1, 10);
+        Page<AmsArticleDO> page = new Page(1, 5);
         page(page, lambdaQueryWrapper);
         List<AmsArticleDO> articleList = page.getRecords();
         // bean拷贝
@@ -63,7 +67,28 @@ public class AmsArticleServiceImpl extends ServiceImpl<AmsArticleMapper, AmsArti
     }
 
     @Override
-    public Long addArticle(AddArticleDTO addArticleDTO) {
+    public void updateLikeCount(Long articleId) {
+        // 更新redis中对应 id的点赞量
+        redisCache.incrementCacheMapValue(SystemConstants.ARTICLE_LIKE_COUNT_KEY, articleId.toString(), 1);
+    }
+
+    @Override
+    public void decreaseLikeCount(Long articleId) {
+        Integer likeCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_LIKE_COUNT_KEY, articleId.toString());
+        if (likeCount > 0) {
+            // 减少redis中对应 id的点赞量
+            redisCache.incrementCacheMapValue(SystemConstants.ARTICLE_LIKE_COUNT_KEY, articleId.toString(), -1);
+        }
+    }
+
+    @Override
+    public Long addArticle(AddArticleDTO addArticleDTO) throws Exception {
+        if (SensitiveUtil.isContainsIllegalWord(addArticleDTO.getContent())) {
+            throw new SystemException(AppHttpCodeEnums.CONTAIN_ILLEGALWORD);
+        }
+        if (ClassifyUtil.isSensitive(addArticleDTO.getContent())) {
+            throw new SystemException(AppHttpCodeEnums.CONTAIN_ILLEGALWORD);
+        }
         AmsArticleDO amsArticleDO = BeanCopyUtils.copyBean(addArticleDTO, AmsArticleDO.class);
         save(amsArticleDO);
         return amsArticleDO.getId();

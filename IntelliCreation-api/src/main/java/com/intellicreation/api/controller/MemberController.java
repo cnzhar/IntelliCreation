@@ -2,6 +2,7 @@ package com.intellicreation.api.controller;
 
 import com.intellicreation.api.facade.MemberFacade;
 import com.intellicreation.common.ResponseResult;
+import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.domain.dto.LoginMemberDTO;
 import com.intellicreation.member.domain.vo.AdminInfoVO;
 import com.intellicreation.member.domain.vo.MenuItemVO;
@@ -12,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +43,18 @@ public class MemberController {
     public ResponseResult<AdminInfoVO> getInfo() {
         AdminInfoVO adminInfoVO = memberFacade.getInfo();
         return ResponseResult.okResult(adminInfoVO);
+    }
+
+    @GetMapping("isAdmin")
+    public ResponseResult isAdmin() {
+        Long id = SecurityUtils.getMemberId();
+        Map<String, Object> result = new HashMap<>();
+        if (id != 1L && id != 2L) {
+            result.put("isAdmin", false);
+        } else {
+            result.put("isAdmin", true);
+        }
+        return ResponseResult.okResult(result);
     }
 
     @PreAuthorize("hasAuthority('system:test:list1')")

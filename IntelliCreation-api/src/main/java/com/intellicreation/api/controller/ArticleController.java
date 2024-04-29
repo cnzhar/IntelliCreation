@@ -8,6 +8,7 @@ import com.intellicreation.article.domain.dto.PostRatingDTO;
 import com.intellicreation.article.domain.dto.UpdateArticleInfoDTO;
 import com.intellicreation.article.domain.vo.ArticleViewVO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
+import com.intellicreation.article.domain.vo.RatingViewVO;
 import com.intellicreation.article.domain.vo.UpdateArticleInfoVO;
 import com.intellicreation.article.service.AmsArticleService;
 import com.intellicreation.common.ResponseResult;
@@ -22,7 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -93,7 +96,7 @@ public class ArticleController {
     }
 
     @PostMapping("/addArticle")
-    public ResponseResult addArticle(@RequestBody AddArticleDTO addArticleDTO) {
+    public ResponseResult addArticle(@RequestBody AddArticleDTO addArticleDTO) throws Exception {
         articleFacade.addArticle(addArticleDTO);
         return ResponseResult.okResult();
     }
@@ -121,8 +124,20 @@ public class ArticleController {
         return ResponseResult.okResult();
     }
 
+    @PostMapping("/likeArticle/{id}")
+    public ResponseResult likeArticle(@PathVariable("id") Long articleId) {
+        articleFacade.likeArticle(articleId);
+        return ResponseResult.okResult();
+    }
+
+    @DeleteMapping("/unlikeArticle/{id}")
+    public ResponseResult unlikeArticle(@PathVariable("id") Long articleId) {
+        articleFacade.unlikeArticle(articleId);
+        return ResponseResult.okResult();
+    }
+
     @PostMapping("postRating")
-    public ResponseResult postRating(@Valid @RequestBody PostRatingDTO postRatingDTO) {
+    public ResponseResult postRating(@Valid @RequestBody PostRatingDTO postRatingDTO) throws Exception {
         articleFacade.postRating(postRatingDTO);
         return ResponseResult.okResult();
     }
@@ -133,6 +148,12 @@ public class ArticleController {
                                      Long articleId) {
         PageVO pageVO = articleFacade.ratingList(pageNum, pageSize, articleId);
         return ResponseResult.okResult(pageVO);
+    }
+
+    @GetMapping("/ratingDetail/{id}")
+    public ResponseResult ratingDetail(@PathVariable("id") Long id) {
+        RatingViewVO ratingViewVO = articleFacade.ratingDetail(id);
+        return ResponseResult.okResult(ratingViewVO);
     }
 
 }

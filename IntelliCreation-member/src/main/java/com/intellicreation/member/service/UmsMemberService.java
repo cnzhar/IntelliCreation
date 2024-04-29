@@ -131,4 +131,12 @@ public interface UmsMemberService extends IService<UmsMemberDO> {
      * @return
      */
     String getAvatarById(Long id);
+
+    void addArticleCount(Long id);
+
+    void addRatingCount(Long id);
+
+    void addPostCount(Long id);
+
+    void addCommentCount(Long id);
 }

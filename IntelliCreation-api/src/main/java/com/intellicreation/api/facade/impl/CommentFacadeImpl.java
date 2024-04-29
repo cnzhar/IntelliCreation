@@ -3,14 +3,19 @@ package com.intellicreation.api.facade.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.intellicreation.api.facade.CommentFacade;
+import com.intellicreation.article.domain.dto.AddCommentDTO;
 import com.intellicreation.article.domain.entity.AmsCommentDO;
 import com.intellicreation.article.domain.vo.CommentVO;
 import com.intellicreation.article.service.AmsCommentService;
 import com.intellicreation.common.constant.SystemConstants;
+import com.intellicreation.common.enumtype.AppHttpCodeEnums;
+import com.intellicreation.common.exception.SystemException;
 import com.intellicreation.common.util.BeanCopyUtils;
+import com.intellicreation.common.util.SensitiveUtil;
 import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.service.UmsMemberService;
+import com.intellicreation.member.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -53,8 +58,10 @@ public class CommentFacadeImpl implements CommentFacade {
     }
 
     @Override
-    public void addComment(AmsCommentDO comment) {
-        amsCommentService.addComment(comment);
+    public void addComment(AddCommentDTO addCommentDTO) throws Exception {
+        amsCommentService.addComment(addCommentDTO);
+        Long id = SecurityUtils.getMemberId();
+        umsMemberService.addCommentCount(id);
     }
 
     private List<CommentVO> toCommentVOList(List<AmsCommentDO> list) {

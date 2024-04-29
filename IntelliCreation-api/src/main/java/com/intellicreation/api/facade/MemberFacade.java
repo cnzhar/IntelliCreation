@@ -1,5 +1,6 @@
 package com.intellicreation.api.facade;
 
+import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.domain.dto.LoginMemberDTO;
 import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.domain.vo.AdminInfoVO;

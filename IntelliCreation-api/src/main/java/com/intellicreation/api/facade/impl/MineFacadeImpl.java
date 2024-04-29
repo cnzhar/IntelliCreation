@@ -6,16 +6,20 @@ import com.intellicreation.api.facade.MineFacade;
 import com.intellicreation.article.domain.entity.AmsArticleDO;
 import com.intellicreation.article.domain.vo.MineArticleListVO;
 import com.intellicreation.article.service.AmsArticleService;
+import com.intellicreation.article.service.AmsArticleTagRelationService;
+import com.intellicreation.article.service.AmsTagService;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.domain.dto.UpdateMineInfoDTO;
 import com.intellicreation.member.domain.entity.UmsMemberDO;
 import com.intellicreation.member.domain.vo.*;
+import com.intellicreation.member.service.UmsMemberLoginLogService;
 import com.intellicreation.member.service.UmsMemberService;
 import com.intellicreation.member.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +33,15 @@ public class MineFacadeImpl implements MineFacade {
 
     @Autowired
     private AmsArticleService amsArticleService;
+
+    @Autowired
+    private AmsTagService amsTagService;
+
+    @Autowired
+    private AmsArticleTagRelationService amsArticleTagRelationService;
+
+    @Autowired
+    private UmsMemberLoginLogService umsMemberLoginLogService;
 
     @Override
     public MineNavInfoVO mineNavInfo() {
@@ -74,8 +87,7 @@ public class MineFacadeImpl implements MineFacade {
     }
 
     @Override
-    public PageVO mineArticle(Integer pageNum, Integer pageSize) {
-        Long memberId = SecurityUtils.getMemberId();
+    public PageVO mineArticle(Integer pageNum, Integer pageSize, Long memberId) {
         // 查询条件
         LambdaQueryWrapper<AmsArticleDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper
@@ -88,6 +100,23 @@ public class MineFacadeImpl implements MineFacade {
         amsArticleService.page(page, lambdaQueryWrapper);
         // 封装查询结果
         List<MineArticleListVO> mineArticleListVOList = BeanCopyUtils.copyBeanList(page.getRecords(), MineArticleListVO.class);
+        mineArticleListVOList
+                // 查询关联的标签
+                .forEach(mineArticleListVO -> {
+                    List<Long> tagIds = amsArticleTagRelationService.getTagByArticleId(mineArticleListVO.getId());
+                    List<String> tagNameList = new ArrayList<>();
+                    for (Long tagId : tagIds) {
+                        String tagName = amsTagService.getById(tagId).getName();
+                        tagNameList.add(tagName);
+                    }
+                    mineArticleListVO.setTagName(tagNameList);
+                });
         return new PageVO(mineArticleListVOList, page.getTotal());
+    }
+
+    @Override
+    public PageVO mineLoginLog(Integer pageNum, Integer pageSize) {
+        Long memberId = SecurityUtils.getMemberId();
+        return umsMemberLoginLogService.getMemberLoginLog(pageNum, pageSize, memberId);
     }
 }

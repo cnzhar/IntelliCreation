@@ -14,5 +14,5 @@ public class UpdateTagDTO {
 
     private String name;
 
-    private String remark;
+    private String description;
 }

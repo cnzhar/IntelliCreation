@@ -3,6 +3,7 @@ package com.intellicreation.api.facade.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.intellicreation.api.facade.MemberFacade;
 import com.intellicreation.common.util.BeanCopyUtils;
+import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.domain.dto.LoginMemberDTO;
 import com.intellicreation.member.domain.dto.MemberDetailsDTO;
 import com.intellicreation.member.domain.entity.UmsMemberDO;

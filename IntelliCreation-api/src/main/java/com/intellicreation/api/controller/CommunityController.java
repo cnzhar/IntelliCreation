@@ -29,7 +29,7 @@ public class CommunityController {
     private CommunityFacade communityFacade;
 
     @PostMapping("/createPost")
-    public ResponseResult createPost(@Valid @RequestBody CreatePostDTO createPostDTO) {
+    public ResponseResult createPost(@Valid @RequestBody CreatePostDTO createPostDTO) throws Exception {
         communityFacade.createPost(createPostDTO);
         return ResponseResult.okResult();
     }

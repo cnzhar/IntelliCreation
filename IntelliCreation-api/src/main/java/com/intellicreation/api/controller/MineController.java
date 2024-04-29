@@ -74,8 +74,9 @@ public class MineController {
 
     @GetMapping("/mineArticle")
     public ResponseResult mineArticle(@RequestParam(defaultValue = "1") Integer pageNum,
-                                      @RequestParam(defaultValue = "5") Integer pageSize) {
-        PageVO pageVO = mineFacade.mineArticle(pageNum, pageSize);
+                                      @RequestParam(defaultValue = "5") Integer pageSize,
+                                      Long memberId) {
+        PageVO pageVO = mineFacade.mineArticle(pageNum, pageSize, memberId);
         return ResponseResult.okResult(pageVO);
     }
 
@@ -103,9 +104,10 @@ public class MineController {
 //        return ResponseResult.okResult();
 //    }
 //
-//    @GetMapping("/loginLog")
-//    public ResponseResult loginLog() {
-//
-//        return ResponseResult.okResult();
-//    }
+    @GetMapping("/mineLoginLog")
+    public ResponseResult mineLoginLog(@RequestParam(defaultValue = "1") Integer pageNum,
+                                            @RequestParam(defaultValue = "5") Integer pageSize) {
+        PageVO pageVO = mineFacade.mineLoginLog(pageNum, pageSize);
+        return ResponseResult.okResult(pageVO);
+    }
 }

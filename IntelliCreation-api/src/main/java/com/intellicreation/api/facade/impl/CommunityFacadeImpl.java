@@ -8,6 +8,7 @@ import com.intellicreation.article.service.AmsPostService;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.service.UmsMemberService;
+import com.intellicreation.member.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +25,10 @@ public class CommunityFacadeImpl implements CommunityFacade {
     private UmsMemberService umsMemberService;
 
     @Override
-    public void createPost(CreatePostDTO createPostDTO) {
+    public void createPost(CreatePostDTO createPostDTO) throws Exception {
         amsPostService.createPost(createPostDTO);
+        Long id = SecurityUtils.getMemberId();
+        umsMemberService.addPostCount(id);
     }
 
     @Override

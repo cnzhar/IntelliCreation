@@ -35,7 +35,9 @@ public class ArticleListVO {
     @ApiModelProperty(value = "所属分类名称")
     private String category1Name;
 
-    List<String> tagName;
+    private List<String> tagName;
+
+    private Boolean isLiked;
 
     @ApiModelProperty(value = "点赞数")
     private Long likeCount;

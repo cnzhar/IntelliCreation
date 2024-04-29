@@ -1,6 +1,7 @@
 package com.intellicreation.common.constant;
 
 /**
+ * 系统常量
  * @author za
  */
 public class SystemConstants {
@@ -19,6 +20,11 @@ public class SystemConstants {
      * 文章浏览量在Redis中的key
      */
     public static final String ARTICLE_VIEW_COUNT_KEY = "article:viewCount";
+
+    /**
+     * 文章点赞量在Redis中的key
+     */
+    public static final String ARTICLE_LIKE_COUNT_KEY = "article:likeCount";
 
     /**
      * 通用状态

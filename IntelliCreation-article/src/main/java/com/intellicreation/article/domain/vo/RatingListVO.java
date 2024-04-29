@@ -15,6 +15,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class RatingListVO {
 
+    private Long id;
+
     private Integer score;
 
     private String text;

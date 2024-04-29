@@ -49,7 +49,8 @@ public class UmsMemberLoginLogServiceImpl extends ServiceImpl<UmsMemberLoginLogM
         LambdaQueryWrapper<UmsMemberLoginLogDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper
                 .select(UmsMemberLoginLogDO::getIp, UmsMemberLoginLogDO::getRegion, UmsMemberLoginLogDO::getUserAgent, UmsMemberLoginLogDO::getGmtCreate)
-                .eq(UmsMemberLoginLogDO::getMemberId, memberId);
+                .eq(UmsMemberLoginLogDO::getMemberId, memberId)
+                .orderByDesc(UmsMemberLoginLogDO::getGmtCreate);
         Page<UmsMemberLoginLogDO> page = new Page<>();
         page.setCurrent(pageNum);
         page.setSize(pageSize);

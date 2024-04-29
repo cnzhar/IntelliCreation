@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author za
@@ -30,6 +31,8 @@ public class MineArticleListVO {
 
     @ApiModelProperty(value = "所属分类名称")
     private String category1Name;
+
+    private List<String> tagName;
 
     @ApiModelProperty(value = "点赞数")
     private Long likeCount;

@@ -31,6 +31,11 @@ public enum AppHttpCodeEnums {
     DUPLICATE_LIKE(409, "重复点赞"),
 
     /**
+     * 尚未点赞
+     */
+    NOT_YET_LIKED(410, "尚未点赞"),
+
+    /**
      * 出现错误
      */
     SYSTEM_ERROR(500, "服务出现错误"),
@@ -98,7 +103,12 @@ public enum AppHttpCodeEnums {
     /**
      * 昵称已存在
      */
-    NICKNAME_EXIST(512, "昵称已存在");
+    NICKNAME_EXIST(512, "昵称已存在"),
+
+    /**
+     * 内容违规
+     */
+    CONTAIN_ILLEGALWORD(513, "内容违规");
 
     int code;
     String msg;

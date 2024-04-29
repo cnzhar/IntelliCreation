@@ -1,6 +1,6 @@
 package com.intellicreation.article.service;
 
-import com.intellicreation.common.ResponseResult;
+import com.intellicreation.article.domain.dto.AddCommentDTO;
 import com.intellicreation.article.domain.entity.AmsCommentDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -17,8 +17,7 @@ public interface AmsCommentService extends IService<AmsCommentDO> {
     /**
      * 添加一条评论
      *
-     * @param comment
-     * @return
+     * @param addCommentDTO
      */
-    void addComment(AmsCommentDO comment);
+    void addComment(AddCommentDTO addCommentDTO) throws Exception;
 }

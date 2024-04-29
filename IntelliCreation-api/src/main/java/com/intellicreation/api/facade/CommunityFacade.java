@@ -14,7 +14,7 @@ public interface CommunityFacade {
      *
      * @param createPostDTO
      */
-    void createPost(CreatePostDTO createPostDTO);
+    void createPost(CreatePostDTO createPostDTO) throws Exception;
 
     /**
      * 获取帖子

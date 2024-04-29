@@ -5,6 +5,7 @@ import com.intellicreation.article.domain.dto.PostRatingDTO;
 import com.intellicreation.article.domain.dto.UpdateArticleInfoDTO;
 import com.intellicreation.article.domain.vo.ArticleViewVO;
 import com.intellicreation.article.domain.vo.HotArticleVO;
+import com.intellicreation.article.domain.vo.RatingViewVO;
 import com.intellicreation.article.domain.vo.UpdateArticleInfoVO;
 import com.intellicreation.common.vo.PageVO;
 
@@ -78,7 +79,7 @@ public interface ArticleFacade {
      *
      * @param addArticleDTO
      */
-    void addArticle(AddArticleDTO addArticleDTO);
+    void addArticle(AddArticleDTO addArticleDTO) throws Exception;
 
     /**
      * 更新文章之前，先获取文章信息
@@ -96,18 +97,41 @@ public interface ArticleFacade {
     void updateArticle(UpdateArticleInfoDTO updateArticleInfoDTO);
 
     /**
+     * 对文章点赞
+     *
+     * @param articleId
+     */
+    void likeArticle(Long articleId);
+
+    /**
+     * 取消对文章点赞
+     *
+     * @param articleId
+     */
+    void unlikeArticle(Long articleId);
+
+    /**
      * 用户发表评价
      *
      * @param postRatingDTO
      */
-    void postRating(PostRatingDTO postRatingDTO);
+    void postRating(PostRatingDTO postRatingDTO) throws Exception;
 
     /**
      * 用户获取评价列表
      *
      * @param pageNum
      * @param pageSize
+     * @param articleId
      * @return
      */
     PageVO ratingList(Integer pageNum, Integer pageSize, Long articleId);
+
+    /**
+     * 评价详情
+     *
+     * @param id
+     * @return
+     */
+    RatingViewVO ratingDetail(Long id);
 }

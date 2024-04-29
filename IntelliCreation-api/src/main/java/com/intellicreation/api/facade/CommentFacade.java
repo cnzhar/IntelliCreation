@@ -1,6 +1,7 @@
 package com.intellicreation.api.facade;
 
 
+import com.intellicreation.article.domain.dto.AddCommentDTO;
 import com.intellicreation.article.domain.entity.AmsCommentDO;
 import com.intellicreation.common.vo.PageVO;
 
@@ -22,8 +23,7 @@ public interface CommentFacade {
     /**
      * 添加一条评论
      *
-     * @param comment
-     * @return
+     * @param addCommentDTO
      */
-    void addComment(AmsCommentDO comment);
+    void addComment(AddCommentDTO addCommentDTO) throws Exception;
 }

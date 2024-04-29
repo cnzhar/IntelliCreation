@@ -38,12 +38,24 @@ public interface AmsArticleService extends IService<AmsArticleDO> {
     void updateViewCount(Long id);
 
     /**
+     * 更新文章点赞量
+     * @param articleId
+     */
+    void updateLikeCount(Long articleId);
+
+    /**
+     * 减少文章点赞量
+     * @param articleId
+     */
+    void decreaseLikeCount(Long articleId);
+
+    /**
      * 用户新增文章
      *
      * @param addArticleDTO
      * @return 返回新增成功的文章id
      */
-    Long addArticle(AddArticleDTO addArticleDTO);
+    Long addArticle(AddArticleDTO addArticleDTO) throws Exception;
 
     /**
      * 用户编辑文章

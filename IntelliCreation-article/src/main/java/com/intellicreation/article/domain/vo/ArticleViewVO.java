@@ -32,6 +32,10 @@ public class ArticleViewVO {
     @ApiModelProperty(value = "点赞数")
     private Long likeCount;
 
+    private Boolean isLiked;
+
+    private Boolean isRated;
+
     @ApiModelProperty(value = "阅读量")
     private Long viewCount;
 

@@ -32,6 +32,9 @@ public class AmsPostDO implements Serializable {
 
     private String content;
 
+    @ApiModelProperty(value = "缩略图")
+    private String thumbnail;
+
     private Long likeCount;
 
     private Long viewCount;

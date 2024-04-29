@@ -65,5 +65,14 @@ public interface MineFacade {
      *
      * @return
      */
-    PageVO mineArticle(Integer pageNum, Integer pageSize);
+    PageVO mineArticle(Integer pageNum, Integer pageSize, Long memberId);
+
+    /**
+     * 用户获取登录日志
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    PageVO mineLoginLog(Integer pageNum, Integer pageSize);
 }

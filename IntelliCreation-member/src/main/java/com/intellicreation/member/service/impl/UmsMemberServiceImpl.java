@@ -209,6 +209,38 @@ public class UmsMemberServiceImpl extends ServiceImpl<UmsMemberMapper, UmsMember
         }
     }
 
+    @Override
+    public void addArticleCount(Long memberId) {
+        UmsMemberDO umsMemberDO = getById(memberId);
+        Long currentArticle = umsMemberDO.getArticleCount();
+        umsMemberDO.setArticleCount(currentArticle + 1);
+        updateById(umsMemberDO);
+    }
+
+    @Override
+    public void addRatingCount(Long id) {
+        UmsMemberDO umsMemberDO = getById(id);
+        Long currentRating = umsMemberDO.getRatingCount();
+        umsMemberDO.setRatingCount(currentRating + 1);
+        updateById(umsMemberDO);
+    }
+
+    @Override
+    public void addPostCount(Long id) {
+        UmsMemberDO umsMemberDO = getById(id);
+        Long currentPost = umsMemberDO.getPostCount();
+        umsMemberDO.setPostCount(currentPost + 1);
+        updateById(umsMemberDO);
+    }
+
+    @Override
+    public void addCommentCount(Long id) {
+        UmsMemberDO umsMemberDO = getById(id);
+        Long currentComment = umsMemberDO.getPostCommentCount();
+        umsMemberDO.setPostCommentCount(currentComment + 1);
+        updateById(umsMemberDO);
+    }
+
     /**
      * 判断uid是否存在
      *

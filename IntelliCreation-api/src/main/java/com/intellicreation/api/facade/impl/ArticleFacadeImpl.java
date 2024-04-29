@@ -9,11 +9,16 @@ import com.intellicreation.article.domain.dto.UpdateArticleInfoDTO;
 import com.intellicreation.article.domain.entity.*;
 import com.intellicreation.article.domain.vo.*;
 import com.intellicreation.article.service.*;
+import com.intellicreation.common.constant.LikeConstants;
 import com.intellicreation.common.constant.SystemConstants;
+import com.intellicreation.common.enumtype.AppHttpCodeEnums;
+import com.intellicreation.common.exception.SystemException;
 import com.intellicreation.common.util.BeanCopyUtils;
 import com.intellicreation.common.util.RedisCache;
 import com.intellicreation.common.vo.PageVO;
 import com.intellicreation.member.service.UmsMemberService;
+import com.intellicreation.member.util.SecurityUtils;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -45,6 +50,9 @@ public class ArticleFacadeImpl implements ArticleFacade {
     private AmsArticleTagRelationService amsArticleTagRelationService;
 
     @Autowired
+    private AmsLikeService amsLikeService;
+
+    @Autowired
     private AmsRatingService amsRatingService;
 
     @Autowired
@@ -57,9 +65,6 @@ public class ArticleFacadeImpl implements ArticleFacade {
 
     @Override
     public PageVO articleList(Integer pageNum, Integer pageSize, Long category1Id, Long category2Id) {
-        // todo 要不要下放到service
-        // todo viewCount改为从redis中获取
-        // todo select过多字段
         // 查询条件
         LambdaQueryWrapper<AmsArticleDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper
@@ -87,6 +92,33 @@ public class ArticleFacadeImpl implements ArticleFacade {
                     }
                     articleListVO.setTagName(tagNameList);
                 });
+        articleListVOList
+                // 从redis中获取viewCount
+                .forEach(article -> {
+                    Integer viewCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, article.getId().toString());
+                    if (viewCount != null) {
+                        article.setViewCount(viewCount.longValue());
+                    } else {
+                        // todo 处理未在Redis中找到浏览量的情况
+                    }
+                });
+        articleListVOList
+                // 设置是否已经点赞
+                .forEach(article -> {
+                    Long memberId = SecurityUtils.getMemberId();
+                    boolean isLiked = amsLikeService.isLikedArticle(article.getId(), LikeConstants.LIKE_TYPE_ARTICLE, memberId);
+                    article.setIsLiked(isLiked);
+                });
+        articleListVOList
+                // 从redis中获取likeCount
+                .forEach(article -> {
+                    Integer likeCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_LIKE_COUNT_KEY, article.getId().toString());
+                    if (likeCount != null) {
+                        article.setLikeCount(likeCount.longValue());
+                    } else {
+                        // todo 处理未在Redis中找到点赞量的情况
+                    }
+                });
         articleListVOList.stream()
                 // 根据categoryId，查询的对应categoryName
                 .map(articleListVO -> articleListVO.setCategory1Name(amsCategoryService.getById(articleListVO.getCategory1Id()).getName()))
@@ -106,8 +138,18 @@ public class ArticleFacadeImpl implements ArticleFacade {
         // 从redis中获取viewCount
         Integer viewCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, id.toString());
         amsArticleDO.setViewCount(viewCount.longValue());
+        // 从redis中获取likeCount
+        Integer likeCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_LIKE_COUNT_KEY, id.toString());
+        amsArticleDO.setLikeCount(likeCount.longValue());
         // 转换成VO
         ArticleViewVO articleViewVO = BeanCopyUtils.copyBean(amsArticleDO, ArticleViewVO.class);
+        // 设置是否已经点赞
+        Long memberId = SecurityUtils.getMemberId();
+        boolean isLiked = amsLikeService.isLikedArticle(articleViewVO.getId(), LikeConstants.LIKE_TYPE_ARTICLE, memberId);
+        articleViewVO.setIsLiked(isLiked);
+        // 设置是否已经评论
+        boolean isRated = amsRatingService.isRated(articleViewVO.getId(), memberId);
+        articleViewVO.setIsRated(isRated);
         // 设定作者头像
         String avatar = umsMemberService.getAvatarById(articleViewVO.getCreateBy());
         articleViewVO.setAvatar(avatar);
@@ -174,13 +216,16 @@ public class ArticleFacadeImpl implements ArticleFacade {
     }
 
     @Override
-    public void addArticle(AddArticleDTO addArticleDTO) {
+    public void addArticle(AddArticleDTO addArticleDTO) throws Exception {
         // 新增文章
         Long articleId = amsArticleService.addArticle(addArticleDTO);
         // 保存文章标签关联关系
         amsArticleTagRelationService.saveArticleTag(articleId, addArticleDTO.getTag());
         // 在redis中初始化viewCount
         redisCache.setCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT_KEY, articleId.toString(), 0);
+        // 增加文章数量计数
+        Long id = SecurityUtils.getMemberId();
+        umsMemberService.addArticleCount(id);
     }
 
     @Override
@@ -224,15 +269,39 @@ public class ArticleFacadeImpl implements ArticleFacade {
     }
 
     @Override
-    public void postRating(PostRatingDTO postRatingDTO) {
+    public void likeArticle(Long articleId) {
+        Long memberId = SecurityUtils.getMemberId();
+        boolean isLiked = amsLikeService.isLikedArticle(articleId, LikeConstants.LIKE_TYPE_ARTICLE, memberId);
+        if (isLiked) {
+            throw new SystemException(AppHttpCodeEnums.DUPLICATE_LIKE);
+        }
+        amsLikeService.like(articleId, LikeConstants.LIKE_TYPE_ARTICLE);
+        amsArticleService.updateLikeCount(articleId);
+    }
+
+    @Override
+    public void unlikeArticle(Long articleId) {
+        Long memberId = SecurityUtils.getMemberId();
+        boolean isLiked = amsLikeService.isLikedArticle(articleId, LikeConstants.LIKE_TYPE_ARTICLE, memberId);
+        if (!isLiked) {
+            throw new SystemException(AppHttpCodeEnums.NOT_YET_LIKED);
+        }
+        amsLikeService.unlike(articleId, LikeConstants.LIKE_TYPE_ARTICLE, memberId);
+        amsArticleService.decreaseLikeCount(articleId);
+    }
+
+    @Override
+    public void postRating(PostRatingDTO postRatingDTO) throws Exception {
         amsRatingService.postRating(postRatingDTO);
+        Long id = SecurityUtils.getMemberId();
+        umsMemberService.addRatingCount(id);
     }
 
     @Override
     public PageVO ratingList(Integer pageNum, Integer pageSize, Long articleId) {
         LambdaQueryWrapper<AmsRatingDO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper
-                .select(AmsRatingDO::getScore, AmsRatingDO::getText, AmsRatingDO::getCreateBy)
+                .select(AmsRatingDO::getId, AmsRatingDO::getScore, AmsRatingDO::getText, AmsRatingDO::getCreateBy)
                 .eq(AmsRatingDO::getArticleId, articleId);
         Page<AmsRatingDO> page = new Page<>();
         page.setCurrent(pageNum);
@@ -245,5 +314,10 @@ public class ArticleFacadeImpl implements ArticleFacade {
                 .map(ratingListVO -> ratingListVO.setAvatar(umsMemberService.getAvatarById(ratingListVO.getCreateBy())))
                 .collect(Collectors.toList());
         return new PageVO(ratingListVOList, page.getTotal());
+    }
+
+    @Override
+    public RatingViewVO ratingDetail(Long id) {
+        return amsRatingService.ratingDetail(id);
     }
 }

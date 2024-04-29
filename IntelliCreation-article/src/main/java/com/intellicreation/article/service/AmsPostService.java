@@ -1,6 +1,7 @@
 package com.intellicreation.article.service;
 
 import com.intellicreation.article.domain.dto.CreatePostDTO;
+import com.intellicreation.article.domain.dto.PostQueryParamDTO;
 import com.intellicreation.article.domain.entity.AmsPostDO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.intellicreation.article.domain.vo.PostViewVO;
@@ -21,7 +22,7 @@ public interface AmsPostService extends IService<AmsPostDO> {
      *
      * @param createPostDTO
      */
-    void createPost(CreatePostDTO createPostDTO);
+    void createPost(CreatePostDTO createPostDTO) throws Exception;
 
     /**
      * 获取帖子
@@ -31,4 +32,8 @@ public interface AmsPostService extends IService<AmsPostDO> {
      * @return
      */
     PageVO postList(Integer pageNum, Integer pageSize);
+
+    PageVO queryPostList(Integer pageNum, Integer pageSize, PostQueryParamDTO postQueryParamDTO);
+
+    void deletePost(Long id);
 }
