@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://sh-cynosdbmysql-grp-3bven5g4.sql.tencentcdb.com:21195/intellicreation?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://---/intellicreation?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
     password: IntelliCreation@2024
     hikari:
@@ -31,8 +31,8 @@ spring:
     freemarker:
       cache: false
   tencent:
-    secretId: AKIDTm2OdhfZSBkCYpxBIKLF3k8TiprlbP6h
-    secretKey: b5Uq9Qet4CMVbfeXGnGveI5xphZhsz3L
+    secretId: 
+    secretKey: 
     region: ap-shanghai
     bucketName: intellicreation-1317922175
     path: https://intellicreation-1317922175.cos.ap-shanghai.myqcloud.com
